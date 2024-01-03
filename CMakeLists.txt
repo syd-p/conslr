@@ -12,7 +12,7 @@ add_library(conslr SHARED
 )
 
 set_target_properties(conslr PROPERTIES CXX_STANDARD 20)
-set_target_properties(conslr PROPERTIES PUBLIC_HEADER include/conslr.hpp)
+set_target_properties(conslr PROPERTIES PUBLIC_HEADER include/conslr/consle.hpp)
 
 target_include_directories(conslr PRIVATE include)
 target_include_directories(conslr PRIVATE src)
