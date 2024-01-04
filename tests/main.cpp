@@ -1,4 +1,5 @@
 #include "conslr/console.hpp"
+#include "conslr/screen.hpp"
 
 #include <SDL.h>
 
@@ -12,6 +13,11 @@ int main(int argc, char* argv[])
 
     int32_t scrIndex = console.createScreen();
     console.setCurrentScreenIndex(scrIndex);
+
+    console.setScreenRender(scrIndex, [](conslr::Screen& scr)
+    {
+        scr.fill({ 255, 0, 0, 255 }, { 0, 0, 255, 255 }, 'C');
+    });
 
     SDL_Event event;
     bool running = true;

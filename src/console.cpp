@@ -15,13 +15,20 @@ conslr::Console::Console(int32_t cellWidth, int32_t cellHeight, int32_t windowCe
     mCurrentFont{ -1 }
 {}
 
-void conslr::Console::init(const char* title, SDL_Surface* icon)
+conslr::Console::~Console()
+{
+    destroy();
+
+    return;
+}
+
+int32_t conslr::Console::init(const char* title, SDL_Surface* icon)
 {
     //init was already called for this console or the object is somehow malformed
     if (mWindow != nullptr || mRenderer != nullptr)
     {
         std::cerr << "Console::init() was already called or this object is malformed" << std::endl;
-        return;
+        return -1;
     }
 
     if (!SDL_WasInit(SDL_INIT_VIDEO))
@@ -37,14 +44,20 @@ void conslr::Console::init(const char* title, SDL_Surface* icon)
     if (!mWindow)
     {
         std::cerr << "Failed to create window with title: " << title << ", " << SDL_GetError() << std::endl;
-        exit(-2);
+        mWindow = nullptr;
+
+        return -2;
     }
 
     mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if (!mRenderer)
     {
         std::cerr << "Failed to create renderer for window with title: " << title << ", " << SDL_GetError() << std::endl;
-        exit(-3);
+        SDL_DestroyWindow(mWindow);
+        mWindow = nullptr;
+        mRenderer = nullptr;
+
+        return -3;
     }
 
     if (icon != nullptr)
@@ -52,7 +65,7 @@ void conslr::Console::init(const char* title, SDL_Surface* icon)
         SDL_SetWindowIcon(mWindow, icon);
     }
 
-    return;
+    return 0;
 }
 
 void conslr::Console::doEvent(SDL_Event& event)
@@ -233,8 +246,8 @@ int32_t conslr::Console::getCurrentScreenIndex() const { return mCurrentScreen; 
 int32_t conslr::Console::getCurrentFontIndex() const { return mCurrentFont; }
 
 //Setters
-void conslr::Console::setCurrentScreenIndex(int32_t index) { mCurrentScreen = index; }
-void conslr::Console::setCurrentFontIndex(int32_t index) { mCurrentFont = index; }
+void conslr::Console::setCurrentScreenIndex(int32_t index) { assert(index < mScreens.size()); mCurrentScreen = index; }
+void conslr::Console::setCurrentFontIndex(int32_t index) { assert(index < mFonts.size()); mCurrentFont = index; }
 
 void conslr::Console::setScreenEventCallback(int32_t index, std::function<void(Screen&, SDL_Event&)> callback) { mScreens.at(index).eventCallback = callback; }
 void conslr::Console::setScreenUpdate(int32_t index, std::function<void(Screen&)> update) { mScreens.at(index).update = update; }

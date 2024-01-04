@@ -23,17 +23,21 @@ namespace conslr
         Console& operator=(const Console&) = delete;
         Console& operator=(Console&&) = delete;
         Console(int32_t cellWidth, int32_t cellHeight, int32_t windowCellWidth, int32_t windowCellHeight);
+        ~Console();
 
-        void init(const char* title = "Console", SDL_Surface* icon = nullptr);
+        //Returns 0 on success or < 0 on failure
+        int32_t init(const char* title = "Console", SDL_Surface* icon = nullptr);
         void doEvent(SDL_Event& event);
         void update();
         void render();
         void destroy();
 
         //Screen functions
+        //Returns created screens index
         int32_t createScreen();
 
         //Font functions
+        //Returns created fonts index or -1 on failure
         int32_t createFont(const char* file, int32_t charWidth, int32_t charHeight);
 
         //Getters

@@ -19,5 +19,7 @@ void conslr::Screen::fill(const SDL_Color& background, const SDL_Color& foregrou
         cell.character = character;
     }
 
+    mUpdated = true;
+
     return;
 }
