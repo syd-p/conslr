@@ -3,6 +3,8 @@
 #include <cstdint>
 #include <vector>
 
+#include <SDL_events.h>
+
 #include "conslr/screen.hpp"
 
 struct SDL_Window;
@@ -23,7 +25,9 @@ namespace conslr
         Console(int32_t cellWidth, int32_t cellHeight, int32_t windowCellWidth, int32_t windowCellHeight);
 
         void init(const char* title = "Console", SDL_Surface* icon = nullptr);
-        void render() const;
+        void doEvent(SDL_Event& event);
+        void update();
+        void render();
         void destroy();
 
         //Screen functions
@@ -34,13 +38,14 @@ namespace conslr
 
         //Getters
         int32_t getCurrentScreenIndex() const;
-        Screen& getCurrentScreen();
-        Screen& getScreen(int32_t index);
         int32_t getCurrentFontIndex() const;
 
         //Setters
         void setCurrentScreenIndex(int32_t index);
         void setCurrentFontIndex(int32_t index);
+        void setScreenEventCallback(int32_t index, std::function<void(Screen&, SDL_Event&)> callback);
+        void setScreenUpdate(int32_t index, std::function<void(Screen&)> update);
+        void setScreenRender(int32_t index, std::function<void(Screen&)> render);
 
     private:
         //Console data

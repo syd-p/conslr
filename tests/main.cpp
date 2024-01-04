@@ -10,6 +10,9 @@ int main(int argc, char* argv[])
     int32_t font = console.createFont("ibm_vga_fontsheet.bmp", 8, 16);
     console.setCurrentFontIndex(font);
 
+    int32_t scrIndex = console.createScreen();
+    console.setCurrentScreenIndex(scrIndex);
+
     SDL_Event event;
     bool running = true;
     while (running)
@@ -20,8 +23,11 @@ int main(int argc, char* argv[])
             {
                 running = false;
             }
+
+            console.doEvent(event);
         }
 
+        console.update();
         console.render();
     }
 
