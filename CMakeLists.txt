@@ -9,6 +9,7 @@ find_package(SDL2_image REQUIRED)
 
 add_library(conslr SHARED
     src/console.cpp
+    src/screen.cpp
 )
 
 set_target_properties(conslr PROPERTIES CXX_STANDARD 20)

@@ -1,10 +1,14 @@
 #pragma once
 
 #include <cstdint>
+#include <vector>
+
+#include "conslr/screen.hpp"
 
 struct SDL_Window;
 struct SDL_Renderer;
 struct SDL_Surface;
+struct SDL_Texture;
 
 namespace conslr
 {
@@ -22,6 +26,22 @@ namespace conslr
         void render() const;
         void destroy();
 
+        //Screen functions
+        int32_t createScreen();
+
+        //Font functions
+        int32_t createFont(const char* file, int32_t charWidth, int32_t charHeight);
+
+        //Getters
+        int32_t getCurrentScreenIndex() const;
+        Screen& getCurrentScreen();
+        Screen& getScreen(int32_t index);
+        int32_t getCurrentFontIndex() const;
+
+        //Setters
+        void setCurrentScreenIndex(int32_t index);
+        void setCurrentFontIndex(int32_t index);
+
     private:
         //Console data
         int32_t mCellWidth;
@@ -34,5 +54,22 @@ namespace conslr
         //SDL data
         SDL_Window* mWindow;
         SDL_Renderer* mRenderer;
+
+        //Screen data
+        std::vector<Screen> mScreens;
+        int32_t mCurrentScreen;
+
+        //Font data
+        struct Font
+        {
+            int32_t mCharWidth;
+            int32_t mCharHeight;
+            int32_t mColumns;
+            int32_t mRows;
+
+            SDL_Texture* mTexture;
+        };
+        std::vector<Font> mFonts;
+        int32_t mCurrentFont;
     };
 }
