@@ -12,6 +12,7 @@
 #include <SDL_events.h>
 
 struct SDL_Renderer;
+struct SDL_Rect;
 
 namespace conslr
 {
@@ -59,6 +60,51 @@ namespace conslr
         ///@param foreground Foreground color to fill
         ///@param character Character to fill
         void fill(const SDL_Color& background, const SDL_Color& foreground, const int32_t& character);
+        ///Fills the background
+        ///
+        ///@param background Background color to fill
+        void fillBackground(const SDL_Color& background);
+        ///Fills the foreground
+        ///
+        ///@param foreground Foreground color to fill
+        void fillForeground(const SDL_Color& foreground);
+        ///Fills the foreground
+        ///
+        ///@param foreground Foreground color to fill
+        ///@param character Character to fill
+        void fillForeground(const SDL_Color& foreground, const int32_t& character);
+        ///Fills characters
+        ///
+        ///@param character Character to fill
+        void fillCharacter(const int32_t& character);
+        ///Fills a rect
+        ///
+        ///@param rect Rect to fill
+        ///@param background Background color to fill
+        ///@param foreground Foreground color to fill
+        ///@param character Character to fill
+        void fillRect(SDL_Rect rect, const SDL_Color& background, const SDL_Color& foreground, const int32_t& character);
+        ///Fills the background of a rect
+        ///
+        ///@param rect Rect to fill
+        ///@param background Background color to fill
+        void fillRectBackground(SDL_Rect rect, const SDL_Color& background);
+        ///Fills the foreground of a rect
+        ///
+        ///@param rect Rect to fill
+        ///@param foreground Foreground color to fill
+        void fillRectForeground(SDL_Rect rect, const SDL_Color& foreground);
+        ///Fills the foreground of a rect
+        ///
+        ///@param rect Rect to fill
+        ///@param foreground Foreground color to fill
+        ///@param character Character to fill
+        void fillRectForeground(SDL_Rect rect, const SDL_Color& foreground, const int32_t& character);
+        ///Fills the characters in a rect
+        ///
+        ///@param rect Rect to fill
+        ///@param character Character to fill
+        void fillRectCharacter(SDL_Rect rect, const int32_t& character);
 
         //Getters
         const int32_t& getWidth() const { return mWidth; }
