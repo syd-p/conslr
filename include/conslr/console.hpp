@@ -1,3 +1,7 @@
+///
+///@file conslr/console.hpp
+///@brief Contains declarations for Console and Console::Font
+///
 #pragma once
 
 #include <cstdint>
@@ -14,6 +18,9 @@ struct SDL_Texture;
 
 namespace conslr
 {
+    ///
+    ///Console class
+    ///
     class Console
     {
     public:
@@ -22,22 +29,51 @@ namespace conslr
         Console(Console&&) = delete;
         Console& operator=(const Console&) = delete;
         Console& operator=(Console&&) = delete;
+        ///Constructs a console
+        ///
+        ///@param cellWidth Width of a cell
+        ///@param cellHeight Height of a cell
+        ///@param windowCellWidth Width of the console in cells
+        ///@param windowCellHeight Height of the console in cells
         Console(int32_t cellWidth, int32_t cellHeight, int32_t windowCellWidth, int32_t windowCellHeight);
         ~Console();
 
-        //Returns 0 on success or < 0 on failure
+        ///Initializes a console
+        ///
+        ///@param title Title of the console window
+        ///@param icon Icon of the console window
+        ///
+        ///@return 0 on success, < 0 on failure
         int32_t init(const char* title = "Console", SDL_Surface* icon = nullptr);
+        ///Processes events for the console
+        ///
+        ///@param event SDL_Event being passed to the console
         void doEvent(SDL_Event& event);
+        ///Updates the current screen
+        ///
+        ///
         void update();
+        ///Renders the current screen
+        ///
+        ///Only called when screen.mUpdated is true
         void render();
+        ///Destroys the console
+        ///
+        ///Console can then be reinitialized as if it were a newly constructed console
         void destroy();
 
-        //Screen functions
-        //Returns created screens index
+        ///Creates a new screen
+        ///
+        ///@return Index of the new screen
         int32_t createScreen();
 
-        //Font functions
-        //Returns created fonts index or -1 on failure
+        ///Creates a new font
+        ///
+        ///@param file Font sheet file to load
+        ///@param charWidth Width of a character in the image file
+        ///@param charHeight Height of a character in the image file
+        ///
+        ///@return Index of the new font
         int32_t createFont(const char* file, int32_t charWidth, int32_t charHeight);
 
         //Getters
