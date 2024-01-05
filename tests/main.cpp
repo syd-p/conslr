@@ -18,6 +18,7 @@ int main(int argc, char* argv[])
     {
        scr.fillBackground({ 255, 0, 0, 255 });
        scr.fillRectBackground({ 1, 1, 2, 1 }, { 0, 0, 255, 255 });
+       scr.setCellBackground(81, 25, { 0, 255, 0, 255 });
     });
 
     SDL_Event event;

@@ -105,6 +105,39 @@ namespace conslr
         ///@param rect Rect to fill
         ///@param character Character to fill
         void fillRectCharacter(SDL_Rect rect, const int32_t& character);
+        ///Sets the information of a cell
+        ///
+        ///@param x Index X of the cell
+        ///@param y Index Y of the cell
+        ///@param background Background color to set
+        ///@param foreground Foreground color to set
+        ///@param character Character to set
+        void setCell(int32_t x, int32_t y, const SDL_Color& background, const SDL_Color& foreground, const int32_t& character);
+        ///Sets the background color of a cell
+        ///
+        ///@param x Index X of the cell
+        ///@param y Index Y of the cell
+        ///@param background Background color to set
+        void setCellBackground(int32_t x, int32_t y, const SDL_Color& background);
+        ///Sets the foreground color of a cell
+        ///
+        ///@param x Index X of the cell
+        ///@param y Index Y of the cell
+        ///@param foreground Foreground color to set
+        void setCellForeground(int32_t x, int32_t y, const SDL_Color& foreground);
+        ///Sets the foreground color of a cell
+        ///
+        ///@param x Index X of the cell
+        ///@param y Index Y of the cell
+        ///@param foreground Foreground color to set
+        ///@param character Character to set
+        void setCellForeground(int32_t x, int32_t y, const SDL_Color& foreground, const int32_t& character);
+        ///Sets the character of a cell
+        ///
+        ///@param x Index X of the cell
+        ///@param y Index Y of the cell
+        ///@param character Character to set
+        void setCellCharacter(int32_t x, int32_t y, const int32_t& character);
 
         //Getters
         const int32_t& getWidth() const { return mWidth; }

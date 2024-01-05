@@ -185,3 +185,86 @@ void conslr::Screen::fillRectCharacter(SDL_Rect rect, const int32_t& character)
 
     return;
 }
+
+void conslr::Screen::setCell(int32_t x, int32_t y, const SDL_Color& background, const SDL_Color& foreground, const int32_t& character)
+{
+    if (x < 0) { x = 0; }
+    if (x >= mWidth) { x = mWidth - 1; }
+    if (y < 0) { y = 0; }
+    if (y >= mHeight) { y = mHeight - 1; }
+
+    int32_t index = (y * mWidth) + x;
+    auto& cell = mCells.at(index);
+    cell.background = background;
+    cell.foreground = foreground;
+    cell.character = character;
+
+    mUpdated = true;
+
+    return;
+}
+
+void conslr::Screen::setCellBackground(int32_t x, int32_t y, const SDL_Color& background)
+{
+    if (x < 0) { x = 0; }
+    if (x >= mWidth) { x = mWidth - 1; }
+    if (y < 0) { y = 0; }
+    if (y >= mHeight) { y = mHeight - 1; }
+
+    int32_t index = (y * mWidth) + x;
+    auto& cell = mCells.at(index);
+    cell.background = background;
+
+    mUpdated = true;
+
+    return;
+}
+
+void conslr::Screen::setCellForeground(int32_t x, int32_t y, const SDL_Color& foreground)
+{
+    if (x < 0) { x = 0; }
+    if (x >= mWidth) { x = mWidth - 1; }
+    if (y < 0) { y = 0; }
+    if (y >= mHeight) { y = mHeight - 1; }
+
+    int32_t index = (y * mWidth) + x;
+    auto& cell = mCells.at(index);
+    cell.foreground = foreground;
+
+    mUpdated = true;
+
+    return;
+}
+
+void conslr::Screen::setCellForeground(int32_t x, int32_t y, const SDL_Color& foreground, const int32_t& character)
+{
+    if (x < 0) { x = 0; }
+    if (x >= mWidth) { x = mWidth - 1; }
+    if (y < 0) { y = 0; }
+    if (y >= mHeight) { y = mHeight - 1; }
+
+    int32_t index = (y * mWidth) + x;
+    auto& cell = mCells.at(index);
+    cell.foreground = foreground;
+    cell.character = character;
+
+    mUpdated = true;
+
+    return;
+}
+
+void conslr::Screen::setCellCharacter(int32_t x, int32_t y, const int32_t& character)
+{
+    if (x < 0) { x = 0; }
+    if (x >= mWidth) { x = mWidth - 1; }
+    if (y < 0) { y = 0; }
+    if (y >= mHeight) { y = mHeight - 1; }
+
+    int32_t index = (y * mWidth) + x;
+    auto& cell = mCells.at(index);
+    cell.character = character;
+
+    mUpdated = true;
+
+    return;
+}
