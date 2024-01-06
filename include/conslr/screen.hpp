@@ -9,10 +9,10 @@
 #include <functional>
 
 #include <SDL_pixels.h>
-#include <SDL_events.h>
 
 struct SDL_Renderer;
 struct SDL_Rect;
+union SDL_Event;
 
 namespace conslr
 {

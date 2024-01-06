@@ -8,18 +8,18 @@
 #include <array>
 #include <queue>
 #include <memory>
-
-#include <SDL_events.h>
-
-#include "conslr/screen.hpp"
+#include <functional>
 
 struct SDL_Window;
 struct SDL_Renderer;
 struct SDL_Surface;
 struct SDL_Texture;
+union SDL_Event;
 
 namespace conslr
 {
+    struct Screen;
+
     ///
     ///Console class
     ///
@@ -97,6 +97,10 @@ namespace conslr
         void setScreenUpdate(int32_t index, std::function<void(Screen&)> update);
         void setScreenRender(int32_t index, std::function<void(Screen&)> render);
 
+        //Const values
+        static const int32_t MAX_SCREENS = 16; //!<Max screens that a console can have
+        static const int32_t MAX_FONTS = 4; //!<Max fonts that a console can have
+
     private:
         //Console data
         int32_t mCellWidth;
@@ -111,7 +115,6 @@ namespace conslr
         SDL_Renderer* mRenderer;
 
         //Screen data
-        static const int32_t MAX_SCREENS = 16;
         std::queue<int32_t> mFreeScreens;
         std::array<std::unique_ptr<Screen>, MAX_SCREENS> mScreens;
         int32_t mCurrentScreen;
@@ -128,7 +131,6 @@ namespace conslr
 
             SDL_Texture* mTexture = nullptr;
         };
-        static const int32_t MAX_FONTS = 4;
         std::queue<int32_t> mFreeFonts;
         std::array<std::unique_ptr<Font>, MAX_FONTS> mFonts;
         int32_t mCurrentFont;

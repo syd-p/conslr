@@ -6,6 +6,8 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
+#include <conslr/screen.hpp>
+
 conslr::Console::Console(int32_t cellWidth, int32_t cellHeight, int32_t windowCellWidth, int32_t windowCellHeight) :
     mCellWidth{ cellWidth }, mCellHeight{ cellHeight },
     mWindowCellWidth{ windowCellWidth }, mWindowCellHeight{ windowCellHeight },
@@ -229,7 +231,7 @@ void conslr::Console::destroy()
 //Screen functions
 int32_t conslr::Console::createScreen()
 {
-    assert((!mScreens.empty()) && "Max number of screens created");
+    assert((!mFreeScreens.empty()) && "Max number of screens created");
 
     int32_t index = mFreeScreens.front();
     mFreeScreens.pop();
@@ -241,7 +243,7 @@ int32_t conslr::Console::createScreen()
 
 void conslr::Console::destroyScreen(int32_t index)
 {
-    assert((index < MAX_SCREENS) && "Index is larger than MAX_SCREENS");
+    assert((index > 0 && index < MAX_SCREENS) && "Index is out of bounds");
     assert((mScreens.at(index) != nullptr) && "Screen is already nullptr");
 
     mScreens.at(index).reset(nullptr);
@@ -284,7 +286,7 @@ int32_t conslr::Console::createFont(const char* file, int32_t charWidth, int32_t
 
 void conslr::Console::destroyFont(int32_t index)
 {
-    assert((index < MAX_FONTS) && "Index is larger than MAX_FONTS");
+    assert((index > 0 && index < MAX_FONTS) && "Index is out of bounds");
     assert((mFonts.at(index) != nullptr) && "Font is already nullptr");
 
     mFonts.at(index).reset(nullptr);

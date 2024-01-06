@@ -1,5 +1,7 @@
 #include "conslr/screen.hpp"
 
+#include <SDL_events.h>
+
 conslr::Screen::Screen(int32_t width, int32_t height) :
     mWidth{ width }, mHeight{ height },
     eventCallback{ nullptr }, update{ nullptr }, render{ nullptr },
