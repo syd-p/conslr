@@ -140,9 +140,9 @@ namespace conslr
         void setCellCharacter(int32_t x, int32_t y, const int32_t& character);
 
         //Getters
-        const int32_t& getWidth() const { return mWidth; }
-        const int32_t& getHeight() const { return mHeight; }
-        const std::vector<Cell>& getCells() const { return mCells; }
+        [[nodiscard]] const int32_t& getWidth() const { return mWidth; }
+        [[nodiscard]] const int32_t& getHeight() const { return mHeight; }
+        [[nodiscard]] const std::vector<Cell>& getCells() const { return mCells; }
 
         bool mUpdated; //!<Screen will be rerendered if true
 

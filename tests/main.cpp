@@ -6,7 +6,10 @@
 int main(int argc, char* argv[])
 {
     conslr::Console console(32, 64, 80, 24);
-    console.init("TestConsole");
+    if (console.init("TestConsole") < 0)
+    {
+        exit(-1);
+    }
 
     int32_t font = console.createFont("ibm_vga_fontsheet.bmp", 8, 16);
     console.setCurrentFontIndex(font);

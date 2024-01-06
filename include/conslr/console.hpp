@@ -44,7 +44,7 @@ namespace conslr
         ///@param icon Icon of the console window
         ///
         ///@return 0 on success, < 0 on failure
-        int32_t init(const char* title = "Console", SDL_Surface* icon = nullptr);
+        [[nodiscard]] int32_t init(const char* title = "Console", SDL_Surface* icon = nullptr);
         ///Processes events for the console
         ///
         ///@param event SDL_Event being passed to the console
@@ -65,7 +65,7 @@ namespace conslr
         ///Creates a new screen
         ///
         ///@return Index of the new screen
-        int32_t createScreen();
+        [[nodiscard]] int32_t createScreen();
 
         ///Creates a new font
         ///
@@ -74,11 +74,11 @@ namespace conslr
         ///@param charHeight Height of a character in the image file
         ///
         ///@return Index of the new font
-        int32_t createFont(const char* file, int32_t charWidth, int32_t charHeight);
+        [[nodiscard]] int32_t createFont(const char* file, int32_t charWidth, int32_t charHeight);
 
         //Getters
-        int32_t getCurrentScreenIndex() const;
-        int32_t getCurrentFontIndex() const;
+        [[nodiscard]] int32_t getCurrentScreenIndex() const;
+        [[nodiscard]] int32_t getCurrentFontIndex() const;
 
         //Setters
         void setCurrentScreenIndex(int32_t index);
