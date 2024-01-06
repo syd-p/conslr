@@ -5,7 +5,9 @@
 #pragma once
 
 #include <cstdint>
-#include <vector>
+#include <array>
+#include <queue>
+#include <memory>
 
 #include <SDL_events.h>
 
@@ -66,6 +68,10 @@ namespace conslr
         ///
         ///@return Index of the new screen
         [[nodiscard]] int32_t createScreen();
+        ///Destroys a screen
+        ///
+        ///@param index Index of screen
+        void destroyScreen(int32_t index);
 
         ///Creates a new font
         ///
@@ -75,6 +81,10 @@ namespace conslr
         ///
         ///@return Index of the new font
         [[nodiscard]] int32_t createFont(const char* file, int32_t charWidth, int32_t charHeight);
+        ///Destroys a font
+        ///
+        ///@param index Font to destroy
+        void destroyFont(int32_t index);
 
         //Getters
         [[nodiscard]] int32_t getCurrentScreenIndex() const;
@@ -101,20 +111,26 @@ namespace conslr
         SDL_Renderer* mRenderer;
 
         //Screen data
-        std::vector<Screen> mScreens;
+        static const int32_t MAX_SCREENS = 16;
+        std::queue<int32_t> mFreeScreens;
+        std::array<std::unique_ptr<Screen>, MAX_SCREENS> mScreens;
         int32_t mCurrentScreen;
 
         //Font data
         struct Font
         {
-            int32_t mCharWidth;
-            int32_t mCharHeight;
-            int32_t mColumns;
-            int32_t mRows;
+            ~Font();
 
-            SDL_Texture* mTexture;
+            int32_t mCharWidth = 0;
+            int32_t mCharHeight = 0;
+            int32_t mColumns = 0;
+            int32_t mRows = 0;
+
+            SDL_Texture* mTexture = nullptr;
         };
-        std::vector<Font> mFonts;
+        static const int32_t MAX_FONTS = 4;
+        std::queue<int32_t> mFreeFonts;
+        std::array<std::unique_ptr<Font>, MAX_FONTS> mFonts;
         int32_t mCurrentFont;
     };
 }

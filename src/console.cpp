@@ -13,7 +13,21 @@ conslr::Console::Console(int32_t cellWidth, int32_t cellHeight, int32_t windowCe
     mWindow{ nullptr }, mRenderer{ nullptr },
     mCurrentScreen{ -1 },
     mCurrentFont{ -1 }
-{}
+{
+    for (auto i = 0; i < MAX_SCREENS; i++)
+    {
+        mFreeScreens.push(i);
+        mScreens.at(i).reset(nullptr);
+    }
+
+    for (auto i = 0; i < MAX_FONTS; i++)
+    {
+        mFreeFonts.push(i);
+        mFonts.at(i).reset(nullptr);
+    }
+
+    return;
+}
 
 conslr::Console::~Console()
 {
@@ -25,11 +39,7 @@ conslr::Console::~Console()
 int32_t conslr::Console::init(const char* title, SDL_Surface* icon)
 {
     //init was already called for this console or the object is somehow malformed
-    if (mWindow != nullptr || mRenderer != nullptr)
-    {
-        std::cerr << "Console::init() was already called or this object is malformed" << std::endl;
-        return -1;
-    }
+    assert((mWindow == nullptr && mRenderer == nullptr) && "Console was already initialized");
 
     if (!SDL_WasInit(SDL_INIT_VIDEO))
     {
@@ -96,7 +106,8 @@ void conslr::Console::doEvent(SDL_Event& event)
         return;
     }
 
-    auto& scr = mScreens.at(mCurrentScreen);
+    assert((mScreens.at(mCurrentScreen) != nullptr) && "Screen does not exist");
+    auto& scr = *mScreens.at(mCurrentScreen);
     if (scr.eventCallback == nullptr)
     {
         return;
@@ -114,7 +125,8 @@ void conslr::Console::update()
         return;
     }
 
-    auto& scr = mScreens.at(mCurrentScreen);
+    assert((mScreens.at(mCurrentScreen) != nullptr) && "Screen does not exist");
+    auto& scr = *mScreens.at(mCurrentScreen);
     if (scr.update == nullptr)
     {
         return;
@@ -136,16 +148,17 @@ void conslr::Console::render()
         return;
     }
 
-    auto& scr = mScreens.at(mCurrentScreen);
+    assert((mScreens.at(mCurrentScreen) != nullptr) && "Screen does not exist");
+    auto& scr = *mScreens.at(mCurrentScreen);
     if (scr.render != nullptr && scr.mUpdated)
     {
         scr.render(scr);
         scr.mUpdated = false;
     }
 
-    const auto& cells = mScreens.at(mCurrentScreen).getCells();
+    const auto& cells = scr.getCells();
     //Ensure size of screen is same as size of console
-    assert(cells.size() == mWindowCellWidth * mWindowCellHeight);
+    assert((cells.size() == mWindowCellWidth * mWindowCellHeight) && "Size of console and size of screen do not match");
     for (auto i = 0; i < mWindowCellWidth * mWindowCellHeight; i++)
     {
         const auto& cell = cells.at(i);
@@ -160,7 +173,7 @@ void conslr::Console::render()
         {
             continue;
         }
-        const auto& font = mFonts.at(mCurrentFont);
+        const auto& font = *mFonts.at(mCurrentFont);
         SDL_Rect src{ (cell.character % font.mColumns) * font.mCharWidth, (cell.character / font.mColumns) * font.mCharHeight, font.mCharWidth, font.mCharHeight };
 
         SDL_SetTextureColorMod(font.mTexture, cell.foreground.r, cell.foreground.g, cell.foreground.b);
@@ -175,18 +188,27 @@ void conslr::Console::render()
 
 void conslr::Console::destroy()
 {
-    mScreens.clear();
-    mCurrentScreen = -1;
-
-    for (auto& font : mFonts)
+    for (auto& scrPtr : mScreens)
     {
-        if (font.mTexture)
-        {
-            SDL_DestroyTexture(font.mTexture);
-        }
+        scrPtr.reset(nullptr);
     }
-    mFonts.clear();
+    mCurrentScreen = -1;
+    mFreeScreens = {};
+    for (auto i = 0; i < MAX_SCREENS; i++)
+    {
+        mFreeScreens.push(i);
+    }
+
+    for (auto& fontPtr : mFonts)
+    {
+        fontPtr.reset(nullptr);
+    }
     mCurrentFont = -1;
+    mFreeFonts = {};
+    for (auto i = 0; i < MAX_FONTS; i++)
+    {
+        mFreeFonts.push(i);
+    }
 
     if (mRenderer)
     {
@@ -207,14 +229,32 @@ void conslr::Console::destroy()
 //Screen functions
 int32_t conslr::Console::createScreen()
 {
-    mScreens.emplace_back(mWindowCellWidth, mWindowCellHeight);
+    assert((!mScreens.empty()) && "Max number of screens created");
 
-    return mScreens.size() - 1;
+    int32_t index = mFreeScreens.front();
+    mFreeScreens.pop();
+
+    mScreens.at(index).reset(new Screen{ mWindowCellWidth, mWindowCellHeight });
+
+    return index;
+}
+
+void conslr::Console::destroyScreen(int32_t index)
+{
+    assert((index < MAX_SCREENS) && "Index is larger than MAX_SCREENS");
+    assert((mScreens.at(index) != nullptr) && "Screen is already nullptr");
+
+    mScreens.at(index).reset(nullptr);
+    mFreeScreens.push(index);
+
+    return;
 }
 
 //Font functions
 int32_t conslr::Console::createFont(const char* file, int32_t charWidth, int32_t charHeight)
 {
+    assert((!mFreeFonts.empty()) && "Max number of fonts created");
+
     if (!IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG))
     {
         std::cerr << "Failed to init SDL_Image" << std::endl;
@@ -232,13 +272,25 @@ int32_t conslr::Console::createFont(const char* file, int32_t charWidth, int32_t
     int32_t height;
     SDL_QueryTexture(texture, NULL, NULL, &width, &height);
 
-    assert(width % charWidth == 0);
-    assert(height % charHeight == 0);
+    assert((width % charWidth == 0) && "Character width does not divide font evenly");
+    assert((height % charHeight == 0) && "Character height does not divide font evenly");
 
-    Font font{ charWidth, charHeight, width / charWidth, height / charHeight, texture };
-    mFonts.push_back(font);
+    int32_t index = mFreeFonts.front();
+    mFreeFonts.pop();
+    mFonts.at(index).reset(new Font{ charWidth, charHeight, width / charWidth, height / charHeight, texture });
 
-    return mFonts.size() - 1;
+    return index;
+}
+
+void conslr::Console::destroyFont(int32_t index)
+{
+    assert((index < MAX_FONTS) && "Index is larger than MAX_FONTS");
+    assert((mFonts.at(index) != nullptr) && "Font is already nullptr");
+
+    mFonts.at(index).reset(nullptr);
+    mFreeFonts.push(index);
+
+    return;
 }
 
 //Getters
@@ -249,6 +301,17 @@ int32_t conslr::Console::getCurrentFontIndex() const { return mCurrentFont; }
 void conslr::Console::setCurrentScreenIndex(int32_t index) { assert(index < mScreens.size()); mCurrentScreen = index; }
 void conslr::Console::setCurrentFontIndex(int32_t index) { assert(index < mFonts.size()); mCurrentFont = index; }
 
-void conslr::Console::setScreenEventCallback(int32_t index, std::function<void(Screen&, SDL_Event&)> callback) { mScreens.at(index).eventCallback = callback; }
-void conslr::Console::setScreenUpdate(int32_t index, std::function<void(Screen&)> update) { mScreens.at(index).update = update; }
-void conslr::Console::setScreenRender(int32_t index, std::function<void(Screen&)> render) { mScreens.at(index).render = render; }
+void conslr::Console::setScreenEventCallback(int32_t index, std::function<void(Screen&, SDL_Event&)> callback) { mScreens.at(index)->eventCallback = callback; }
+void conslr::Console::setScreenUpdate(int32_t index, std::function<void(Screen&)> update) { mScreens.at(index)->update = update; }
+void conslr::Console::setScreenRender(int32_t index, std::function<void(Screen&)> render) { mScreens.at(index)->render = render; }
+
+//Console::Font
+conslr::Console::Font::~Font()
+{
+    if (mTexture != nullptr)
+    {
+        SDL_DestroyTexture(mTexture);
+    }
+
+    return;
+}
