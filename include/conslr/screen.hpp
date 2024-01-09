@@ -10,6 +10,8 @@
 
 #include <SDL_pixels.h>
 
+#include <conslr/widgetmanager.hpp>
+
 struct SDL_Renderer;
 struct SDL_Rect;
 union SDL_Event;
@@ -48,10 +50,10 @@ namespace conslr
         ///
         ///@param Screen& Screen that update is being called on
         std::function<void(Screen&)> update;
-        ///Render function
+        ///Renders the screen
         ///
-        ///@param Screen& Screen that render is being called on
-        std::function<void(Screen&)> render;
+        ///
+        void render();
 
         //Drawing functions
         ///Fills the screen
@@ -145,6 +147,7 @@ namespace conslr
         [[nodiscard]] const std::vector<Cell>& getCells() const { return mCells; }
 
         bool mUpdated; //!<Screen will be rerendered if true
+        WidgetManager mWidgetManager; //!<Screens widget manager
 
     private:
         //Size in cells

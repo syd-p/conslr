@@ -10,6 +10,8 @@
 #include <memory>
 #include <functional>
 
+#include "conslr/widgetmanager.hpp"
+
 struct SDL_Window;
 struct SDL_Renderer;
 struct SDL_Surface;
@@ -89,13 +91,17 @@ namespace conslr
         //Getters
         [[nodiscard]] int32_t getCurrentScreenIndex() const;
         [[nodiscard]] int32_t getCurrentFontIndex() const;
+        ///Returns the widget manager of a screen
+        ///
+        ///@param index Index of the screen
+        ///@return Reference to the screen's WidgetManager
+        [[nodiscard]] WidgetManager& getWidgetManager(int32_t index) const;
 
         //Setters
         void setCurrentScreenIndex(int32_t index);
         void setCurrentFontIndex(int32_t index);
         void setScreenEventCallback(int32_t index, std::function<void(Screen&, SDL_Event&)> callback);
         void setScreenUpdate(int32_t index, std::function<void(Screen&)> update);
-        void setScreenRender(int32_t index, std::function<void(Screen&)> render);
 
         //Const values
         static const int32_t MAX_SCREENS = 16; //!<Max screens that a console can have

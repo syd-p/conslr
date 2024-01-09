@@ -1,7 +1,17 @@
 #include "conslr/console.hpp"
 #include "conslr/screen.hpp"
+#include "conslr/widget.hpp"
 
 #include <SDL.h>
+
+class TestWidget : public conslr::IWidget, public conslr::IRenderable
+{
+public:
+    void render(conslr::Screen& scr) override
+    {
+        scr.fill({ 255, 0, 0, 255 }, { 0, 0, 255, 255 }, 'A');
+    }
+};
 
 int main(int argc, char* argv[])
 {
@@ -17,12 +27,8 @@ int main(int argc, char* argv[])
     int32_t scrIndex = console.createScreen();
     console.setCurrentScreenIndex(scrIndex);
 
-    console.setScreenRender(scrIndex, [](conslr::Screen& scr)
-    {
-       scr.fillBackground({ 255, 0, 0, 255 });
-       scr.fillRectBackground({ 1, 1, 2, 1 }, { 0, 0, 255, 255 });
-       scr.setCellBackground(81, 25, { 0, 255, 0, 255 });
-    });
+    auto& wm = console.getWidgetManager(scrIndex);
+    wm.createWidget<TestWidget>();
 
     SDL_Event event;
     bool running = true;

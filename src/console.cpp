@@ -1,4 +1,5 @@
 #include "conslr/console.hpp"
+#include "conslr/widgetmanager.hpp"
 
 #include <iostream>
 #include <cassert>
@@ -152,9 +153,9 @@ void conslr::Console::render()
 
     assert((mScreens.at(mCurrentScreen) != nullptr) && "Screen does not exist");
     auto& scr = *mScreens.at(mCurrentScreen);
-    if (scr.render != nullptr && scr.mUpdated)
+    if (scr.mUpdated)
     {
-        scr.render(scr);
+        scr.render();
         scr.mUpdated = false;
     }
 
@@ -243,7 +244,7 @@ int32_t conslr::Console::createScreen()
 
 void conslr::Console::destroyScreen(int32_t index)
 {
-    assert((index > 0 && index < MAX_SCREENS) && "Index is out of bounds");
+    assert((index >= 0 && index < MAX_SCREENS) && "Index is out of bounds");
     assert((mScreens.at(index) != nullptr) && "Screen is already nullptr");
 
     mScreens.at(index).reset(nullptr);
@@ -286,7 +287,7 @@ int32_t conslr::Console::createFont(const char* file, int32_t charWidth, int32_t
 
 void conslr::Console::destroyFont(int32_t index)
 {
-    assert((index > 0 && index < MAX_FONTS) && "Index is out of bounds");
+    assert((index >= 0 && index < MAX_FONTS) && "Index is out of bounds");
     assert((mFonts.at(index) != nullptr) && "Font is already nullptr");
 
     mFonts.at(index).reset(nullptr);
@@ -298,6 +299,13 @@ void conslr::Console::destroyFont(int32_t index)
 //Getters
 int32_t conslr::Console::getCurrentScreenIndex() const { return mCurrentScreen; }
 int32_t conslr::Console::getCurrentFontIndex() const { return mCurrentFont; }
+conslr::WidgetManager& conslr::Console::getWidgetManager(int32_t index) const
+{
+    assert((index >= 0 && index < MAX_SCREENS) && "Index out of bounds");
+    assert((mScreens.at(index) != nullptr) && "Screen does not exist");
+
+    return mScreens.at(index)->mWidgetManager;
+}
 
 //Setters
 void conslr::Console::setCurrentScreenIndex(int32_t index) { assert(index < mScreens.size()); mCurrentScreen = index; }
@@ -305,7 +313,6 @@ void conslr::Console::setCurrentFontIndex(int32_t index) { assert(index < mFonts
 
 void conslr::Console::setScreenEventCallback(int32_t index, std::function<void(Screen&, SDL_Event&)> callback) { mScreens.at(index)->eventCallback = callback; }
 void conslr::Console::setScreenUpdate(int32_t index, std::function<void(Screen&)> update) { mScreens.at(index)->update = update; }
-void conslr::Console::setScreenRender(int32_t index, std::function<void(Screen&)> render) { mScreens.at(index)->render = render; }
 
 //Console::Font
 conslr::Console::Font::~Font()

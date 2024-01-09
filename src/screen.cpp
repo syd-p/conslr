@@ -4,10 +4,20 @@
 
 conslr::Screen::Screen(int32_t width, int32_t height) :
     mWidth{ width }, mHeight{ height },
-    eventCallback{ nullptr }, update{ nullptr }, render{ nullptr },
+    eventCallback{ nullptr }, update{ nullptr },
     mUpdated{ true }
 {
     mCells.resize(mWidth * mHeight, {});
+
+    return;
+}
+
+void conslr::Screen::render()
+{
+    for (auto& renderablePtr : mWidgetManager.getRenderable())
+    {
+        renderablePtr->render(*this);
+    }
 
     return;
 }
