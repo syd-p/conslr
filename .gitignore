@@ -4,6 +4,6 @@
 Debug/*
 Release/*
 docs/*
-test/*
+tests/*
 
 compile_commands.json
