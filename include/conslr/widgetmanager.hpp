@@ -27,26 +27,30 @@ namespace conslr
         ///Creates a widget
         ///
         ///@tparam T Type of widget to create, type must inherit from IWidget and must not be a widget interface
-        ///@return Returns the index of the created widget
+        ///@param priority Priority of the created widget
+        ///@return Returns a weak pointer to the created widget
         template<IsWidget T>
             requires IsNotInterface<T>
-        int32_t createWidget()
+        [[nodiscard]] std::weak_ptr<T> createWidget(int32_t priority = 0)
         {
             assert(!mFreeWidgets.empty() && "Max number of widgets created");
 
             int32_t index = mFreeWidgets.front();
             mFreeWidgets.pop();
 
-            std::shared_ptr<T> ptr = std::make_shared<T>();
-            ptr->mId = index;
+            std::shared_ptr<T> ptr = std::make_shared<T>(index, priority);
             mWidgets.at(index) = ptr;
 
             if (std::is_base_of<IRenderable, T>())
             {
                 mRenderable.push_back(ptr);
+                mRenderable.sort([](const std::shared_ptr<IRenderable>& a, const std::shared_ptr<IRenderable>& b) -> bool
+                        {
+                            return std::dynamic_pointer_cast<IWidget>(a)->getPriority() < std::dynamic_pointer_cast<IWidget>(b)->getPriority();
+                        });
             }
 
-            return index;
+            return ptr;
         }
         ///Destroys a widget
         ///

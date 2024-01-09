@@ -21,7 +21,7 @@ void conslr::WidgetManager::destroyWidget(int32_t index)
 
     for (auto it = mRenderable.begin(); it != mRenderable.end(); it++)
     {
-        if (std::dynamic_pointer_cast<IWidget>(*it)->mId == index)
+        if (std::dynamic_pointer_cast<IWidget>(*it)->getId() == index)
         {
             mRenderable.erase(it);
             break;

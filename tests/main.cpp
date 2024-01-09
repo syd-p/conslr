@@ -4,13 +4,17 @@
 
 #include <SDL.h>
 
-class TestWidget : public conslr::IWidget, public conslr::IRenderable
+class RectWidget : public conslr::IWidget, public conslr::IRenderable
 {
 public:
-    void render(conslr::Screen& scr) override
+    RectWidget(int32_t index, int32_t priority) : IWidget{ index, priority } {}
+    virtual void render(conslr::Screen& scr) override
     {
-        scr.fill({ 255, 0, 0, 255 }, { 0, 0, 255, 255 }, 'A');
+        scr.fillRectBackground(r, color);
     }
+
+    SDL_Rect r;
+    SDL_Color color;
 };
 
 int main(int argc, char* argv[])
@@ -28,7 +32,13 @@ int main(int argc, char* argv[])
     console.setCurrentScreenIndex(scrIndex);
 
     auto& wm = console.getWidgetManager(scrIndex);
-    wm.createWidget<TestWidget>();
+    auto rect1 = wm.createWidget<RectWidget>(1);
+    rect1.lock()->r = { 1, 1, 2, 2 };
+    rect1.lock()->color = { 255, 0, 0, 255 };
+
+    auto r2 = wm.createWidget<RectWidget>(0);
+    r2.lock()->r = { 2, 2, 2, 2 };
+    r2.lock()->color = { 0, 0, 255, 255 };
 
     SDL_Event event;
     bool running = true;

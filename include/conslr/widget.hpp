@@ -19,9 +19,15 @@ namespace conslr
     class IWidget
     {
     public:
+        IWidget(int32_t id, int32_t priority) : mId{ id }, mPriority{ priority } {}
         virtual ~IWidget() {}
 
-        int32_t mId; //!<Id of the widget in the WidgetManager
+        [[nodiscard]] int32_t getId() const { return mId; }
+        [[nodiscard]] int32_t getPriority() const { return mPriority; }
+
+    private:
+        int32_t mId;
+        int32_t mPriority;
     };
 
     ///
