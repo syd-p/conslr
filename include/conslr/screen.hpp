@@ -146,10 +146,12 @@ namespace conslr
         [[nodiscard]] const int32_t& getHeight() const { return mHeight; }
         [[nodiscard]] const std::vector<Cell>& getCells() const { return mCells; }
 
-        bool mUpdated; //!<Screen will be rerendered if true
+        bool mRerender; //!<Screen will be rerendered if true
         WidgetManager mWidgetManager; //!<Screens widget manager
 
     private:
+        constexpr void clear();
+
         //Size in cells
         int32_t mWidth;
         int32_t mHeight;

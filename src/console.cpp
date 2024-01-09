@@ -153,10 +153,20 @@ void conslr::Console::render()
 
     assert((mScreens.at(mCurrentScreen) != nullptr) && "Screen does not exist");
     auto& scr = *mScreens.at(mCurrentScreen);
-    if (scr.mUpdated)
+
+    for (auto& ptr : scr.mWidgetManager.getRenderable())
+    {
+        if (ptr->mRerender)
+        {
+            scr.mRerender = true;
+            break;
+        }
+    }
+
+    if (scr.mRerender)
     {
         scr.render();
-        scr.mUpdated = false;
+        scr.mRerender = false;
     }
 
     const auto& cells = scr.getCells();

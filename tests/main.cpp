@@ -2,6 +2,9 @@
 #include "conslr/screen.hpp"
 #include "conslr/widget.hpp"
 
+#include <chrono>
+#include <iostream>
+
 #include <SDL.h>
 
 class RectWidget : public conslr::IWidget, public conslr::IRenderable
@@ -19,6 +22,8 @@ public:
 
 int main(int argc, char* argv[])
 {
+    const auto initStart{ std::chrono::steady_clock::now() };
+
     conslr::Console console(32, 64, 80, 24);
     if (console.init("TestConsole") < 0)
     {
@@ -40,6 +45,17 @@ int main(int argc, char* argv[])
     r2.lock()->r = { 2, 2, 2, 2 };
     r2.lock()->color = { 0, 0, 255, 255 };
 
+    /*for (auto i = 2; i < wm.MAX_WIDGETS; i++)
+    {
+        auto x = wm.createWidget<RectWidget>();
+    }*/
+
+    const auto initEnd{ std::chrono::steady_clock::now() };
+    std::cout << std::chrono::duration<double>(initEnd - initStart) << std::endl;
+
+    int32_t loopCount = 0;
+    const auto start{ std::chrono::steady_clock::now() };
+
     SDL_Event event;
     bool running = true;
     while (running)
@@ -51,11 +67,31 @@ int main(int argc, char* argv[])
                 running = false;
             }
 
+            if (event.type == SDL_KEYDOWN)
+            {
+                if (event.key.keysym.scancode == SDL_SCANCODE_H)
+                {
+                    rect1.lock()->hide();
+                }
+
+                if (event.key.keysym.scancode == SDL_SCANCODE_S)
+                {
+                    rect1.lock()->show();
+                }
+            }
+
             console.doEvent(event);
         }
 
         console.update();
         console.render();
+
+        loopCount++;
+        if (loopCount == 60)
+        {
+            const auto end{ std::chrono::steady_clock::now() };
+            std::cout << std::chrono::duration<double>(end - start) << std::endl;
+        }
     }
 
     console.destroy();

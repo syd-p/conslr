@@ -37,6 +37,14 @@ namespace conslr
     {
     public:
         virtual void render(Screen&) {}
+
+        void show() { mVisible = true; mRerender = true; }
+        void hide() { mVisible = false; mRerender = true; }
+        bool isVisible() const { return mVisible; }
+
+        bool mRerender = true;
+    protected:
+        bool mVisible = true;
     };
 
     template <typename T>

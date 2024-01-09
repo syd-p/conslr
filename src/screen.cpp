@@ -5,7 +5,7 @@
 conslr::Screen::Screen(int32_t width, int32_t height) :
     mWidth{ width }, mHeight{ height },
     eventCallback{ nullptr }, update{ nullptr },
-    mUpdated{ true }
+    mRerender{ true }
 {
     mCells.resize(mWidth * mHeight, {});
 
@@ -14,9 +14,15 @@ conslr::Screen::Screen(int32_t width, int32_t height) :
 
 void conslr::Screen::render()
 {
+    clear();
+
     for (auto& renderablePtr : mWidgetManager.getRenderable())
     {
-        renderablePtr->render(*this);
+        if (renderablePtr->isVisible())
+        {
+            renderablePtr->render(*this);
+        }
+        renderablePtr->mRerender = false;
     }
 
     return;
@@ -31,7 +37,7 @@ void conslr::Screen::fill(const SDL_Color& background, const SDL_Color& foregrou
         cell.character = character;
     }
 
-    mUpdated = true;
+    mRerender = true;
 
     return;
 }
@@ -43,7 +49,7 @@ void conslr::Screen::fillBackground(const SDL_Color& background)
         cell.background = background;
     }
 
-    mUpdated = true;
+    mRerender = true;
 
     return;
 }
@@ -55,7 +61,7 @@ void conslr::Screen::fillForeground(const SDL_Color& foreground)
         cell.foreground = foreground;
     }
 
-    mUpdated = true;
+    mRerender = true;
 
     return;
 }
@@ -68,7 +74,7 @@ void conslr::Screen::fillForeground(const SDL_Color& foreground, const int32_t& 
         cell.character = character;
     }
 
-    mUpdated = true;
+    mRerender = true;
 
     return;
 }
@@ -80,7 +86,7 @@ void conslr::Screen::fillCharacter(const int32_t& character)
         cell.character = character;
     }
 
-    mUpdated = true;
+    mRerender = true;
 
     return;
 }
@@ -104,7 +110,7 @@ void conslr::Screen::fillRect(SDL_Rect rect, const SDL_Color& background, const 
         }
     }
 
-    mUpdated = true;
+    mRerender = true;
 
     return;
 }
@@ -126,7 +132,7 @@ void conslr::Screen::fillRectBackground(SDL_Rect rect, const SDL_Color& backgrou
         }
     }
 
-    mUpdated = true;
+    mRerender = true;
 
     return;
 }
@@ -148,7 +154,7 @@ void conslr::Screen::fillRectForeground(SDL_Rect rect, const SDL_Color& foregrou
         }
     }
 
-    mUpdated = true;
+    mRerender = true;
 
     return;
 }
@@ -171,7 +177,7 @@ void conslr::Screen::fillRectForeground(SDL_Rect rect, const SDL_Color& foregrou
         }
     }
 
-    mUpdated = true;
+    mRerender = true;
 
     return;
 }
@@ -193,7 +199,7 @@ void conslr::Screen::fillRectCharacter(SDL_Rect rect, const int32_t& character)
         }
     }
 
-    mUpdated = true;
+    mRerender = true;
 
     return;
 }
@@ -211,7 +217,7 @@ void conslr::Screen::setCell(int32_t x, int32_t y, const SDL_Color& background, 
     cell.foreground = foreground;
     cell.character = character;
 
-    mUpdated = true;
+    mRerender = true;
 
     return;
 }
@@ -227,7 +233,7 @@ void conslr::Screen::setCellBackground(int32_t x, int32_t y, const SDL_Color& ba
     auto& cell = mCells.at(index);
     cell.background = background;
 
-    mUpdated = true;
+    mRerender = true;
 
     return;
 }
@@ -243,7 +249,7 @@ void conslr::Screen::setCellForeground(int32_t x, int32_t y, const SDL_Color& fo
     auto& cell = mCells.at(index);
     cell.foreground = foreground;
 
-    mUpdated = true;
+    mRerender = true;
 
     return;
 }
@@ -260,7 +266,7 @@ void conslr::Screen::setCellForeground(int32_t x, int32_t y, const SDL_Color& fo
     cell.foreground = foreground;
     cell.character = character;
 
-    mUpdated = true;
+    mRerender = true;
 
     return;
 }
@@ -276,7 +282,14 @@ void conslr::Screen::setCellCharacter(int32_t x, int32_t y, const int32_t& chara
     auto& cell = mCells.at(index);
     cell.character = character;
 
-    mUpdated = true;
+    mRerender = true;
+
+    return;
+}
+
+constexpr void conslr::Screen::clear()
+{
+    mCells.assign(mCells.size(), Cell{});
 
     return;
 }

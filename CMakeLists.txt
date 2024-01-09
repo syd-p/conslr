@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.27)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-project(conslr)
+project(conslr VERSION 0.9 DESCRIPTION "Simple console emulator")
 
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
@@ -15,6 +15,8 @@ add_library(conslr SHARED
 
 set_target_properties(conslr PROPERTIES CXX_STANDARD 20)
 set_target_properties(conslr PROPERTIES PUBLIC_HEADER include/conslr/consle.hpp)
+set_target_properties(conslr PROPERTIES VERSION ${PROJECT_VERSION})
+set_target_properties(conslr PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR})
 
 target_include_directories(conslr PRIVATE include)
 target_include_directories(conslr PRIVATE src)
