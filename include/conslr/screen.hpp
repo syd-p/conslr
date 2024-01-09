@@ -140,6 +140,13 @@ namespace conslr
         ///@param y Index Y of the cell
         ///@param character Character to set
         void setCellCharacter(int32_t x, int32_t y, const int32_t& character);
+        ///Borders a rect (inclusive)
+        ///
+        ///@param rect Rect to border
+        ///@param horizontal Horizontal character
+        ///@param vertical Vertical character
+        ///@param corner Corner character
+        void borderRect(SDL_Rect rect, int32_t horizontal, int32_t vertical, int32_t corner);
 
         //Getters
         [[nodiscard]] const int32_t& getWidth() const { return mWidth; }
