@@ -22,7 +22,9 @@ int main()
 
     auto& wm = console.getWidgetManager(scr);
     auto listPtr = wm.createWidget<conslr::widgets::ScrollList<int32_t>>();
-    listPtr.lock()->setRegion({ 0, 0, 20, 24 });
+    listPtr.lock()->setRegion({ 1, 1, 20, 23 });
+    listPtr.lock()->showTitle();
+    listPtr.lock()->setTitle("List");
     for (auto i = 0; i < 30; i++)
     {
         listPtr.lock()->addElement(i, std::to_string(i));

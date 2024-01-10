@@ -11,6 +11,7 @@
 
 #include <cstdint>
 #include <type_traits>
+#include <string>
 
 #include <SDL_rect.h>
 
@@ -48,11 +49,19 @@ namespace conslr
         void hide() { mVisible = false; mRerender = true; }
         [[nodiscard]] bool isVisible() const { return mVisible; }
 
+        void showTitle() { mShowTitle = true; mRerender = true; }
+        void hideTitle() { mShowTitle = false; mRerender = true; }
+
+        [[nodiscard]] const std::string& getTitle() const { return mTitle; }
+
+        void setTitle(const std::string& title) { mTitle = title; }
         void setColorScheme(ColorScheme* colorScheme) { mColorScheme = colorScheme; }
 
         bool mRerender = true;
     protected:
         bool mVisible = true;
+        bool mShowTitle = false;
+        std::string mTitle;
 
         ColorScheme* mColorScheme = nullptr;
     };

@@ -57,17 +57,28 @@ namespace conslr::widgets
             }
 
             //Render the elements
+            int32_t xOffset = mRegion.x + 1;
+            int32_t yOffset = mRegion.y + 1;
             int32_t freeWidth = mRegion.w - 2;
             int32_t freeHeight = mRegion.h - 2;
+
+            if (mShowTitle)
+            {
+                screen.renderTextColor(
+                        mRegion.x + 1, mRegion.y,
+                        std::min(freeWidth, (int32_t)mTitle.size()),
+                        mTitle,
+                        mColorScheme->border);
+            }
 
             int32_t maxShown = std::min(freeHeight, (int32_t)mElements.size());
             for (auto i = 0; i < maxShown; i++)
             {
                 const auto& element = mElements.at(mScrollY + i);
-                screen.renderTextColor(1, 1 + i, freeWidth, element.mName, mColorScheme->text);
+                screen.renderTextColor(xOffset, yOffset + i, freeWidth, element.mName, mColorScheme->text);
             }
 
-            screen.setCellBackground(1, mSelection - mScrollY + 1, mColorScheme->selection);
+            screen.setCellBackground(xOffset, yOffset + mSelection - mScrollY, mColorScheme->selection);
 
             return;
         }
