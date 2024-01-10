@@ -35,13 +35,16 @@ namespace conslr
     {
     public:
         ///
-        ///Used internal, should not be called directly
+        ///Used internally, should not be called directly
         ///
         ScrollList(int32_t id, int32_t priority) :
             IWidget{ id, priority },
             mRegion{ 0, 0, 0, 0 }, mScrollY{ 0 }
         {}
 
+        ///
+        ///Internal
+        ///
         virtual void render(Screen& screen) override
         {
             screen.borderRect(mRegion, '=', '|', '+');
@@ -67,6 +70,10 @@ namespace conslr
             return;
         }
 
+        ///Adds an element to the list
+        ///
+        ///@param t Object value to be added
+        ///@param name Name for rendering the list
         void addElement(const T& t, const std::string& name)
         {
             mElements.emplace_back(mElements.size(), t, name);
@@ -75,6 +82,10 @@ namespace conslr
             return;
         }
 
+        ///Adds an element to the list
+        ///
+        ///@param t Object value to be added
+        ///@param name Name for rendering the list
         void addElement(T&& t, const std::string& name)
         {
             mElements.emplace_back(mElements.size(), t, name);
@@ -83,6 +94,9 @@ namespace conslr
             return;
         }
 
+        ///
+        ///Scrolls the list up
+        ///
         virtual void scrollUp() override
         {
             if (mElements.size() == 0)
@@ -101,6 +115,9 @@ namespace conslr
             return;
         }
 
+        ///
+        ///Scrolls the list down
+        ///
         virtual void scrollDown() override
         {
             if (mElements.size() == 0)
@@ -121,6 +138,9 @@ namespace conslr
             return;
         }
 
+        ///Gets the current elements value
+        ///
+        ///@return Value of the currently selected element
         const T& getCurrentElement() { return mElements.at(mSelection).mElement; }
 
         void setRegion(SDL_Rect region)

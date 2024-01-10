@@ -2,6 +2,11 @@
 ///@file conslr/widget.hpp
 ///@brief Defines widget interfaces
 ///
+///For extending widgets
+///1) Inherit from IWidget
+///2) Inherit from needed Interfaces
+///3) Create a constructor that takes id and priority and passes to IWidget contstructor
+///4) Overload interface functions
 #pragma once
 
 #include <cstdint>

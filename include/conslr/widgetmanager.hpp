@@ -2,6 +2,10 @@
 ///@file conslr/widgetmanager.hpp
 ///@brief Contains declarations for WidgetManager
 ///
+///To use widget manager
+///1) Create a screen for a console
+///2) Get widget manager from screen
+///3) Add widgets to screen with createWidget(...), where type T inherits from IWidget but is not an interface
 #pragma once
 
 #include <cstdint>

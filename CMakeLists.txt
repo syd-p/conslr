@@ -1,8 +1,10 @@
 cmake_minimum_required(VERSION 3.27)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-project(conslr VERSION 0.9 DESCRIPTION "Simple console emulator")
+project(conslr VERSION 1.0 DESCRIPTION "Simple console emulator")
 
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
@@ -25,6 +27,8 @@ target_include_directories(conslr PRIVATE ${SDL2_INCLUDE_DIR})
 target_link_libraries(conslr PRIVATE ${SDL2_LIBRARIES})
 target_link_libraries(conslr PRIVATE ${SDL2_IMAGE_LIBRARIES})
 
+#testproj
+
 project(test)
 
 add_executable(test tests/main.cpp)
@@ -36,4 +40,21 @@ target_include_directories(test PRIVATE include)
 
 target_link_libraries(test PRIVATE ${SDL2_LIBRARIES})
 target_link_libraries(test PRIVATE ${SDL2_IMAGE_LIBRARIES})
-target_link_libraries(test PRIVATE ${CMAKE_SOURCE_DIR}/${CMAKE_BUILD_TYPE}/libconslr.so)
+target_link_libraries(test PRIVATE ${CMAKE_SOURCE_DIR}/${CMAKE_BUILD_TYPE}/lib/libconslr.so)
+
+#examples
+
+file(GLOB EXAMPLE_SOURCES examples/*.cpp)
+foreach(exampleSourceFile ${EXAMPLE_SOURCES})
+    get_filename_component(exampleName ${exampleSourceFile} NAME_WE)
+    add_executable(${exampleName} ${exampleSourceFile})
+
+    set_target_properties(${exampleName} PROPERTIES CXX_STANDARD 20)
+
+    target_include_directories(${exampleName} PRIVATE ${SDL2_INCLUDE_DIR})
+    target_include_directories(${exampleName} PRIVATE include)
+
+    target_link_libraries(${exampleName} PRIVATE ${SDL2_LIBRARIES})
+    target_link_libraries(${exampleName} PRIVATE ${SDL2_IMAGE_LIBRARIES})
+    target_link_libraries(${exampleName} PRIVATE ${CMAKE_SOURCE_DIR}/${CMAKE_BUILD_TYPE}/lib/libconslr.so)
+endforeach(exampleSourceFile ${EXAMPLE_SOURCES})
