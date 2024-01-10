@@ -333,6 +333,16 @@ void conslr::Console::setColorScheme(const ColorScheme& colorScheme)
 {
     mColorScheme = colorScheme;
 
+    for (auto& scr : mScreens)
+    {
+        if (scr == nullptr)
+        {
+            continue;
+        }
+
+        scr->mRerender = true;
+    }
+
     return;
 }
 

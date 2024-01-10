@@ -1,8 +1,8 @@
 #include "conslr/screen.hpp"
 
-#include <iostream>
-
 #include <SDL_events.h>
+
+#include "conslr/colorscheme.hpp"
 
 conslr::Screen::Screen(int32_t width, int32_t height) :
     mWidth{ width }, mHeight{ height },
@@ -385,7 +385,7 @@ void conslr::Screen::renderMultilineText(int32_t x, int32_t y, int32_t maxWidth,
 
 constexpr void conslr::Screen::clear()
 {
-    mCells.assign(mCells.size(), Cell{});
+    mCells.assign(mCells.size(), {});
 
     return;
 }
