@@ -14,6 +14,9 @@
 
 namespace conslr
 {
+    ///
+    ///Renders a simple text box
+    ///
     class TextBox : public IWidget, public IRenderable
     {
     public:
@@ -31,9 +34,9 @@ namespace conslr
             screen.borderRect(mRegion, '=', '|', '+');
 
             screen.renderMultilineTextColor(
-                    mRegion.x + 1, mRegion.y + 1, 
-                    mRegion.w - 2, mRegion.h - 2, 
-                    mText, 
+                    mRegion.x + 1, mRegion.y + 1,
+                    mRegion.w - 2, mRegion.h - 2,
+                    mText,
                     mColorScheme->text);
 
             return;
@@ -48,9 +51,9 @@ namespace conslr
 
             return;
         }
-        void setText(const std::string& text) 
-        { 
-            mText = text; 
+        void setText(const std::string& text)
+        {
+            mText = text;
             mRerender = true;
 
             return;
