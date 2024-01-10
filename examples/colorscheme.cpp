@@ -25,6 +25,8 @@ int main()
     auto tb = wm.createWidget<conslr::widgets::TextBox>();
     tb.lock()->setRegion({ 1, 1, 40, 20 });
     tb.lock()->setText("Hello\nColor Schemes");
+    tb.lock()->setTitle("Text Box");
+    tb.lock()->showTitle();
 
     conslr::ColorScheme cs1;
     cs1.background = { 255, 0, 0, 255 };

@@ -33,6 +33,16 @@ namespace conslr::widgets
             screen.fillRect(mRegion, mColorScheme->background, mColorScheme->border, 0);
             screen.borderRect(mRegion, mColorScheme->borderHorizontal, mColorScheme->borderVertical, mColorScheme->borderCorner);
 
+            if (mShowTitle)
+            {
+                screen.renderTextColor(
+                        mRegion.x + 1, mRegion.y,
+                        std::min(mRegion.w - 2, (int32_t)mTitle.size()),
+                        mTitle,
+                        mColorScheme->border
+                        );
+            }
+
             screen.renderMultilineTextColor(
                     mRegion.x + 1, mRegion.y + 1,
                     mRegion.w - 2, mRegion.h - 2,
