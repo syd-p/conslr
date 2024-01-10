@@ -13,6 +13,7 @@
 
 #include "conslr/widget.hpp"
 #include "conslr/screen.hpp"
+#include "conslr/colorscheme.hpp"
 
 namespace conslr
 {
@@ -47,6 +48,7 @@ namespace conslr
         ///
         virtual void render(Screen& screen) override
         {
+            screen.fillRect(mRegion, mColorScheme->background, mColorScheme->border, 0);
             screen.borderRect(mRegion, '=', '|', '+');
 
             if (mElements.size() == 0)
@@ -65,7 +67,7 @@ namespace conslr
                 screen.renderText(1, 1 + i, freeWidth, element.mName);
             }
 
-            screen.setCellBackground(1, mSelection - mScrollY + 1, { 100, 100, 100, 255 });
+            screen.setCellBackground(1, mSelection - mScrollY + 1, mColorScheme->selection);
 
             return;
         }

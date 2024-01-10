@@ -20,6 +20,8 @@
 
 namespace conslr
 {
+    struct ColorScheme;
+
     ///
     ///WidgetManager class
     ///
@@ -47,6 +49,7 @@ namespace conslr
 
             if (std::is_base_of<IRenderable, T>())
             {
+                ptr->setColorScheme(mColorScheme);
                 mRenderable.push_back(ptr);
                 mRenderable.sort([](const std::shared_ptr<IRenderable>& a, const std::shared_ptr<IRenderable>& b) -> bool
                         {
@@ -80,6 +83,9 @@ namespace conslr
         ///@return A const reference to the list of renderable widgets
         const std::list<std::shared_ptr<IRenderable>>& getRenderable() const { return mRenderable; }
 
+        //Setters
+        void setColorScheme(ColorScheme* colorScheme) { mColorScheme = colorScheme; }
+
         static const int32_t MAX_WIDGETS = 16; //!<Max widgets that a WidgetManager can hold
 
     private:
@@ -87,5 +93,7 @@ namespace conslr
         std::array<std::shared_ptr<IWidget>, MAX_WIDGETS> mWidgets;
 
         std::list<std::shared_ptr<IRenderable>> mRenderable;
+
+        ColorScheme* mColorScheme = nullptr;
     };
 }

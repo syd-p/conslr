@@ -17,6 +17,7 @@
 namespace conslr
 {
     class Screen;
+    struct ColorScheme;
 
     ///
     ///Interface for all widgets
@@ -47,9 +48,13 @@ namespace conslr
         void hide() { mVisible = false; mRerender = true; }
         [[nodiscard]] bool isVisible() const { return mVisible; }
 
+        void setColorScheme(ColorScheme* colorScheme) { mColorScheme = colorScheme; }
+
         bool mRerender = true;
     protected:
         bool mVisible = true;
+
+        ColorScheme* mColorScheme = nullptr;
     };
 
     ///

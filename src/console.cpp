@@ -1,4 +1,5 @@
 #include "conslr/console.hpp"
+#include "conslr/colorscheme.hpp"
 #include "conslr/widgetmanager.hpp"
 
 #include <iostream>
@@ -249,6 +250,8 @@ int32_t conslr::Console::createScreen()
 
     mScreens.at(index).reset(new Screen{ mWindowCellWidth, mWindowCellHeight });
 
+    mScreens.at(index)->mWidgetManager.setColorScheme(&mColorScheme);
+
     return index;
 }
 
@@ -317,12 +320,21 @@ conslr::WidgetManager& conslr::Console::getWidgetManager(int32_t index) const
     return mScreens.at(index)->mWidgetManager;
 }
 
+const conslr::ColorScheme& conslr::Console::getColorScheme() const { return mColorScheme; }
+
 //Setters
 void conslr::Console::setCurrentScreenIndex(int32_t index) { assert(index < mScreens.size()); mCurrentScreen = index; }
 void conslr::Console::setCurrentFontIndex(int32_t index) { assert(index < mFonts.size()); mCurrentFont = index; }
 
 void conslr::Console::setScreenEventCallback(int32_t index, std::function<void(Screen&, SDL_Event&)> callback) { mScreens.at(index)->eventCallback = callback; }
 void conslr::Console::setScreenUpdate(int32_t index, std::function<void(Screen&)> update) { mScreens.at(index)->update = update; }
+
+void conslr::Console::setColorScheme(const ColorScheme& colorScheme)
+{
+    mColorScheme = colorScheme;
+
+    return;
+}
 
 //Console::Font
 conslr::Console::Font::~Font()
