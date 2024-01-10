@@ -324,6 +324,25 @@ void conslr::Screen::borderRect(SDL_Rect rect, int32_t horizontal, int32_t verti
     return;
 }
 
+void conslr::Screen::renderText(int32_t x, int32_t y, int32_t maxSize, const std::string& str)
+{
+    if (x < 0) { x = 0; }
+    if (x >= mWidth) { x = mWidth - 1; }
+    if (y < 0) { y = 0; }
+    if (y >= mHeight) { y = mHeight - 1; }
+
+    int32_t itrSize = std::min(maxSize, (int32_t)str.size());
+    int32_t start = (y * mWidth) + x;
+    for (int i = 0; i < itrSize; i++)
+    {
+        mCells.at(start + i).character = (int32_t)str.at(i);
+    }
+
+    mRerender = true;
+
+    return;
+}
+
 constexpr void conslr::Screen::clear()
 {
     mCells.assign(mCells.size(), Cell{});

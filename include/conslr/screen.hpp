@@ -147,6 +147,13 @@ namespace conslr
         ///@param vertical Vertical character
         ///@param corner Corner character
         void borderRect(SDL_Rect rect, int32_t horizontal, int32_t vertical, int32_t corner);
+        ///Renders text to cells
+        ///
+        ///@param x X index of the starting cell
+        ///@param y Y index of the starting cell
+        ///@param maxSize Maximum length to be rendered
+        ///@param str String to be rendered
+        void renderText(int32_t x, int32_t y, int32_t maxSize, const std::string& str);
 
         //Getters
         [[nodiscard]] const int32_t& getWidth() const { return mWidth; }

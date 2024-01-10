@@ -40,11 +40,26 @@ namespace conslr
 
         void show() { mVisible = true; mRerender = true; }
         void hide() { mVisible = false; mRerender = true; }
-        bool isVisible() const { return mVisible; }
+        [[nodiscard]] bool isVisible() const { return mVisible; }
 
         bool mRerender = true;
     protected:
         bool mVisible = true;
+    };
+
+    ///
+    ///Interface for scrollable widgets
+    ///
+    class IScrollable
+    {
+    public:
+        virtual void scrollUp() {}
+        virtual void scrollDown() {}
+
+        [[nodiscard]] int32_t getSelection() const { return mSelection; }
+
+    protected:
+        int32_t mSelection = 0;
     };
 
     template <typename T>
@@ -53,5 +68,6 @@ namespace conslr
     template <typename T>
     concept IsNotInterface =
         !std::is_same<IWidget, T>::value &&
-        !std::is_same<IRenderable, T>::value;
+        !std::is_same<IRenderable, T>::value &&
+        !std::is_same<IScrollable, T>::value;
 }
