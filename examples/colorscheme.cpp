@@ -30,6 +30,7 @@ int main()
     cs1.background = { 255, 0, 0, 255 };
     cs1.border = { 0, 0, 255, 255 };
     cs1.text = { 0, 0, 0, 255 };
+    cs1.borderCorner = '.';
 
     conslr::ColorScheme cs2;
     cs2.background = { 0, 255, 0, 255 };

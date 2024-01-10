@@ -31,7 +31,7 @@ namespace conslr::widgets
         virtual void render(Screen& screen) override
         {
             screen.fillRect(mRegion, mColorScheme->background, mColorScheme->border, 0);
-            screen.borderRect(mRegion, '=', '|', '+');
+            screen.borderRect(mRegion, mColorScheme->borderHorizontal, mColorScheme->borderVertical, mColorScheme->borderCorner);
 
             screen.renderMultilineTextColor(
                     mRegion.x + 1, mRegion.y + 1,
