@@ -383,6 +383,66 @@ void conslr::Screen::renderMultilineText(int32_t x, int32_t y, int32_t maxWidth,
     return;
 }
 
+void conslr::Screen::renderTextColor(int32_t x, int32_t y, int32_t maxSize, const std::string& str, const SDL_Color& color)
+{
+    if (x < 0) { x = 0; }
+    if (x >= mWidth) { x = mWidth - 1; }
+    if (y < 0) { y = 0; }
+    if (y >= mHeight) { y = mHeight - 1; }
+
+    int32_t itrSize = std::min(maxSize, (int32_t)str.size());
+    int32_t start = (y * mWidth) + x;
+    for (int i = 0; i < itrSize; i++)
+    {
+        mCells.at(start + i).character = (int32_t)str.at(i);
+        mCells.at(start + i).foreground = color;
+    }
+
+    mRerender = true;
+
+    return;
+}
+
+void conslr::Screen::renderMultilineTextColor(int32_t x, int32_t y, int32_t maxWidth, int32_t maxHeight, const std::string& str, const SDL_Color& color)
+{
+    if (x < 0) { x = 0; }
+    if (x >= mWidth) { x = mWidth - 1; }
+    if (y < 0) { y = 0; }
+    if (y >= mHeight) { y = mHeight - 1; }
+
+    int32_t i = 0;
+    int32_t j = 0;
+    for (const auto& c : str)
+    {
+        if (c == '\n')
+        {
+            i = 0;
+            j++;
+            continue;
+        }
+
+        if (i >= maxWidth)
+        {
+            i = 0;
+            j++;
+        }
+
+        if (j >= maxHeight)
+        {
+            break;
+        }
+
+        mCells.at(((j + y) * mWidth) + x + i).character = c;
+        mCells.at(((j + y) * mWidth) + x + i).foreground = color;
+        i++;
+    }
+
+    mRerender = true;
+
+    return;
+}
+
+
 constexpr void conslr::Screen::clear()
 {
     mCells.assign(mCells.size(), {});

@@ -64,7 +64,7 @@ namespace conslr
             for (auto i = 0; i < maxShown; i++)
             {
                 const auto& element = mElements.at(mScrollY + i);
-                screen.renderText(1, 1 + i, freeWidth, element.mName);
+                screen.renderTextColor(1, 1 + i, freeWidth, element.mName, mColorScheme->text);
             }
 
             screen.setCellBackground(1, mSelection - mScrollY + 1, mColorScheme->selection);

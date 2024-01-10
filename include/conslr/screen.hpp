@@ -165,6 +165,27 @@ namespace conslr
         ///@param maxHeight Max height for lines
         ///@param str String to be rendered
         void renderMultilineText(int32_t x, int32_t y, int32_t maxWidth, int32_t maxHeight, const std::string& str);
+        ///Renders text to cells
+        ///Only renders text on a single line, potentially wrapping if it overflows that line
+        ///New line characters are interpreted as console int characters for this function
+        ///Use renderMultilineText for multi-line text rendering
+        ///
+        ///@param x X index of the starting cell
+        ///@param y Y index of the starting cell
+        ///@param maxSize Maximum length to be rendered
+        ///@param str String to be rendered
+        ///@param color Text color
+        void renderTextColor(int32_t x, int32_t y, int32_t maxSize, const std::string& str, const SDL_Color& color);
+        ///Renders a string across multiple lines
+        ///
+        ///@param x X index of the starting cell
+        ///@param y Y index of the starting cell
+        ///@param maxWidth Max width for a line
+        ///@param maxHeight Max height for lines
+        ///@param str String to be rendered
+        ///@param color Text color
+        void renderMultilineTextColor(int32_t x, int32_t y, int32_t maxWidth, int32_t maxHeight, const std::string& str, const SDL_Color& color);
+
 
         //Getters
         [[nodiscard]] const int32_t& getWidth() const { return mWidth; }
