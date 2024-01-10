@@ -15,7 +15,7 @@
 #include "conslr/screen.hpp"
 #include "conslr/colorscheme.hpp"
 
-namespace conslr
+namespace conslr::widgets
 {
     ///Container used to store elements in a scroll list
     ///

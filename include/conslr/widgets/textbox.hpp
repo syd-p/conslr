@@ -12,7 +12,7 @@
 #include "conslr/screen.hpp"
 #include "conslr/colorscheme.hpp"
 
-namespace conslr
+namespace conslr::widgets
 {
     ///
     ///Renders a simple text box

@@ -1,15 +1,16 @@
+#include "conslr/colorscheme.hpp"
 #include <string>
-#include <iostream>
 
 #include <SDL.h>
 
 #include "conslr/console.hpp"
-#include "conslr/widgets/scrolllist.hpp"
+#include "conslr/colorscheme.hpp"
+#include "conslr/widgets/textbox.hpp"
 
 int main()
 {
     conslr::Console console{ 32, 64, 80, 24 };
-    if (console.init("Widget Example") < 0)
+    if (console.init("Color Scheme Example") < 0)
     {
         exit(-1);
     }
@@ -21,12 +22,21 @@ int main()
     console.setCurrentScreenIndex(scr);
 
     auto& wm = console.getWidgetManager(scr);
-    auto listPtr = wm.createWidget<conslr::widgets::ScrollList<int32_t>>();
-    listPtr.lock()->setRegion({ 0, 0, 20, 24 });
-    for (auto i = 0; i < 30; i++)
-    {
-        listPtr.lock()->addElement(i, std::to_string(i));
-    }
+    auto tb = wm.createWidget<conslr::widgets::TextBox>();
+    tb.lock()->setRegion({ 1, 1, 40, 20 });
+    tb.lock()->setText("Hello\nColor Schemes");
+
+    conslr::ColorScheme cs1;
+    cs1.background = { 255, 0, 0, 255 };
+    cs1.border = { 0, 0, 255, 255 };
+    cs1.text = { 0, 0, 0, 255 };
+
+    conslr::ColorScheme cs2;
+    cs2.background = { 0, 255, 0, 255 };
+    cs2.border = { 255, 255, 255, 255 };
+    cs2.text = { 255, 0, 255, 255 };
+
+    console.setColorScheme(cs1);
 
     SDL_Event event;
     bool running = true;
@@ -41,19 +51,14 @@ int main()
 
             if (event.type == SDL_KEYDOWN)
             {
-                if (event.key.keysym.scancode == SDL_SCANCODE_UP)
+                if (event.key.keysym.scancode == SDL_SCANCODE_1)
                 {
-                    listPtr.lock()->scrollUp();
+                    console.setColorScheme(cs1);
                 }
 
-                if (event.key.keysym.scancode == SDL_SCANCODE_DOWN)
+                if (event.key.keysym.scancode == SDL_SCANCODE_2)
                 {
-                    listPtr.lock()->scrollDown();
-                }
-
-                if (event.key.keysym.scancode == SDL_SCANCODE_RETURN)
-                {
-                    std::cout << "Currently selected list element is: " << listPtr.lock()->getCurrentElement() << std::endl;
+                    console.setColorScheme(cs2);
                 }
             }
 
