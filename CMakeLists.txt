@@ -27,21 +27,6 @@ target_include_directories(conslr PRIVATE ${SDL2_INCLUDE_DIR})
 target_link_libraries(conslr PRIVATE ${SDL2_LIBRARIES})
 target_link_libraries(conslr PRIVATE ${SDL2_IMAGE_LIBRARIES})
 
-#testproj
-
-project(test)
-
-add_executable(test tests/main.cpp)
-
-set_target_properties(test PROPERTIES CXX_STANDARD 20)
-
-target_include_directories(test PRIVATE ${SDL2_INCLUDE_DIR})
-target_include_directories(test PRIVATE include)
-
-target_link_libraries(test PRIVATE ${SDL2_LIBRARIES})
-target_link_libraries(test PRIVATE ${SDL2_IMAGE_LIBRARIES})
-target_link_libraries(test PRIVATE ${CMAKE_SOURCE_DIR}/${CMAKE_BUILD_TYPE}/lib/libconslr.so)
-
 #examples
 
 file(GLOB EXAMPLE_SOURCES examples/*.cpp)
