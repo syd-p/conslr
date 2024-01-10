@@ -151,6 +151,8 @@ namespace conslr
 
             mRegion = region;
             mRerender = true;
+
+            return;
         }
 
     protected:
