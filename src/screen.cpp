@@ -1,5 +1,7 @@
 #include "conslr/screen.hpp"
 
+#include <iostream>
+
 #include <SDL_events.h>
 
 conslr::Screen::Screen(int32_t width, int32_t height) :
@@ -336,6 +338,44 @@ void conslr::Screen::renderText(int32_t x, int32_t y, int32_t maxSize, const std
     for (int i = 0; i < itrSize; i++)
     {
         mCells.at(start + i).character = (int32_t)str.at(i);
+    }
+
+    mRerender = true;
+
+    return;
+}
+
+void conslr::Screen::renderMultilineText(int32_t x, int32_t y, int32_t maxWidth, int32_t maxHeight, const std::string& str)
+{
+    if (x < 0) { x = 0; }
+    if (x >= mWidth) { x = mWidth - 1; }
+    if (y < 0) { y = 0; }
+    if (y >= mHeight) { y = mHeight - 1; }
+
+    int32_t i = 0;
+    int32_t j = 0;
+    for (const auto& c : str)
+    {
+        if (c == '\n')
+        {
+            i = 0;
+            j++;
+            continue;
+        }
+
+        if (i >= maxWidth)
+        {
+            i = 0;
+            j++;
+        }
+
+        if (j >= maxHeight)
+        {
+            break;
+        }
+
+        mCells.at(((j + y) * mWidth) + x + i).character = c;
+        i++;
     }
 
     mRerender = true;
