@@ -84,6 +84,10 @@ namespace conslr
         const std::list<std::shared_ptr<IRenderable>>& getRenderable() const { return mRenderable; }
 
         //Setters
+        ///Sets the Color Scheme for widgets
+        ///Note that the colorscheme passed must have a lifetime at least equal to the life time of the screen that the widget manager is held by
+        ///
+        ///@param colorScheme Pointer to the color scheme
         void setColorScheme(ColorScheme* colorScheme) { mColorScheme = colorScheme; }
 
         static const int32_t MAX_WIDGETS = 16; //!<Max widgets that a WidgetManager can hold

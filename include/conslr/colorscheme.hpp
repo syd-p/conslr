@@ -8,6 +8,9 @@
 
 namespace conslr
 {
+    ///Color Scheme struct
+    ///
+    ///Provides a unified list of colors, but does not specify their usage by widgets
     struct ColorScheme
     {
         SDL_Color background = { 0, 0, 0, 255 };
