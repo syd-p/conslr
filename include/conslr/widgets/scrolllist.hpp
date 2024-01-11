@@ -40,7 +40,7 @@ namespace conslr::widgets
         ///
         ScrollList(int32_t id, int32_t priority) :
             IWidget{ id, priority },
-            mRegion{ 0, 0, 0, 0 }, mScrollY{ 0 }
+            mRegion{ 0, 0, 0, 0 }, mScrollY{ 0 }, mShowScrollbar{ true }
         {}
 
         ///
@@ -69,6 +69,18 @@ namespace conslr::widgets
                         std::min(freeWidth, (int32_t)mTitle.size()),
                         mTitle,
                         mColorScheme->border);
+            }
+
+            if (mShowScrollbar && mElements.size() > freeHeight)
+            {
+                int32_t visiblePercent = (freeHeight * 100) / mElements.size(); //Percent of elements shown
+                int32_t percentDown = (mScrollY * 100) / mElements.size(); //How far down the first element is
+
+                //Render scrollbar
+                int32_t scrollbarOffset = (percentDown * freeHeight) / 100;
+                int32_t scrollbarHeight = (visiblePercent * freeHeight) / 100;
+
+                screen.fillRectCharacter({ mRegion.x, yOffset + scrollbarOffset, 1, std::min(scrollbarHeight + 1, freeHeight - scrollbarOffset) }, mColorScheme->scrollbarCharacter);
             }
 
             int32_t maxShown = std::min(freeHeight, (int32_t)mElements.size());
@@ -151,6 +163,9 @@ namespace conslr::widgets
             return;
         }
 
+        void showScrollbar() { mShowScrollbar = true; mRerender = true; }
+        void hideScrollbar() { mShowScrollbar = false; mRerender = true; }
+
         ///Gets the current elements value
         ///
         ///@return Value of the currently selected element
@@ -171,5 +186,6 @@ namespace conslr::widgets
 
         SDL_Rect mRegion;
         int32_t mScrollY;
+        bool mShowScrollbar;
     };
 }
