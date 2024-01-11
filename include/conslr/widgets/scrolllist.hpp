@@ -48,6 +48,8 @@ namespace conslr::widgets
         ///
         virtual void render(Screen& screen) override
         {
+            assert((mRegion.w > 2 && mRegion.h > 2) && "Scroll List is too small to render");
+
             screen.fillRect(mRegion, mTheme->background, mTheme->border, 0);
             screen.borderRect(mRegion, mTheme->borderHorizontal, mTheme->borderVertical, mTheme->borderCorner);
 

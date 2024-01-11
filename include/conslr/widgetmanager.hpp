@@ -82,6 +82,10 @@ namespace conslr
         ///
         ///@return A const reference to the list of renderable widgets
         const std::list<std::shared_ptr<IRenderable>>& getRenderable() const { return mRenderable; }
+        ///Used internally
+        ///
+        ///
+        const Theme* getTheme() const { return mTheme; }
 
         //Setters
         ///Sets the Color Scheme for widgets
