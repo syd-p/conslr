@@ -4,6 +4,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
+configure_file(res/ibm_vga_fontsheet.bmp ${CMAKE_SOURCE_DIR}/${CMAKE_BUILD_TYPE}/bin/ibm_vga_fontsheet.bmp COPYONLY)
+
 project(conslr VERSION 1.1.1 DESCRIPTION "Simple console emulator")
 
 find_package(SDL2 REQUIRED)
