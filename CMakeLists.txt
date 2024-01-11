@@ -5,6 +5,12 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 configure_file(res/ibm_vga_fontsheet.bmp ${CMAKE_SOURCE_DIR}/${CMAKE_BUILD_TYPE}/bin/ibm_vga_fontsheet.bmp COPYONLY)
+configure_file(include/conslr/conslr.hpp ${CMAKE_SOURCE_DIR}/${CMAKE_BUILD_TYPE}/include/conslr.hpp COPYONLY)
+file(GLOB WIDGET_HEADERS include/conslr/widgets/*.hpp)
+foreach(widgetHeader ${WIDGET_HEADERS})
+    get_filename_component(widgetHeaderName ${widgetHeader} NAME)
+    configure_file(${widgetHeader} ${CMAKE_SOURCE_DIR}/${CMAKE_BUILD_TYPE}/include/widgets/${widgetHeaderName} COPYONLY)
+endforeach(widgetHeader ${WIDGET_HEADERS})
 
 project(conslr VERSION 1.1.1 DESCRIPTION "Simple console emulator")
 
