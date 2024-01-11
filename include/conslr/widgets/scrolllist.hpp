@@ -165,7 +165,13 @@ namespace conslr::widgets
             return;
         }
 
+        ///
+        ///Shows the scrollbar if possible
+        ///
         void showScrollbar() { mShowScrollbar = true; mRerender = true; }
+        ///
+        ///Hides the scrollbar
+        ///
         void hideScrollbar() { mShowScrollbar = false; mRerender = true; }
 
         ///Gets the current elements value
@@ -173,6 +179,9 @@ namespace conslr::widgets
         ///@return Value of the currently selected element
         const T& getCurrentElement() { return mElements.at(mSelection).mElement; }
 
+        ///Sets the region of the widget
+        ///
+        ///@param region Region in cells of the widget
         void setRegion(SDL_Rect region)
         {
             assert(((region.w > 2) && (region.h > 2)) && "Region is too small");
@@ -184,10 +193,10 @@ namespace conslr::widgets
         }
 
     protected:
-        std::vector<ScrollListContainer<T>> mElements;
+        std::vector<ScrollListContainer<T>> mElements; //!<Elements of the list
 
-        SDL_Rect mRegion;
-        int32_t mScrollY;
-        bool mShowScrollbar;
+        SDL_Rect mRegion; //!<Region of the widget on screen
+        int32_t mScrollY; //!<Scroll offset of the list
+        bool mShowScrollbar; //!<Shows scrollbar if true
     };
 }

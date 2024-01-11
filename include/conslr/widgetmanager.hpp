@@ -28,6 +28,9 @@ namespace conslr
     class WidgetManager
     {
     public:
+        ///
+        ///Default constructor
+        ///
         WidgetManager();
 
         ///Creates a widget
@@ -82,16 +85,16 @@ namespace conslr
         ///
         ///@return A const reference to the list of renderable widgets
         const std::list<std::shared_ptr<IRenderable>>& getRenderable() const { return mRenderable; }
-        ///Used internally
+        ///Gets the current theme as a pointer
         ///
-        ///
+        ///@return Pointer to the current theme
         const Theme* getTheme() const { return mTheme; }
 
         //Setters
         ///Sets the Color Scheme for widgets
         ///Note that the colorscheme passed must have a lifetime at least equal to the life time of the screen that the widget manager is held by
         ///
-        ///@param colorScheme Pointer to the color scheme
+        ///@param theme Pointer to the color scheme
         void setTheme(Theme* theme) { mTheme = theme; }
 
         static const int32_t MAX_WIDGETS = 16; //!<Max widgets that a WidgetManager can hold

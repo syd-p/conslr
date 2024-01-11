@@ -26,15 +26,27 @@ namespace conslr
     class IWidget
     {
     public:
+        ///
+        ///Internal constructor
+        ///
         IWidget(int32_t id, int32_t priority) : mId{ id }, mPriority{ priority } {}
+        ///
+        ///Internal destructor
+        ///
         virtual ~IWidget() {}
 
+        ///Gets the id of the widget
+        ///
+        ///@return Id of the widget
         [[nodiscard]] int32_t getId() const { return mId; }
+        ///Gets the priority of the widget
+        ///
+        ///@return Priority of the widget
         [[nodiscard]] int32_t getPriority() const { return mPriority; }
 
     private:
-        int32_t mId;
-        int32_t mPriority;
+        int32_t mId; //!<Internal id of the widget
+        int32_t mPriority; //!<Priority of the widget, higher values will be drawn above lower values
     };
 
     ///
@@ -43,27 +55,57 @@ namespace conslr
     class IRenderable
     {
     public:
+        ///
+        ///Function called by the widget manager
+        ///Screen that owns the widget manager
+        ///
         virtual void render(Screen&) {}
 
+        ///
+        ///Shows the widget
+        ///
         void show() { mVisible = true; mRerender = true; }
+        ///
+        ///Hides the widget
+        ///
         void hide() { mVisible = false; mRerender = true; }
+        ///Gets the visibility of the widget
+        ///
+        ///@return True if the widget is visible, false if the widget is not visible
         [[nodiscard]] bool isVisible() const { return mVisible; }
 
+        ///
+        ///Shows the widgets title
+        ///
         void showTitle() { mShowTitle = true; mRerender = true; }
+        ///
+        ///Hides the widgets title
+        ///
         void hideTitle() { mShowTitle = false; mRerender = true; }
 
+        ///Gets the widgets title
+        ///
+        ///@return Title of the widget
         [[nodiscard]] const std::string& getTitle() const { return mTitle; }
 
+        ///Sets the widgets title
+        ///
+        ///@param title Title of the widget
         void setTitle(const std::string& title) { mTitle = title; }
+        ///Sets the widgets theme
+        ///Should primarily be internally used
+        ///Assumes that the theme pointer is always valid
+        ///
+        ///@param theme Pointer to the theme
         void setTheme(Theme* theme) { mTheme = theme; }
 
-        bool mRerender = true;
+        bool mRerender = true; //!<If the widget is to be rerendered
     protected:
-        bool mVisible = true;
-        bool mShowTitle = false;
-        std::string mTitle;
+        bool mVisible = true; //!<If the widget is to be rendered
+        bool mShowTitle = false; //!<If the widget is to display its title
+        std::string mTitle; //!<Title of the widget
 
-        Theme* mTheme = nullptr;
+        Theme* mTheme = nullptr; //!<Current theme, typically the theme of the console
     };
 
     ///
@@ -72,13 +114,22 @@ namespace conslr
     class IScrollable
     {
     public:
+        ///
+        ///Scrolls up
+        ///
         virtual void scrollUp() {}
+        ///
+        ///Scrolls down
+        ///
         virtual void scrollDown() {}
 
+        ///Gets the index of the currently selected item
+        ///
+        ///@return Index of the current item
         [[nodiscard]] int32_t getSelection() const { return mSelection; }
 
     protected:
-        int32_t mSelection = 0;
+        int32_t mSelection = 0; //!<Currently selected item
     };
 
     template <typename T>

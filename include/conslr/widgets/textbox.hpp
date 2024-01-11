@@ -20,6 +20,9 @@ namespace conslr::widgets
     class TextBox : public IWidget, public IRenderable
     {
     public:
+        ///
+        ///Internal constructor
+        ///
         TextBox(int32_t id, int32_t priority) :
             IWidget{ id, priority },
             mRegion{ 0, 0, 0, 0 }
@@ -54,6 +57,9 @@ namespace conslr::widgets
             return;
         }
 
+        ///Sets the region of the widget
+        ///
+        ///@param region Region of the widget on screen
         void setRegion(SDL_Rect region)
         {
             assert(((region.w > 2) && (region.h > 2)) && "Region is too small");
@@ -63,6 +69,9 @@ namespace conslr::widgets
 
             return;
         }
+        ///Sets the text of the widget
+        ///
+        ///@param text Text of the widget
         void setText(const std::string& text)
         {
             mText = text;
@@ -72,7 +81,7 @@ namespace conslr::widgets
         }
 
     protected:
-        SDL_Rect mRegion;
-        std::string mText;
+        SDL_Rect mRegion; //!<Region of the widget on the screen
+        std::string mText; //!<Text of the widget
     };
 }

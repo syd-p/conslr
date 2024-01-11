@@ -50,8 +50,8 @@ namespace conslr
         ///
         ///@param Screen& Screen that update is being called on
         std::function<void(Screen&)> update;
-        ///Renders the screen
         ///
+        ///Renders the screen
         ///
         void render();
 
@@ -188,20 +188,32 @@ namespace conslr
 
 
         //Getters
+        ///Gets the screens width
+        ///
+        ///@return Width of the screen
         [[nodiscard]] const int32_t& getWidth() const { return mWidth; }
+        ///Gets the screens height
+        ///
+        ///@return Height of the screen
         [[nodiscard]] const int32_t& getHeight() const { return mHeight; }
+        ///Gets the cells of the screen
+        ///
+        ///@return Const reference to the cells of the screen
         [[nodiscard]] const std::vector<Cell>& getCells() const { return mCells; }
 
         bool mRerender; //!<Screen will be rerendered if true
         WidgetManager mWidgetManager; //!<Screens widget manager
 
     private:
+        ///
+        ///Clears the cells
+        ///
         constexpr void clear();
 
         //Size in cells
-        int32_t mWidth;
-        int32_t mHeight;
+        int32_t mWidth; //!<Width of the screen
+        int32_t mHeight; //!<Height of the screen
 
-        std::vector<Cell> mCells;
+        std::vector<Cell> mCells; //!<Cells of the screen
     };
 }

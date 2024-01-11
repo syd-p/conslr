@@ -41,6 +41,9 @@ namespace conslr
         ///@param windowCellWidth Width of the console in cells
         ///@param windowCellHeight Height of the console in cells
         Console(int32_t cellWidth, int32_t cellHeight, int32_t windowCellWidth, int32_t windowCellHeight);
+        ///
+        ///Destructor
+        ///
         ~Console();
 
         ///Initializes a console
@@ -81,7 +84,6 @@ namespace conslr
         ///@param file Font sheet file to load
         ///@param charWidth Width of a character in the image file
         ///@param charHeight Height of a character in the image file
-        ///
         ///@return Index of the new font
         [[nodiscard]] int32_t createFont(const char* file, int32_t charWidth, int32_t charHeight);
         ///Destroys a font
@@ -90,20 +92,46 @@ namespace conslr
         void destroyFont(int32_t index);
 
         //Getters
+        ///Gets the current screen index
+        ///
+        ///@return Index of the current screen
         [[nodiscard]] int32_t getCurrentScreenIndex() const;
+        ///Gets the current font index
+        ///
+        ///@return Index of the current font
         [[nodiscard]] int32_t getCurrentFontIndex() const;
         ///Returns the widget manager of a screen
         ///
         ///@param index Index of the screen
         ///@return Reference to the screen's WidgetManager
         [[nodiscard]] WidgetManager& getWidgetManager(int32_t index) const;
+        ///Gets the current screen
+        ///
+        ///@return Reference to the current screen
         [[nodiscard]] const Theme& getTheme() const;
 
         //Setters
+        ///Sets current screen index
+        ///
+        ///@param index Screen index
         void setCurrentScreenIndex(int32_t index);
+        ///Sets current font index
+        ///
+        ///@param index Font index
         void setCurrentFontIndex(int32_t index);
+        ///Sets screen event callback
+        ///
+        ///@param index Index of the screen
+        ///@param callback Function pointer to event callback
         void setScreenEventCallback(int32_t index, std::function<void(Screen&, SDL_Event&)> callback);
+        ///Sets screen update callback
+        ///
+        ///@param index Index of the screen
+        ///@param update Function pointer to update callback
         void setScreenUpdate(int32_t index, std::function<void(Screen&)> update);
+        ///Sets the theme of the console
+        ///
+        ///@param theme Theme to set as console theme
         void setTheme(const Theme& theme);
 
         //Const values
