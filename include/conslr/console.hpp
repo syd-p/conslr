@@ -11,7 +11,7 @@
 #include <functional>
 
 #include "conslr/widgetmanager.hpp"
-#include "conslr/colorscheme.hpp"
+#include "conslr/theme.hpp"
 
 struct SDL_Window;
 struct SDL_Renderer;
@@ -97,14 +97,14 @@ namespace conslr
         ///@param index Index of the screen
         ///@return Reference to the screen's WidgetManager
         [[nodiscard]] WidgetManager& getWidgetManager(int32_t index) const;
-        [[nodiscard]] const ColorScheme& getColorScheme() const;
+        [[nodiscard]] const Theme& getTheme() const;
 
         //Setters
         void setCurrentScreenIndex(int32_t index);
         void setCurrentFontIndex(int32_t index);
         void setScreenEventCallback(int32_t index, std::function<void(Screen&, SDL_Event&)> callback);
         void setScreenUpdate(int32_t index, std::function<void(Screen&)> update);
-        void setColorScheme(const ColorScheme& colorScheme);
+        void setTheme(const Theme& theme);
 
         //Const values
         static const int32_t MAX_SCREENS = 16; //!<Max screens that a console can have
@@ -118,7 +118,7 @@ namespace conslr
         int32_t mWindowCellHeight;
         int32_t mWindowWidth;
         int32_t mWindowHeight;
-        ColorScheme mColorScheme;
+        Theme mTheme;
 
         //SDL data
         SDL_Window* mWindow;

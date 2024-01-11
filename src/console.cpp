@@ -1,6 +1,4 @@
 #include "conslr/console.hpp"
-#include "conslr/colorscheme.hpp"
-#include "conslr/widgetmanager.hpp"
 
 #include <iostream>
 #include <cassert>
@@ -250,7 +248,7 @@ int32_t conslr::Console::createScreen()
 
     mScreens.at(index).reset(new Screen{ mWindowCellWidth, mWindowCellHeight });
 
-    mScreens.at(index)->mWidgetManager.setColorScheme(&mColorScheme);
+    mScreens.at(index)->mWidgetManager.setTheme(&mTheme);
 
     return index;
 }
@@ -320,7 +318,7 @@ conslr::WidgetManager& conslr::Console::getWidgetManager(int32_t index) const
     return mScreens.at(index)->mWidgetManager;
 }
 
-const conslr::ColorScheme& conslr::Console::getColorScheme() const { return mColorScheme; }
+const conslr::Theme& conslr::Console::getTheme() const { return mTheme; }
 
 //Setters
 void conslr::Console::setCurrentScreenIndex(int32_t index) { assert(index < mScreens.size()); mCurrentScreen = index; }
@@ -329,9 +327,9 @@ void conslr::Console::setCurrentFontIndex(int32_t index) { assert(index < mFonts
 void conslr::Console::setScreenEventCallback(int32_t index, std::function<void(Screen&, SDL_Event&)> callback) { mScreens.at(index)->eventCallback = callback; }
 void conslr::Console::setScreenUpdate(int32_t index, std::function<void(Screen&)> update) { mScreens.at(index)->update = update; }
 
-void conslr::Console::setColorScheme(const ColorScheme& colorScheme)
+void conslr::Console::setTheme(const Theme& theme)
 {
-    mColorScheme = colorScheme;
+    mTheme = theme;
 
     for (auto& scr : mScreens)
     {

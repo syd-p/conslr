@@ -2,8 +2,6 @@
 
 #include <SDL_events.h>
 
-#include "conslr/colorscheme.hpp"
-
 conslr::Screen::Screen(int32_t width, int32_t height) :
     mWidth{ width }, mHeight{ height },
     eventCallback{ nullptr }, update{ nullptr },

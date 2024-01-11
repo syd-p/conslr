@@ -18,7 +18,7 @@
 namespace conslr
 {
     class Screen;
-    struct ColorScheme;
+    struct Theme;
 
     ///
     ///Interface for all widgets
@@ -55,7 +55,7 @@ namespace conslr
         [[nodiscard]] const std::string& getTitle() const { return mTitle; }
 
         void setTitle(const std::string& title) { mTitle = title; }
-        void setColorScheme(ColorScheme* colorScheme) { mColorScheme = colorScheme; }
+        void setTheme(Theme* theme) { mTheme = theme; }
 
         bool mRerender = true;
     protected:
@@ -63,7 +63,7 @@ namespace conslr
         bool mShowTitle = false;
         std::string mTitle;
 
-        ColorScheme* mColorScheme = nullptr;
+        Theme* mTheme = nullptr;
     };
 
     ///

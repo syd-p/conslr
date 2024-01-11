@@ -13,7 +13,7 @@
 
 #include "conslr/widget.hpp"
 #include "conslr/screen.hpp"
-#include "conslr/colorscheme.hpp"
+#include "conslr/theme.hpp"
 
 namespace conslr::widgets
 {
@@ -48,8 +48,8 @@ namespace conslr::widgets
         ///
         virtual void render(Screen& screen) override
         {
-            screen.fillRect(mRegion, mColorScheme->background, mColorScheme->border, 0);
-            screen.borderRect(mRegion, mColorScheme->borderHorizontal, mColorScheme->borderVertical, mColorScheme->borderCorner);
+            screen.fillRect(mRegion, mTheme->background, mTheme->border, 0);
+            screen.borderRect(mRegion, mTheme->borderHorizontal, mTheme->borderVertical, mTheme->borderCorner);
 
             if (mElements.size() == 0)
             {
@@ -68,7 +68,7 @@ namespace conslr::widgets
                         mRegion.x + 1, mRegion.y,
                         std::min(freeWidth, (int32_t)mTitle.size()),
                         mTitle,
-                        mColorScheme->border);
+                        mTheme->border);
             }
 
             if (mShowScrollbar && mElements.size() > freeHeight)
@@ -80,17 +80,17 @@ namespace conslr::widgets
                 int32_t scrollbarOffset = (percentDown * freeHeight) / 100;
                 int32_t scrollbarHeight = (visiblePercent * freeHeight) / 100;
 
-                screen.fillRectCharacter({ mRegion.x, yOffset + scrollbarOffset, 1, std::min(scrollbarHeight + 1, freeHeight - scrollbarOffset) }, mColorScheme->scrollbarCharacter);
+                screen.fillRectCharacter({ mRegion.x, yOffset + scrollbarOffset, 1, std::min(scrollbarHeight + 1, freeHeight - scrollbarOffset) }, mTheme->scrollbarCharacter);
             }
 
             int32_t maxShown = std::min(freeHeight, (int32_t)mElements.size());
             for (auto i = 0; i < maxShown; i++)
             {
                 const auto& element = mElements.at(mScrollY + i);
-                screen.renderTextColor(xOffset, yOffset + i, freeWidth, element.mName, mColorScheme->text);
+                screen.renderTextColor(xOffset, yOffset + i, freeWidth, element.mName, mTheme->text);
             }
 
-            screen.setCellBackground(xOffset, yOffset + mSelection - mScrollY, mColorScheme->selection);
+            screen.setCellBackground(xOffset, yOffset + mSelection - mScrollY, mTheme->selection);
 
             return;
         }

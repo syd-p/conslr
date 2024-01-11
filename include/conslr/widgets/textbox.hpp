@@ -10,7 +10,7 @@
 
 #include "conslr/widget.hpp"
 #include "conslr/screen.hpp"
-#include "conslr/colorscheme.hpp"
+#include "conslr/theme.hpp"
 
 namespace conslr::widgets
 {
@@ -30,8 +30,8 @@ namespace conslr::widgets
         ///
         virtual void render(Screen& screen) override
         {
-            screen.fillRect(mRegion, mColorScheme->background, mColorScheme->border, 0);
-            screen.borderRect(mRegion, mColorScheme->borderHorizontal, mColorScheme->borderVertical, mColorScheme->borderCorner);
+            screen.fillRect(mRegion, mTheme->background, mTheme->border, 0);
+            screen.borderRect(mRegion, mTheme->borderHorizontal, mTheme->borderVertical, mTheme->borderCorner);
 
             if (mShowTitle)
             {
@@ -39,7 +39,7 @@ namespace conslr::widgets
                         mRegion.x + 1, mRegion.y,
                         std::min(mRegion.w - 2, (int32_t)mTitle.size()),
                         mTitle,
-                        mColorScheme->border
+                        mTheme->border
                         );
             }
 
@@ -47,7 +47,7 @@ namespace conslr::widgets
                     mRegion.x + 1, mRegion.y + 1,
                     mRegion.w - 2, mRegion.h - 2,
                     mText,
-                    mColorScheme->text);
+                    mTheme->text);
 
             return;
         }

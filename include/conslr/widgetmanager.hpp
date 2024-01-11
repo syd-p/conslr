@@ -20,7 +20,7 @@
 
 namespace conslr
 {
-    struct ColorScheme;
+    struct Theme;
 
     ///
     ///WidgetManager class
@@ -49,7 +49,7 @@ namespace conslr
 
             if (std::is_base_of<IRenderable, T>())
             {
-                ptr->setColorScheme(mColorScheme);
+                ptr->setTheme(mTheme);
                 mRenderable.push_back(ptr);
                 mRenderable.sort([](const std::shared_ptr<IRenderable>& a, const std::shared_ptr<IRenderable>& b) -> bool
                         {
@@ -88,7 +88,7 @@ namespace conslr
         ///Note that the colorscheme passed must have a lifetime at least equal to the life time of the screen that the widget manager is held by
         ///
         ///@param colorScheme Pointer to the color scheme
-        void setColorScheme(ColorScheme* colorScheme) { mColorScheme = colorScheme; }
+        void setTheme(Theme* theme) { mTheme = theme; }
 
         static const int32_t MAX_WIDGETS = 16; //!<Max widgets that a WidgetManager can hold
 
@@ -98,6 +98,6 @@ namespace conslr
 
         std::list<std::shared_ptr<IRenderable>> mRenderable;
 
-        ColorScheme* mColorScheme = nullptr;
+        Theme* mTheme = nullptr;
     };
 }

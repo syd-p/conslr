@@ -1,10 +1,9 @@
-#include "conslr/colorscheme.hpp"
 #include <string>
 
 #include <SDL.h>
 
 #include "conslr/console.hpp"
-#include "conslr/colorscheme.hpp"
+#include "conslr/theme.hpp"
 #include "conslr/widgets/textbox.hpp"
 
 int main()
@@ -28,18 +27,18 @@ int main()
     tb.lock()->setTitle("Text Box");
     tb.lock()->showTitle();
 
-    conslr::ColorScheme cs1;
+    conslr::Theme cs1;
     cs1.background = { 255, 0, 0, 255 };
     cs1.border = { 0, 0, 255, 255 };
     cs1.text = { 0, 0, 0, 255 };
     cs1.borderCorner = '.';
 
-    conslr::ColorScheme cs2;
+    conslr::Theme cs2;
     cs2.background = { 0, 255, 0, 255 };
     cs2.border = { 255, 255, 255, 255 };
     cs2.text = { 255, 0, 255, 255 };
 
-    console.setColorScheme(cs1);
+    console.setTheme(cs1);
 
     SDL_Event event;
     bool running = true;
@@ -56,12 +55,12 @@ int main()
             {
                 if (event.key.keysym.scancode == SDL_SCANCODE_1)
                 {
-                    console.setColorScheme(cs1);
+                    console.setTheme(cs1);
                 }
 
                 if (event.key.keysym.scancode == SDL_SCANCODE_2)
                 {
-                    console.setColorScheme(cs2);
+                    console.setTheme(cs2);
                 }
             }
 

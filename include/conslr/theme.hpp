@@ -1,5 +1,5 @@
 ///
-///@file conslr/colorscheme.hpp
+///@file conslr/theme.hpp
 ///@brief
 ///
 #pragma once
@@ -10,10 +10,10 @@
 
 namespace conslr
 {
-    ///Color Scheme struct
+    ///Theme struct
     ///
-    ///Provides a unified list of colors, but does not specify their usage by widgets
-    struct ColorScheme
+    ///Provides a unified list data, but does not specify their usage by widgets
+    struct Theme
     {
         int32_t borderHorizontal = '=';
         int32_t borderVertical = '|';

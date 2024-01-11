@@ -1,7 +1,6 @@
 #include <SDL.h>
 
 #include "conslr/console.hpp"
-#include "conslr/colorscheme.hpp"
 #include "conslr/widgets/textbox.hpp"
 
 int main()
