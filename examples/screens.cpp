@@ -1,3 +1,6 @@
+///Example showing the creation and use of multiple screens
+///
+///Press 1 or 2 to change screens
 #include <SDL.h>
 
 #include "conslr/console.hpp"
@@ -5,21 +8,25 @@
 
 int main()
 {
+    //Init console
     conslr::Console console{ 32, 64, 80, 24 };
     if (console.init("Minimal Example") < 0)
     {
         exit(-1);
     }
 
+    //Create and set font for console
     int32_t font = console.createFont("ibm_vga_fontsheet.bmp", 8, 16);
     console.setCurrentFontIndex(font);
 
+    //Create screen 1
     int32_t scr1 = console.createScreen();
     auto& wm1 = console.getWidgetManager(scr1);
     auto tb1 = wm1.createWidget<conslr::widgets::TextBox>();
     tb1.lock()->setRegion({ 0, 0, 40, 20 });
     tb1.lock()->setText("This is on screen 1!");
 
+    //Create screen 2
     int32_t scr2 = console.createScreen();
     auto& wm2 = console.getWidgetManager(scr2);
     auto tb2 = wm2.createWidget<conslr::widgets::TextBox>();
@@ -41,6 +48,7 @@ int main()
 
             if (event.type == SDL_KEYDOWN)
             {
+                //Changes the screen
                 if (event.key.keysym.scancode == SDL_SCANCODE_1)
                 {
                     console.setCurrentScreenIndex(scr1);

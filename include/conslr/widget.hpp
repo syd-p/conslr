@@ -29,7 +29,11 @@ namespace conslr
         ///
         ///Internal constructor
         ///
-        IWidget(int32_t id, int32_t priority) : mId{ id }, mPriority{ priority } {}
+        IWidget(int32_t id, int32_t priority) :
+            mId{ id },
+            mPriority{ priority },
+            mActive{ false }
+        {}
         ///
         ///Internal destructor
         ///
@@ -43,10 +47,21 @@ namespace conslr
         ///
         ///@return Priority of the widget
         [[nodiscard]] int32_t getPriority() const { return mPriority; }
+        ///Gets if the widget is active
+        ///
+        ///@return If the widget is active
+        [[nodiscard]] bool getActive() const { return mActive; }
 
-    private:
+        ///Sets the active status of the widget
+        ///Primarily internal
+        ///
+        ///@param val Value to set it to
+        void setActive(bool val) { mActive = val; }
+
+    protected:
         int32_t mId; //!<Internal id of the widget
         int32_t mPriority; //!<Priority of the widget, higher values will be drawn above lower values
+        bool mActive; //!<If this widget is currently active, used for changing behavior of widgets
     };
 
     ///

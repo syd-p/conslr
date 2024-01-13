@@ -92,7 +92,11 @@ namespace conslr::widgets
                 screen.renderTextColor(xOffset, yOffset + i, freeWidth, element.mName, mTheme->text);
             }
 
-            screen.setCellBackground(xOffset, yOffset + mSelection - mScrollY, mTheme->selection);
+            //Current selection
+            if (mActive)
+            {
+                screen.setCellBackground(xOffset, yOffset + mSelection - mScrollY, mTheme->selection);
+            }
 
             return;
         }
@@ -108,7 +112,6 @@ namespace conslr::widgets
 
             return;
         }
-
         ///Adds an element to the list
         ///
         ///@param t Object value to be added
@@ -141,7 +144,6 @@ namespace conslr::widgets
 
             return;
         }
-
         ///
         ///Scrolls the list down
         ///
@@ -174,15 +176,21 @@ namespace conslr::widgets
         ///
         void hideScrollbar() { mShowScrollbar = false; mRerender = true; }
 
+        //Getters
         ///Gets the current elements value
         ///
         ///@return Value of the currently selected element
         const T& getCurrentElement() { return mElements.at(mSelection).mElement; }
+        ///Gets the region of the widget
+        ///
+        ///@return Region
+        const SDL_Rect& getRegion() const { return mRegion; }
 
+        //Setters
         ///Sets the region of the widget
         ///
         ///@param region Region in cells of the widget
-        void setRegion(SDL_Rect region)
+        void setRegion(const SDL_Rect& region)
         {
             assert(((region.w > 2) && (region.h > 2)) && "Region is too small");
 

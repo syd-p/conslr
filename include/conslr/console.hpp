@@ -52,6 +52,8 @@ namespace conslr
         ///@param icon Icon of the console window
         ///
         ///@return 0 on success, < 0 on failure
+        ///@return -2 Failed to create window
+        ///@return -3 Failed to create renderer
         [[nodiscard]] int32_t init(const char* title = "Console", SDL_Surface* icon = nullptr);
         ///Processes events for the console
         ///

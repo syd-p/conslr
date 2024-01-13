@@ -67,6 +67,11 @@ namespace conslr
         ///@param index Index of widget to destroy
         void destroyWidget(int32_t index);
 
+        ///Activates a widget
+        ///
+        ///@param index Index of the widget to activate
+        void activateWidget(int32_t index);
+
         //Getters
         ///Gets a widget as a shared pointer
         ///

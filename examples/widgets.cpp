@@ -1,3 +1,6 @@
+///Example showing widgets
+///
+///Press up or down to scroll through list, enter to output the current element
 #include <string>
 #include <iostream>
 
@@ -5,22 +8,27 @@
 
 #include "conslr/console.hpp"
 #include "conslr/widgets/scrolllist.hpp"
+#include "conslr/widgets/textbox.hpp"
 
 int main()
 {
+    //Init console
     conslr::Console console{ 32, 64, 80, 24 };
     if (console.init("Widget Example") < 0)
     {
         exit(-1);
     }
 
+    //Init font
     int32_t font = console.createFont("ibm_vga_fontsheet.bmp", 8, 16);
     console.setCurrentFontIndex(font);
 
+    //Init screen
     int32_t scr = console.createScreen();
     console.setCurrentScreenIndex(scr);
 
     auto& wm = console.getWidgetManager(scr);
+    //Creates list
     auto listPtr = wm.createWidget<conslr::widgets::ScrollList<int32_t>>();
     listPtr.lock()->setRegion({ 1, 1, 20, 23 });
     listPtr.lock()->showTitle();
@@ -29,6 +37,14 @@ int main()
     {
         listPtr.lock()->addElement(i, std::to_string(i));
     }
+    wm.activateWidget(listPtr.lock()->getId());
+
+    //Creates text box
+    auto tbPtr = wm.createWidget<conslr::widgets::TextBox>();
+    tbPtr.lock()->setRegion({ 21, 0, 20, 8 });
+    tbPtr.lock()->setText("This is a textbox!");
+    tbPtr.lock()->showTitle();
+    tbPtr.lock()->setTitle("Text Box");
 
     SDL_Event event;
     bool running = true;
