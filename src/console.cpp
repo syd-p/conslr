@@ -16,6 +16,8 @@ conslr::Console::Console(int32_t cellWidth, int32_t cellHeight, int32_t windowCe
     mCurrentScreen{ -1 },
     mCurrentFont{ -1 }
 {
+    assert((cellWidth > 0 && cellHeight > 0 && windowCellWidth > 0 && windowCellHeight > 0) && "Console size is 0");
+
     for (auto i = 0; i < MAX_SCREENS; i++)
     {
         mFreeScreens.push(i);
