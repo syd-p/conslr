@@ -46,6 +46,11 @@ void conslr::WidgetManager::activateWidget(int32_t index)
         widgetPtr->setActive(false);
     }
 
+    for (auto renderablePtr : mRenderable)
+    {
+        renderablePtr->mRerender = true;
+    }
+
     mWidgets.at(index)->setActive(true);
 
     return;
