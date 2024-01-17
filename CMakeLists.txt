@@ -12,7 +12,7 @@ foreach(widgetHeader ${WIDGET_HEADERS})
     configure_file(${widgetHeader} ${CMAKE_SOURCE_DIR}/${CMAKE_BUILD_TYPE}/include/widgets/${widgetHeaderName} COPYONLY)
 endforeach(widgetHeader ${WIDGET_HEADERS})
 
-project(conslr VERSION 1.1.1 DESCRIPTION "Simple console emulator")
+project(conslr VERSION 1.1.2 DESCRIPTION "Simple console emulator")
 
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
