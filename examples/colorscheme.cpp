@@ -6,7 +6,6 @@
 #include <SDL.h>
 
 #include "conslr/console.hpp"
-#include "conslr/theme.hpp"
 #include "conslr/widgets/textbox.hpp"
 #include "conslr/themes/defaulttheme.hpp"
 #include "conslr/themes/turboblue.hpp"

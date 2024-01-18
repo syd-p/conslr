@@ -19,7 +19,7 @@ public:
     virtual void render(conslr::Screen& screen) override
     {
         screen.fillRect(mRegion, mTheme->background, mTheme->border, 0);
-        screen.borderRect(mRegion, mTheme->borderHorizontal, mTheme->borderVertical, mTheme->borderCorner);
+        screen.borderRect(mRegion, mTheme->borderHorizontal, mTheme->borderVertical, mTheme->borderCornerTl, mTheme->borderCornerTr, mTheme->borderCornerBl, mTheme->borderCornerBr);
 
         screen.renderMultilineTextTagged(
                 mRegion.x + 1, mRegion.y + 1,

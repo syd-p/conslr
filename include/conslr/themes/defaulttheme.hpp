@@ -12,7 +12,10 @@ namespace conslr::themes
     {
         .borderHorizontal = '=', //!<Horizontal border character
         .borderVertical = '|', //!<Vertical border character
-        .borderCorner = '+', //!<Corner border character
+        .borderCornerTl = '+', //!<Top left corner border character
+        .borderCornerTr = '+', //!<Top right corner border character
+        .borderCornerBl = '+', //!<Bottom left corner border character
+        .borderCornerBr = '+', //!<Bottom right corner border character
         .scrollbarCharacter = (11 * 16) + 10, //!<Scrollbar character
 
         .background = { 0, 0, 0, 255 }, //!<Background for widgets

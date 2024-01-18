@@ -147,8 +147,11 @@ namespace conslr
         ///@param rect Rect to border
         ///@param horizontal Horizontal character
         ///@param vertical Vertical character
-        ///@param corner Corner character
-        void borderRect(SDL_Rect rect, int32_t horizontal, int32_t vertical, int32_t corner);
+        ///@param cornerTl Top left corner character
+        ///@param cornerTr Top right corner character
+        ///@param cornerBl Bottom left corner character
+        ///@param cornerBr Bottom right corner character
+        void borderRect(SDL_Rect rect, int32_t horizontal, int32_t vertical, int32_t cornerTl, int32_t cornerTr, int32_t cornerBl, int32_t cornerBr);
         ///Renders text to cells
         ///Only renders text on a single line, potentially wrapping if it overflows that line
         ///New line characters are interpreted as console int characters for this function

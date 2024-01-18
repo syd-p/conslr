@@ -292,7 +292,7 @@ void conslr::Screen::setCellCharacter(int32_t x, int32_t y, const int32_t& chara
     return;
 }
 
-void conslr::Screen::borderRect(SDL_Rect rect, int32_t horizontal, int32_t vertical, int32_t corner)
+void conslr::Screen::borderRect(SDL_Rect rect, int32_t horizontal, int32_t vertical, int32_t cornerTl, int32_t cornerTr, int32_t cornerBl, int32_t cornerBr)
 {
     if (rect.x < 0) { rect.x = 0; }
     if (rect.y < 0) { rect.y = 0; }
@@ -319,10 +319,10 @@ void conslr::Screen::borderRect(SDL_Rect rect, int32_t horizontal, int32_t verti
 
     int32_t tl = (rect.y * mWidth) + rect.x;
     int32_t bl = ((rect.y + rect.h - 1) * mWidth) + rect.x;
-    mCells.at(tl).character = corner;
-    mCells.at(tl + rect.w - 1).character = corner;
-    mCells.at(bl).character = corner;
-    mCells.at(bl + rect.w - 1).character = corner;
+    mCells.at(tl).character = cornerTl;
+    mCells.at(tl + rect.w - 1).character = cornerTr;
+    mCells.at(bl).character = cornerBl;
+    mCells.at(bl + rect.w - 1).character = cornerBr;
 
     mRerender = true;
 
