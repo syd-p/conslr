@@ -58,6 +58,8 @@ int main()
     {
         auto rcwPtr = rcw.lock();
 
+        //Tagged strings work like a stringstream, where FgTag and BgTag are used to set the index of the foreground and background tags respectively
+        //The index 0 is for the default foreground/background of the widget which typically comes from the theme
         rcwPtr->mText << "Some tagged text\n" << conslr::FgTag(1) << "With foreground\n" << conslr::FgTag(0) << conslr::BgTag(2) << "With background\n" << conslr::FgTag(1) << "With both!";
         rcwPtr->mText.setTag(1, { 0, 0, 0, 255 });
         rcwPtr->mText.setTag(2, { 255, 0, 0, 255 });
