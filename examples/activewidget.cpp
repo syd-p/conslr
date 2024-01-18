@@ -10,6 +10,7 @@
 
 #include "conslr/console.hpp"
 #include "conslr/widgets/scrolllist.hpp"
+#include "conslr/themes/turboblue.hpp"
 
 int main()
 {
@@ -27,6 +28,8 @@ int main()
     //Init screen
     int32_t scr = console.createScreen();
     console.setCurrentScreenIndex(scr);
+
+    console.setTheme(conslr::themes::TurboBlue);
 
     auto& wm = console.getWidgetManager(scr);
     //Creates list
