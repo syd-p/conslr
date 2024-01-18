@@ -7,8 +7,10 @@
 #include <SDL.h>
 
 #include "conslr/console.hpp"
+#include "conslr/taggedstring.hpp"
 #include "conslr/widgets/scrolllist.hpp"
 #include "conslr/widgets/textbox.hpp"
+#include "conslr/widgets/taggedtextbox.hpp"
 
 int main()
 {
@@ -45,6 +47,21 @@ int main()
     tbPtr.lock()->setText("This is a textbox!");
     tbPtr.lock()->showTitle();
     tbPtr.lock()->setTitle("Text Box");
+
+    auto ttb = wm.createWidget<conslr::widgets::TaggedTextBox>();
+    {
+        auto ttbPtr = ttb.lock();
+        ttbPtr->setRegion({ 41, 0, 20, 15 });
+        ttbPtr->showTitle();
+        ttbPtr->setTitle("Tagged Text Box");
+
+        using conslr::FgTag;
+        using conslr::BgTag;
+        auto& ts = ttbPtr->getString();
+        ts << "This is a tagged string\n" << FgTag(1) << "It can have multiple colors\n" << BgTag(2) << "Using tags!";
+        ts.setTag(1, { 255, 0, 0, 255 });
+        ts.setTag(2, { 0, 0, 255, 255 });
+    }
 
     SDL_Event event;
     bool running = true;
