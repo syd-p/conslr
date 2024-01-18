@@ -3,6 +3,7 @@
 #include <SDL_events.h>
 
 #include "conslr/taggedstring.hpp"
+#include "conslr/theme.hpp"
 
 conslr::Screen::Screen(int32_t width, int32_t height) :
     mWidth{ width }, mHeight{ height },
@@ -26,6 +27,8 @@ void conslr::Screen::render()
         }
         renderablePtr->mRerender = false;
     }
+
+    mRerender = false;
 
     return;
 }
@@ -614,9 +617,9 @@ void conslr::Screen::renderMultilineTextTagged(int32_t x, int32_t y, int32_t max
     return;
 }
 
-constexpr void conslr::Screen::clear()
+void conslr::Screen::clear()
 {
-    mCells.assign(mCells.size(), {});
+    mCells.assign(mCells.size(), { mWidgetManager.getTheme()->background, { 255, 255, 255, 255 }, 0 });
 
     return;
 }

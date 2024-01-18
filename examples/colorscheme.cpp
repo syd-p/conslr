@@ -8,6 +8,8 @@
 #include "conslr/console.hpp"
 #include "conslr/theme.hpp"
 #include "conslr/widgets/textbox.hpp"
+#include "conslr/themes/defaulttheme.hpp"
+#include "conslr/themes/turboblue.hpp"
 
 int main()
 {
@@ -34,20 +36,7 @@ int main()
     tb.lock()->setTitle("Text Box");
     tb.lock()->showTitle();
 
-    //Theme 1
-    conslr::Theme cs1;
-    cs1.background = { 255, 0, 0, 255 };
-    cs1.border = { 0, 0, 255, 255 };
-    cs1.text = { 0, 0, 0, 255 };
-    cs1.borderCorner = '.';
-
-    //Theme 2
-    conslr::Theme cs2;
-    cs2.background = { 0, 255, 0, 255 };
-    cs2.border = { 255, 255, 255, 255 };
-    cs2.text = { 255, 0, 255, 255 };
-
-    console.setTheme(cs1);
+    console.setTheme(conslr::themes::Default);
 
     SDL_Event event;
     bool running = true;
@@ -65,12 +54,12 @@ int main()
                 //Changes the theme
                 if (event.key.keysym.scancode == SDL_SCANCODE_1)
                 {
-                    console.setTheme(cs1);
+                    console.setTheme(conslr::themes::Default);
                 }
 
                 if (event.key.keysym.scancode == SDL_SCANCODE_2)
                 {
-                    console.setTheme(cs2);
+                    console.setTheme(conslr::themes::TurboBlue);
                 }
             }
 

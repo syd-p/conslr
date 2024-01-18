@@ -6,13 +6,15 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-#include <conslr/screen.hpp>
+#include "conslr/screen.hpp"
+#include "conslr/themes/defaulttheme.hpp"
 
 conslr::Console::Console(int32_t cellWidth, int32_t cellHeight, int32_t windowCellWidth, int32_t windowCellHeight) :
     mCellWidth{ cellWidth }, mCellHeight{ cellHeight },
     mWindowCellWidth{ windowCellWidth }, mWindowCellHeight{ windowCellHeight },
     mWindowWidth{ cellWidth * windowCellWidth }, mWindowHeight{ cellHeight * windowCellHeight },
     mWindow{ nullptr }, mRenderer{ nullptr },
+    mTheme{ themes::Default },
     mCurrentScreen{ -1 },
     mCurrentFont{ -1 }
 {
@@ -167,7 +169,6 @@ void conslr::Console::render()
     if (scr.mRerender)
     {
         scr.render();
-        scr.mRerender = false;
     }
 
     const auto& cells = scr.getCells();

@@ -1,6 +1,6 @@
 ///
 ///@file conslr/theme.hpp
-///@brief
+///@brief Defines the theme struct
 ///
 #pragma once
 

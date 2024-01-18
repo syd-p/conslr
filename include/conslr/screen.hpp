@@ -253,7 +253,7 @@ namespace conslr
         ///
         ///Clears the cells
         ///
-        constexpr void clear();
+        void clear();
 
         //Size in cells
         int32_t mWidth; //!<Width of the screen
