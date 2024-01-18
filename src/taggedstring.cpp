@@ -49,7 +49,11 @@ conslr::TaggedString& conslr::TaggedString::operator<<(const BgTag& tag)
     return *this;
 }
 
+//Getters
+const std::vector<conslr::TaggedString::TaggedChar>& conslr::TaggedString::getString() const { return mString; }
+const SDL_Color& conslr::TaggedString::getTag(int32_t index) const { return mTags.at(index); }
 
+//Setters
 void conslr::TaggedString::setTag(int32_t index, const SDL_Color& color)
 {
     assert((index > 0 && index < MAX_TAGS) && "Tag index is out of bounds");
@@ -63,6 +67,3 @@ void conslr::TaggedString::setTag(int32_t index, const SDL_Color& color)
 
     return;
 }
-
-const std::vector<conslr::TaggedString::TaggedChar>& conslr::TaggedString::getString() const { return mString; }
-const SDL_Color& conslr::TaggedString::getTag(int32_t index) const { return mTags.at(index); }

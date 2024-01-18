@@ -71,12 +71,7 @@ namespace conslr
         ///@return TaggedString it was called on
         TaggedString& operator<<(const BgTag& tag);
 
-        ///Sets the color of a tag
-        ///
-        ///@param index Index of the tag, cannot be 0
-        ///@param color Color to set tag to
-        void setTag(int32_t index, const SDL_Color& color);
-
+        //Getters
         ///Gets the string
         ///
         ///@return Vector of TaggedChar representing the string
@@ -86,6 +81,13 @@ namespace conslr
         ///@param index Index of the tag
         ///@return Color of the tag
         const SDL_Color& getTag(int32_t index) const;
+
+        //Setters
+        ///Sets the color of a tag
+        ///
+        ///@param index Index of the tag, cannot be 0
+        ///@param color Color to set tag to
+        void setTag(int32_t index, const SDL_Color& color);
 
         static const int32_t MAX_TAGS = 16; //!<Max tags a TaggedString can have (technically one more than max as 0 can not be used)
 
