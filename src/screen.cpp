@@ -2,6 +2,8 @@
 
 #include <SDL_events.h>
 
+#include "conslr/taggedstring.hpp"
+
 conslr::Screen::Screen(int32_t width, int32_t height) :
     mWidth{ width }, mHeight{ height },
     eventCallback{ nullptr }, update{ nullptr },
@@ -392,8 +394,10 @@ void conslr::Screen::renderTextColor(int32_t x, int32_t y, int32_t maxSize, cons
     int32_t start = (y * mWidth) + x;
     for (int i = 0; i < itrSize; i++)
     {
-        mCells.at(start + i).character = (int32_t)str.at(i);
-        mCells.at(start + i).foreground = color;
+        auto& cell = mCells.at(start + i);
+
+        cell.character = (int32_t)str.at(i);
+        cell.foreground = color;
     }
 
     mRerender = true;
@@ -412,9 +416,11 @@ void conslr::Screen::renderTextColor(int32_t x, int32_t y, int32_t maxSize, cons
     int32_t start = (y * mWidth) + x;
     for (int i = 0; i < itrSize; i++)
     {
-        mCells.at(start + i).character = (int32_t)str.at(i);
-        mCells.at(start + i).foreground = foreground;
-        mCells.at(start + i).background = background;
+        auto& cell = mCells.at(start + i);
+
+        cell.character = (int32_t)str.at(i);
+        cell.foreground = foreground;
+        cell.background = background;
     }
 
     mRerender = true;
@@ -450,9 +456,11 @@ void conslr::Screen::renderMultilineTextColor(int32_t x, int32_t y, int32_t maxW
         {
             break;
         }
+        auto& cell = mCells.at(((j + y) * mWidth) + x + i);
 
-        mCells.at(((j + y) * mWidth) + x + i).character = c;
-        mCells.at(((j + y) * mWidth) + x + i).foreground = color;
+        cell.character = c;
+        cell.foreground = color;
+
         i++;
     }
 
@@ -490,9 +498,114 @@ void conslr::Screen::renderMultilineTextColor(int32_t x, int32_t y, int32_t maxW
             break;
         }
 
-        mCells.at(((j + y) * mWidth) + x + i).character = c;
-        mCells.at(((j + y) * mWidth) + x + i).foreground = foreground;
-        mCells.at(((j + y) * mWidth) + x + i).background = background;
+        auto& cell = mCells.at(((j + y) * mWidth) + x + i);
+
+        cell.character = c;
+        cell.foreground = foreground;
+        cell.background = background;
+        i++;
+    }
+
+    mRerender = true;
+
+    return;
+}
+
+void conslr::Screen::renderTextTagged(int32_t x, int32_t y, int32_t maxSize, const TaggedString& str, const SDL_Color& foreground, const SDL_Color& background)
+{
+    if (x < 0) { x = 0; }
+    if (x >= mWidth) { x = mWidth - 1; }
+    if (y < 0) { y = 0; }
+    if (y >= mHeight) { y = mHeight - 1; }
+
+    //Gets tagged string vector
+    const auto& tstr = str.getString();
+    int32_t itrSize = std::min(maxSize, (int32_t)tstr.size());
+    int32_t start = (y * mWidth) + x;
+    for (int i = 0; i < itrSize; i++)
+    {
+        auto& cell = mCells.at(start + i);
+        //Current tagged character
+        const auto& tc = tstr.at(i);
+        //Current indexs of the color tags
+        int8_t bg = tc.tags & TaggedString::TaggedChar::BACKGROUND_MASK;
+        int8_t fg = (tc.tags & TaggedString::TaggedChar::FOREGROUND_MASK) >> 4;
+
+        cell.character = (int32_t)tc.character;
+
+        if (fg == 0)
+        {
+            cell.foreground = foreground;
+        } else
+        {
+            cell.foreground = str.getTag(fg);
+        }
+
+        if (bg == 0)
+        {
+            cell.background = background;
+        } else
+        {
+            cell.background = str.getTag(bg);
+        }
+    }
+
+    mRerender = true;
+
+    return;
+}
+
+void conslr::Screen::renderMultilineTextTagged(int32_t x, int32_t y, int32_t maxWidth, int32_t maxHeight, const TaggedString& str, const SDL_Color& foreground, const SDL_Color& background)
+{
+    if (x < 0) { x = 0; }
+    if (x >= mWidth) { x = mWidth - 1; }
+    if (y < 0) { y = 0; }
+    if (y >= mHeight) { y = mHeight - 1; }
+
+    int32_t i = 0;
+    int32_t j = 0;
+    for (const auto& tc : str.getString())
+    {
+        if (tc.character == '\n')
+        {
+            i = 0;
+            j++;
+            continue;
+        }
+
+        if (i >= maxWidth)
+        {
+            i = 0;
+            j++;
+        }
+
+        if (j >= maxHeight)
+        {
+            break;
+        }
+
+        auto& cell = mCells.at(((j + y) * mWidth) + x + i);
+        int8_t bg = tc.tags & TaggedString::TaggedChar::BACKGROUND_MASK;
+        int8_t fg = (tc.tags & TaggedString::TaggedChar::FOREGROUND_MASK) >> 4;
+
+        cell.character = (int32_t)tc.character;
+
+        if (fg == 0)
+        {
+            cell.foreground = foreground;
+        } else
+        {
+            cell.foreground = str.getTag(fg);
+        }
+
+        if (bg == 0)
+        {
+            cell.background = background;
+        } else
+        {
+            cell.background = str.getTag(bg);
+        }
+
         i++;
     }
 

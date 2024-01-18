@@ -21,6 +21,7 @@ add_library(conslr SHARED
     src/console.cpp
     src/screen.cpp
     src/widgetmanager.cpp
+    src/taggedstring.cpp
 )
 
 set_target_properties(conslr PROPERTIES CXX_STANDARD 20)
