@@ -29,9 +29,9 @@ conslr::TaggedString& conslr::TaggedString::operator<<(const FgTag& tag)
 {
     mCurrentForegroundTag = tag.index & 0x0F;
 
-    if (mTags.size() >= mCurrentForegroundTag)
+    if (mTags.size() <= mCurrentForegroundTag)
     {
-        mTags.resize(mCurrentForegroundTag + 1);
+        mTags.resize(mCurrentForegroundTag + 1, { 255, 255, 255, 255 });
     }
 
     return *this;
@@ -41,9 +41,9 @@ conslr::TaggedString& conslr::TaggedString::operator<<(const BgTag& tag)
 {
     mCurrentBackgroundTag = tag.index & 0x0F;
 
-    if (mTags.size() >= mCurrentBackgroundTag)
+    if (mTags.size() <= mCurrentBackgroundTag)
     {
-        mTags.resize(mCurrentBackgroundTag + 1);
+        mTags.resize(mCurrentBackgroundTag + 1, { 255, 255, 255, 255 });
     }
 
     return *this;
