@@ -12,6 +12,7 @@
 #include "conslr/widgets/textbox.hpp"
 #include "conslr/widgets/taggedtextbox.hpp"
 #include "conslr/widgets/floatingtext.hpp"
+#include "conslr/widgets/taggedfloatingtext.hpp"
 
 int main()
 {
@@ -67,8 +68,20 @@ int main()
     auto ft = wm.createWidget<conslr::widgets::FloatingText>();
     {
         auto ftPtr = ft.lock();
-        ftPtr->setRegion({ 41, 15, 20, 2 });
+        ftPtr->setRegion({ 41, 15, 20, 1 });
         ftPtr->setText("Floating text widget");
+    }
+
+    auto tft = wm.createWidget<conslr::widgets::TaggedFloatingText>();
+    {
+        auto tftPtr = tft.lock();
+        tftPtr->setRegion({ 41, 16, 20, 2 });
+
+        using conslr::FgTag;
+        using conslr::BgTag;
+        auto& ts = tftPtr->getString();
+        ts << FgTag(1) << "Tagged" << FgTag(0) << " floating text widget";
+        ts.setTag(1, { 255, 0, 255, 255 });
     }
 
     SDL_Event event;
