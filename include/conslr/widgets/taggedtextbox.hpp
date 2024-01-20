@@ -1,6 +1,6 @@
 ///
 ///@file conslr/widgets/taggedtextbox.hpp
-///@brief
+///@brief Defines the TaggedTextBox widget
 ///
 #pragma once
 
@@ -64,7 +64,7 @@ namespace conslr::widgets
         ///Sets the region of the widget
         ///
         ///@param region Region of the widget on screen
-        void setRegion(SDL_Rect region)
+        void setRegion(const SDL_Rect& region)
         {
             assert(((region.w > 2) && (region.h > 2)) && "Region is too small");
 

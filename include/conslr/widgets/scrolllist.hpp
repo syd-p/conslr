@@ -1,6 +1,6 @@
 ///
 ///@file conslr/widgets/scrolllist.hpp
-///@brief
+///@brief Defines the ScrollList widget
 ///
 #pragma once
 

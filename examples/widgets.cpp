@@ -11,6 +11,7 @@
 #include "conslr/widgets/scrolllist.hpp"
 #include "conslr/widgets/textbox.hpp"
 #include "conslr/widgets/taggedtextbox.hpp"
+#include "conslr/widgets/floatingtext.hpp"
 
 int main()
 {
@@ -61,6 +62,13 @@ int main()
         ts << "This is a tagged string\n" << FgTag(1) << "It can have multiple colors\n" << BgTag(2) << "Using tags!";
         ts.setTag(1, { 255, 0, 0, 255 });
         ts.setTag(2, { 0, 0, 255, 255 });
+    }
+
+    auto ft = wm.createWidget<conslr::widgets::FloatingText>();
+    {
+        auto ftPtr = ft.lock();
+        ftPtr->setRegion({ 41, 15, 20, 2 });
+        ftPtr->setText("Floating text widget");
     }
 
     SDL_Event event;
