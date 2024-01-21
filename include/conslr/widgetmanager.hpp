@@ -71,6 +71,10 @@ namespace conslr
         ///
         ///@param index Index of the widget to activate
         void activateWidget(int32_t index);
+        ///Deactivates a widget
+        ///
+        ///@param inddex Index of the widget to deactivate
+        void deactivateWidget(int32_t index);
 
         //Getters
         ///Gets a widget as a shared pointer

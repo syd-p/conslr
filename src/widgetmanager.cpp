@@ -36,22 +36,27 @@ void conslr::WidgetManager::activateWidget(int32_t index)
     assert((index >= 0 && index < MAX_WIDGETS) && "Index out of bounds");
     assert((mWidgets.at(index) != nullptr) && "Widget does not exist");
 
-    for (auto widgetPtr : mWidgets)
-    {
-        if (widgetPtr == nullptr)
-        {
-            continue;
-        }
-
-        widgetPtr->setActive(false);
-    }
-
     for (auto renderablePtr : mRenderable)
     {
         renderablePtr->mRerender = true;
     }
 
     mWidgets.at(index)->setActive(true);
+
+    return;
+}
+
+void conslr::WidgetManager::deactivateWidget(int32_t index)
+{
+    assert((index >= 0 && index < MAX_WIDGETS) && "Index out of bounds");
+    assert((mWidgets.at(index) != nullptr) && "Widget does not exist");
+
+    for (auto renderablePtr : mRenderable)
+    {
+        renderablePtr->mRerender = true;
+    }
+
+    mWidgets.at(index)->setActive(false);
 
     return;
 }

@@ -111,10 +111,12 @@ int main()
                     if (listPtr.lock()->getActive())
                     {
                         wm.activateWidget(listPtr2.lock()->getId());
+                        wm.deactivateWidget(listPtr.lock()->getId());
                         currentWidget = 1;
                     } else
                     {
                         wm.activateWidget(listPtr.lock()->getId());
+                        wm.deactivateWidget(listPtr2.lock()->getId());
                         currentWidget = 0;
                     }
                 }
