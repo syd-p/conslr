@@ -3,6 +3,8 @@ This is a pet project of mine initially created as an abstraction layer to a gam
 
 It is meant to be relatively extendable and easily modifiable.
 
+![Example of conslr being used](https://github.com/syd-p/conslr/blob/master/res/widgetsexample.png)
+
 ## Installation
 As there are no precompiled binaries (yet), you have to build it from source
 
