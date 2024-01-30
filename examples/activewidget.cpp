@@ -52,9 +52,9 @@ int main()
         sPtr->setRegion({ 21, 1, 20, 23 });
         sPtr->showTitle();
         sPtr->setTitle("List 2");
-        for (auto i = 'a'; i < 'z'; i++)
+        for (char i = 'a'; i < 'z'; i++)
         {
-            sPtr->addElement(i, std::string(&i));
+            sPtr->addElement(i, std::string{} + i);
         }
     }
 
