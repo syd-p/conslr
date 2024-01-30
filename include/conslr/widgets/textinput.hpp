@@ -20,6 +20,7 @@ namespace conslr::widgets
     ///
     ///Only newline characters are treated as a special character
     ///Other characters such as \t are treated as a index for a character to render
+    ///Note: Scrollbar may be inaccurate for certain amounts of rows, not terribly inaccurate so it has been left to be fixed later
     ///
     class TextInput : public IWidget, public IRenderable, public ITextInput
     {
@@ -309,7 +310,7 @@ namespace conslr::widgets
         }
         ///Sets the value of word wrap
         ///
-        ///@param Value to set it to
+        ///@param val Value to set it to
         void setWordWrap(bool val) { mWordWrap = true; mRerender = true; }
 
     protected:

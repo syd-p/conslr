@@ -73,7 +73,7 @@ namespace conslr
         void activateWidget(int32_t index);
         ///Deactivates a widget
         ///
-        ///@param inddex Index of the widget to deactivate
+        ///@param index Index of the widget to deactivate
         void deactivateWidget(int32_t index);
 
         //Getters
