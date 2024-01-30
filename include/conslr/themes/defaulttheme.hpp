@@ -10,13 +10,14 @@ namespace conslr::themes
 {
     static const Theme Default
     {
-        .borderHorizontal = '=', //!<Horizontal border character
+        .borderHorizontal = '-', //!<Horizontal border character
         .borderVertical = '|', //!<Vertical border character
         .borderCornerTl = '+', //!<Top left corner border character
         .borderCornerTr = '+', //!<Top right corner border character
         .borderCornerBl = '+', //!<Bottom left corner border character
         .borderCornerBr = '+', //!<Bottom right corner border character
         .scrollbarCharacter = (11 * 16) + 10, //!<Scrollbar character
+        .scrollbarCharacterHorizontal = (12 * 16) + 13, //!<Horizontal scrollbar character
 
         .background = { 0, 0, 0, 255 }, //!<Background for widgets
         .text = { 255, 255, 255, 255 }, //!<Text for widgets

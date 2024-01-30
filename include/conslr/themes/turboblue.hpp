@@ -17,6 +17,7 @@ namespace conslr::themes
         .borderCornerBl = (12 * 16) + 8, //!<Botton left corner border character
         .borderCornerBr = (11 * 16) + 12, //!<Bottom right corner border character
         .scrollbarCharacter = (13 * 16) + 11, //!<Scrollbar character
+        .scrollbarCharacterHorizontal = (13 * 16) + 11, //!<Horizontal scrollbar character
 
         .background = { 0, 0, 175, 255 }, //!<Background for widgets
         .text = { 255, 255, 255, 255 }, //!<Text for widgets
