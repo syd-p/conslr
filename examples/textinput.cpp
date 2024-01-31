@@ -48,6 +48,8 @@ int main()
         tbPtr->showTitle();
     }
 
+    //Made to track the efficacy of textinput
+    //Mainly for my personal testing
     int32_t frames = 0;
     auto start = std::chrono::steady_clock::now();
 
@@ -85,6 +87,7 @@ int main()
         console.update();
         console.render();
 
+        //Approximate updates per second
         frames++;
         if (frames % 100 == 0)
         {
