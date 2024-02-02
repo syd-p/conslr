@@ -29,6 +29,7 @@ namespace conslr::widgets
         TextInput(int32_t id, int32_t priority) :
             IWidget{ id, priority },
             mRegion{ 0, 0, 0, 0 }, mTextRegion{ 0, 0, 0, 0, },
+            mMaxRows{ -1 },
             mCurrentRow{ 0 }, mSelection{ 0 },
             mWordWrap{ false },
             mScrollX{ 0 }, mScrollY{ 0 }
@@ -109,6 +110,7 @@ namespace conslr::widgets
                 }
                 break;
             case SDL_SCANCODE_RETURN:
+                if (mRows.size() + 1 > mMaxRows) { return; }
                 mRows.insert(mRows.begin() + mCurrentRow + 1, std::string{ mRows.at(mCurrentRow).begin() + mSelection, mRows.at(mCurrentRow).end() });
                 mRows.at(mCurrentRow).erase(mSelection);
 
@@ -265,6 +267,10 @@ namespace conslr::widgets
         ///
         ///@return Current value of word wrap
         bool getWordWrap() const { return mWordWrap; }
+        ///Gets the max rows of the widget
+        ///
+        ///@return Max rows of the widget, negative is infinite
+        int32_t getMaxRows() const { return mMaxRows; }
 
         ///Sets the region of the widget
         ///
@@ -275,8 +281,8 @@ namespace conslr::widgets
 
             mRegion = region;
             mTextRegion = { mRegion.x + 1, mRegion.y + 1, mRegion.w - 2, mRegion.h - 2 };
-            mRerender = true;
 
+            mRerender = true;
             return;
         }
         ///Sets the text of the widget
@@ -303,18 +309,39 @@ namespace conslr::widgets
             mRows.emplace_back(str);
 
             mRerender = true;
-
             return;
         }
         ///Sets the value of word wrap
         ///
         ///@param val Value to set it to
         void setWordWrap(bool val) { mWordWrap = true; mRerender = true; }
+        ///Sets the max rows of the widget
+        ///Excess rows are deleted
+        ///
+        ///@param max New max value
+        void setMaxRows(int32_t max)
+        {
+            mMaxRows = max;
+            if (mMaxRows == -1)
+            {
+                return;
+            }
+
+            if (mMaxRows < mRows.size())
+            {
+                //Removes excess rows
+                mRows = { mRows.begin(), mRows.begin() + mMaxRows };
+            }
+
+            mRerender = true;
+            return;
+        }
 
     protected:
         SDL_Rect mRegion; //!<Region of the widget on the screen
         SDL_Rect mTextRegion; //!<Region that text can be rendered in
         std::vector<std::string> mRows; //!<Text of the widget
+        int32_t mMaxRows; //!<Max rows for the input, negative is infinite 
         int32_t mCurrentRow; //!<Currently selected row
         int32_t mSelection; //!<Index of current selection on row
         bool mWordWrap; //!<If word wrap is enabled
