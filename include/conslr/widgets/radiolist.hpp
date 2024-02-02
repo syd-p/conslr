@@ -64,7 +64,7 @@ namespace conslr::widgets
 
                 if (mChosenElement == mScrollY + i)
                 {
-                    screen.setCellCharacter(xOffset + 1, yOffset + i, 'X');
+                    screen.setCellCharacter(xOffset + 1, yOffset + i, mTheme->selectionTick);
                 }
             }
 
