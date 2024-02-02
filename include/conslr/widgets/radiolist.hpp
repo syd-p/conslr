@@ -56,6 +56,24 @@ namespace conslr::widgets
             int32_t freeWidth = mRegion.w - 2;
             int32_t freeHeight = mRegion.h - 2;
 
+            int32_t maxShown = std::min(freeHeight, (int32_t)mElements.size());
+            for (auto i = 0; i < maxShown; i++)
+            {
+                const auto& element = mElements.at(mScrollY + i);
+                screen.renderTextColor(xOffset, yOffset + i, freeWidth, "[ ]" + element.mName, mTheme->text);
+
+                if (mChosenElement == mScrollY + i)
+                {
+                    screen.setCellCharacter(xOffset + 1, yOffset + i, 'X');
+                }
+            }
+
+            //Current selection
+            if (mActive)
+            {
+                screen.setCellBackground(xOffset, yOffset + mSelection - mScrollY, mTheme->selection);
+            }
+
             if (mShowTitle)
             {
                 screen.renderTextColor(
@@ -75,24 +93,6 @@ namespace conslr::widgets
                 int32_t scrollbarHeight = (visiblePercent * freeHeight) / 100;
 
                 screen.fillRectCharacter({ mRegion.x, yOffset + scrollbarOffset, 1, std::min(scrollbarHeight + 1, freeHeight - scrollbarOffset) }, mTheme->scrollbarCharacter);
-            }
-
-            int32_t maxShown = std::min(freeHeight, (int32_t)mElements.size());
-            for (auto i = 0; i < maxShown; i++)
-            {
-                const auto& element = mElements.at(mScrollY + i);
-                screen.renderTextColor(xOffset, yOffset + i, freeWidth, "[ ]" + element.mName, mTheme->text);
-
-                if (mChosenElement == mScrollY + i)
-                {
-                    screen.setCellCharacter(xOffset + 1, yOffset + i, 'X');
-                }
-            }
-
-            //Current selection
-            if (mActive)
-            {
-                screen.setCellBackground(xOffset, yOffset + mSelection - mScrollY, mTheme->selection);
             }
 
             return;
