@@ -15,13 +15,11 @@
 
 namespace conslr::widgets
 {
-    ///
     ///Renders a simple text box
     ///
     ///Only newline characters are treated as a special character
     ///Other characters such as \t are treated as a index for a character to render
     ///Note: Scrollbar may be inaccurate for certain amounts of rows, not terribly inaccurate so it has been left to be fixed later
-    ///
     class TextInput : public IWidget, public IRenderable, public ITextInput
     {
     public:
