@@ -34,18 +34,12 @@ add_library(conslr SHARED
 
 set_target_properties(conslr PROPERTIES CXX_STANDARD 20)
 set_target_properties(conslr PROPERTIES PUBLIC_HEADER
-    include/conslr/conslr.hpp
-    include/conslr/consle.hpp
-    include/conslr/screen.hpp
-    include/conslr/taggedstring.hpp
-    include/conslr/theme.hpp
-    include/conslr/widget.hpp
-    include/conslr/widgetmanager.hpp
+    "include/conslr/conslr.hpp;include/conslr/console.hpp;include/conslr/screen.hpp;include/conslr/taggedstring.hpp;include/conslr/theme.hpp;include/conslr/widget.hpp;include/conslr/widgetmanager.hpp"
 )
 set_target_properties(conslr PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(conslr PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR})
 
-target_include_directories(conslr PRIVATE include)
+target_include_directories(conslr PUBLIC include)
 target_include_directories(conslr PRIVATE src)
 target_include_directories(conslr PRIVATE ${SDL2_INCLUDE_DIR})
 
@@ -68,3 +62,10 @@ foreach(exampleSourceFile ${EXAMPLE_SOURCES})
     target_link_libraries(${exampleName} PRIVATE ${SDL2_IMAGE_LIBRARIES})
     target_link_libraries(${exampleName} PRIVATE ${CMAKE_SOURCE_DIR}/${CMAKE_BUILD_TYPE}/lib/libconslr.so)
 endforeach(exampleSourceFile ${EXAMPLE_SOURCES})
+
+include(GNUInstallDirs)
+
+install(TARGETS conslr
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/conslr/
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/conslr/
+)
