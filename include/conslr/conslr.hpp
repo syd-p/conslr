@@ -9,3 +9,4 @@
 #include "conslr/theme.hpp"
 #include "conslr/widget.hpp"
 #include "conslr/widgetmanager.hpp"
+#include "conslr/taggedstring.hpp"
