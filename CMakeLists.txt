@@ -7,11 +7,18 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 configure_file(res/ibm_vga_fontsheet.bmp ${CMAKE_SOURCE_DIR}/${CMAKE_BUILD_TYPE}/bin/ibm_vga_fontsheet.bmp COPYONLY)
 configure_file(include/conslr/conslr.hpp ${CMAKE_SOURCE_DIR}/${CMAKE_BUILD_TYPE}/include/conslr.hpp COPYONLY)
+
 file(GLOB WIDGET_HEADERS include/conslr/widgets/*.hpp)
 foreach(widgetHeader ${WIDGET_HEADERS})
     get_filename_component(widgetHeaderName ${widgetHeader} NAME)
     configure_file(${widgetHeader} ${CMAKE_SOURCE_DIR}/${CMAKE_BUILD_TYPE}/include/widgets/${widgetHeaderName} COPYONLY)
-endforeach(widgetHeader ${WIDGET_HEADERS})
+endforeach(widgetHeader)
+
+file(GLOB THEME_HEADERS include/conslr/themes/*.hpp)
+foreach(themeHeader ${THEME_HEADERS})
+    get_filename_component(themeHeaderName ${themeHeader} NAME)
+    configure_file(${themeHeader} ${CMAKE_SOURCE_DIR}/${CMAKE_BUILD_TYPE}/include/themes/${themeHeaderName} COPYONLY)
+endforeach(themeHeader)
 
 project(conslr VERSION 1.1.3 DESCRIPTION "Simple console emulator")
 
@@ -26,7 +33,15 @@ add_library(conslr SHARED
 )
 
 set_target_properties(conslr PROPERTIES CXX_STANDARD 20)
-set_target_properties(conslr PROPERTIES PUBLIC_HEADER include/conslr/consle.hpp)
+set_target_properties(conslr PROPERTIES PUBLIC_HEADER
+    include/conslr/conslr.hpp
+    include/conslr/consle.hpp
+    include/conslr/screen.hpp
+    include/conslr/taggedstring.hpp
+    include/conslr/theme.hpp
+    include/conslr/widget.hpp
+    include/conslr/widgetmanager.hpp
+)
 set_target_properties(conslr PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(conslr PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR})
 
