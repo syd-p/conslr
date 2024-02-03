@@ -32,6 +32,10 @@ namespace conslr
         ///Default constructor
         ///
         WidgetManager();
+        WidgetManager(const WidgetManager&) = delete;
+        WidgetManager(WidgetManager&&) = delete;
+        WidgetManager& operator=(const WidgetManager&) = delete;
+        WidgetManager& operator=(WidgetManager&&) = delete;
 
         ///Creates a widget
         ///
