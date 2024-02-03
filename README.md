@@ -31,3 +31,7 @@ This should create two folders, lib contains the build library and bin contains 
 ```
 ./bin/widgets
 ```
+5. Install:
+```
+cmake --install .
+```
