@@ -32,10 +32,15 @@ add_library(conslr SHARED
     src/taggedstring.cpp
 )
 
-set_target_properties(conslr PROPERTIES CXX_STANDARD 20)
-set_target_properties(conslr PROPERTIES PUBLIC_HEADER
-    "include/conslr/conslr.hpp;include/conslr/console.hpp;include/conslr/screen.hpp;include/conslr/taggedstring.hpp;include/conslr/theme.hpp;include/conslr/widget.hpp;include/conslr/widgetmanager.hpp"
+file(GLOB conslr_headers include/conslr/*)
+
+target_sources(conslr PUBLIC FILE_SET HEADERS
+    BASE_DIRS ${CMAKE_SOURCE_DIR}/include/conslr/
+    FILES ${conslr_headers}
 )
+
+set_target_properties(conslr PROPERTIES CXX_STANDARD 20)
+set_target_properties(conslr PROPERTIES PUBLIC_HEADER include/conslr/conslr.hpp)
 set_target_properties(conslr PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(conslr PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR})
 
@@ -68,4 +73,5 @@ include(GNUInstallDirs)
 install(TARGETS conslr
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/conslr/
     PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/conslr/
+    FILE_SET HEADERS DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/conslr/
 )
