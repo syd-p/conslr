@@ -5,19 +5,19 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-configure_file(res/ibm_vga_fontsheet.bmp ${CMAKE_SOURCE_DIR}/${CMAKE_BUILD_TYPE}/bin/ibm_vga_fontsheet.bmp COPYONLY)
-configure_file(include/conslr/conslr.hpp ${CMAKE_SOURCE_DIR}/${CMAKE_BUILD_TYPE}/include/conslr.hpp COPYONLY)
+configure_file(res/ibm_vga_fontsheet.bmp ${CMAKE_SOURCE_DIR}/build/ibm_vga_fontsheet.bmp COPYONLY)
+configure_file(include/conslr/conslr.hpp ${CMAKE_SOURCE_DIR}/build/include/conslr.hpp COPYONLY)
 
 file(GLOB WIDGET_HEADERS include/conslr/widgets/*.hpp)
 foreach(widgetHeader ${WIDGET_HEADERS})
     get_filename_component(widgetHeaderName ${widgetHeader} NAME)
-    configure_file(${widgetHeader} ${CMAKE_SOURCE_DIR}/${CMAKE_BUILD_TYPE}/include/widgets/${widgetHeaderName} COPYONLY)
+    configure_file(${widgetHeader} ${CMAKE_SOURCE_DIR}/build/include/widgets/${widgetHeaderName} COPYONLY)
 endforeach(widgetHeader)
 
 file(GLOB THEME_HEADERS include/conslr/themes/*.hpp)
 foreach(themeHeader ${THEME_HEADERS})
     get_filename_component(themeHeaderName ${themeHeader} NAME)
-    configure_file(${themeHeader} ${CMAKE_SOURCE_DIR}/${CMAKE_BUILD_TYPE}/include/themes/${themeHeaderName} COPYONLY)
+    configure_file(${themeHeader} ${CMAKE_SOURCE_DIR}/build/include/themes/${themeHeaderName} COPYONLY)
 endforeach(themeHeader)
 
 project(conslr VERSION 1.1.3 DESCRIPTION "Simple console emulator")
@@ -65,7 +65,7 @@ foreach(exampleSourceFile ${EXAMPLE_SOURCES})
 
     target_link_libraries(${exampleName} PRIVATE ${SDL2_LIBRARIES})
     target_link_libraries(${exampleName} PRIVATE ${SDL2_IMAGE_LIBRARIES})
-    target_link_libraries(${exampleName} PRIVATE ${CMAKE_SOURCE_DIR}/${CMAKE_BUILD_TYPE}/lib/libconslr.so)
+    target_link_libraries(${exampleName} PRIVATE ${CMAKE_SOURCE_DIR}/build/lib/libconslr.so)
 endforeach(exampleSourceFile ${EXAMPLE_SOURCES})
 
 include(GNUInstallDirs)

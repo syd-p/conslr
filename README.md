@@ -16,17 +16,12 @@ cd conslr
 ```
 2. Create a directory to build in:
 ```
-mkdir Release
-cd Release
-```
-or
-```
-mkdir Debug
-cd Debug
+mkdir build 
+cd build
 ```
 3. Create the make files from CMake:
 ```
-cmake -DCMAKE_BUILD_TYPE=[Release/Debug] ..
+cmake [-DCMAKE_BUILD_TYPE=[type]] ..
 ```
 4. Build:
 ```
