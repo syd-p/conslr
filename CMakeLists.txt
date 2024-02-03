@@ -40,7 +40,6 @@ target_sources(conslr PUBLIC FILE_SET HEADERS
 )
 
 set_target_properties(conslr PROPERTIES CXX_STANDARD 20)
-set_target_properties(conslr PROPERTIES PUBLIC_HEADER include/conslr/conslr.hpp)
 set_target_properties(conslr PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(conslr PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR})
 
@@ -72,6 +71,5 @@ include(GNUInstallDirs)
 
 install(TARGETS conslr
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}/conslr/
-    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/conslr/
     FILE_SET HEADERS DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/conslr/
 )
