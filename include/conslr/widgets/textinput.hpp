@@ -56,73 +56,98 @@ namespace conslr::widgets
 
             return;
         }
+
         ///
-        ///Handles special key input
+        ///Move selection left
         ///
-        virtual void doKeyDown(SDL_KeyboardEvent& event) override
+        virtual void doKeyLeft()
         {
-            if (!mActive)
+            if (!mActive) { return; }
+            mSelection = std::max(0, mSelection - 1);
+            mRerender = true;
+            return;
+        }
+        ///
+        ///Move selection right
+        ///
+        virtual void doKeyRight()
+        {
+            if (!mActive) { return; }
+            mSelection = std::min((int32_t)mRows.at(mCurrentRow).size(), mSelection + 1);
+            mRerender = true;
+            return;
+        }
+        ///
+        ///Move selection up
+        ///
+        virtual void doKeyUp()
+        {
+            if (!mActive) { return; }
+            mCurrentRow = std::max(0, mCurrentRow - 1);
+            mSelection = std::min((int32_t)mRows.at(mCurrentRow).size(), mSelection);
+            mRerender = true;
+            return;
+        }
+        ///
+        ///Move selection down
+        ///
+        virtual void doKeyDown()
+        {
+            if (!mActive) { return; }
+            mCurrentRow = std::min((int32_t)mRows.size() - 1, mCurrentRow + 1);
+            mSelection = std::min((int32_t)mRows.at(mCurrentRow).size(), mSelection);
+            mRerender = true;
+            return;
+        }
+        ///
+        ///Tab key
+        ///
+        virtual void doTab()
+        {
+            if (!mActive) { return; }
+            mRows.at(mCurrentRow).insert(mSelection, "    ");
+            mSelection += 4;
+            mRerender = true;
+            return;
+        }
+        ///
+        ///Backspace key
+        ///
+        virtual void doBackspace()
+        {
+            if (!mActive) { return; }
+            if (mSelection != 0)
             {
+                mRows.at(mCurrentRow).erase(mSelection - 1, 1);
+                mSelection--;
+                mRerender = true;
+                return;
+            }
+            if (mCurrentRow != 0)
+            {
+                mSelection = mRows.at(mCurrentRow - 1).size();
+                mRows.at(mCurrentRow - 1).append(mRows.at(mCurrentRow));
+                mRows.erase(mRows.begin() + mCurrentRow);
+                mCurrentRow--;
+                mRerender = true;
                 return;
             }
 
-            switch (event.keysym.scancode)
-            {
-            case SDL_SCANCODE_LEFT:
-                mSelection = std::max(0, mSelection - 1);
-                mRerender = true;
-                break;
-            case SDL_SCANCODE_RIGHT:
-                mSelection = std::min((int32_t)mRows.at(mCurrentRow).size(), mSelection + 1);
-                mRerender = true;
-                break;
-            case SDL_SCANCODE_UP:
-                mCurrentRow = std::max(0, mCurrentRow - 1);
-                mSelection = std::min((int32_t)mRows.at(mCurrentRow).size(), mSelection);
-                mRerender = true;
-                break;
-            case SDL_SCANCODE_DOWN:
-                mCurrentRow = std::min((int32_t)mRows.size() - 1, mCurrentRow + 1);
-                 mSelection = std::min((int32_t)mRows.at(mCurrentRow).size(), mSelection);
-                mRerender = true;
-                break;
-            case SDL_SCANCODE_TAB:
-                mRows.at(mCurrentRow).insert(mSelection, "    ");
-                mSelection += 4;
-                mRerender = true;
-                break;
-            case SDL_SCANCODE_BACKSPACE:
-                if (mSelection != 0)
-                {
-                    mRows.at(mCurrentRow).erase(mSelection - 1, 1);
-                    mSelection--;
-                    mRerender = true;
-                    break;
-                }
-                if (mCurrentRow != 0)
-                {
-                    mSelection = mRows.at(mCurrentRow - 1).size();
-                    mRows.at(mCurrentRow - 1).append(mRows.at(mCurrentRow));
-                    mRows.erase(mRows.begin() + mCurrentRow);
-                    mCurrentRow--;
-                    mRerender = true;
-                    break;
-                }
-                break;
-            case SDL_SCANCODE_RETURN:
-                if (mRows.size() + 1 > mMaxRows) { return; }
-                mRows.insert(mRows.begin() + mCurrentRow + 1, std::string{ mRows.at(mCurrentRow).begin() + mSelection, mRows.at(mCurrentRow).end() });
-                mRows.at(mCurrentRow).erase(mSelection);
+            return;
+        }
+        ///
+        ///Return key
+        ///
+        virtual void doReturn()
+        {
+            if (!mActive) { return; }
+            if (mRows.size() + 1 > mMaxRows) { return; }
+            mRows.insert(mRows.begin() + mCurrentRow + 1, std::string{ mRows.at(mCurrentRow).begin() + mSelection, mRows.at(mCurrentRow).end() });
+            mRows.at(mCurrentRow).erase(mSelection);
 
-                mCurrentRow++;
-                mSelection = 0;
-
-                mRerender = true;
-                break;
-            default:
-                break;
-            }
-
+            mCurrentRow++;
+            mSelection = 0;
+            mRerender = true;
             return;
         }
 
@@ -341,7 +366,7 @@ namespace conslr::widgets
         SDL_Rect mRegion; //!<Region of the widget on the screen
         SDL_Rect mTextRegion; //!<Region that text can be rendered in
         std::vector<std::string> mRows; //!<Text of the widget
-        int32_t mMaxRows; //!<Max rows for the input, negative is infinite 
+        int32_t mMaxRows; //!<Max rows for the input, negative is infinite
         int32_t mCurrentRow; //!<Currently selected row
         int32_t mSelection; //!<Index of current selection on row
         bool mWordWrap; //!<If word wrap is enabled

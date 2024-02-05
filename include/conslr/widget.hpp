@@ -158,10 +158,6 @@ namespace conslr
         ///
         ///@param event Text input event
         virtual void doTextInput(SDL_TextInputEvent& event) {}
-        ///Handles special key inputs
-        ///
-        ///@param event Keyboard event
-        virtual void doKeyDown(SDL_KeyboardEvent& event) {}
     };
 
     template <typename T>

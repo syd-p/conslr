@@ -73,7 +73,32 @@ int main()
 
             if (event.type == SDL_KEYDOWN)
             {
-                ti.lock()->doKeyDown(event.key);
+                switch(event.key.keysym.scancode)
+                {
+                case SDL_SCANCODE_UP:
+                    ti.lock()->doKeyUp();
+                    break;
+                case SDL_SCANCODE_DOWN:
+                    ti.lock()->doKeyDown();
+                    break;
+                case SDL_SCANCODE_LEFT:
+                    ti.lock()->doKeyLeft();
+                    break;
+                case SDL_SCANCODE_RIGHT:
+                    ti.lock()->doKeyRight();
+                    break;
+                case SDL_SCANCODE_BACKSPACE:
+                    ti.lock()->doBackspace();
+                    break;
+                case SDL_SCANCODE_TAB:
+                    ti.lock()->doTab();
+                    break;
+                case SDL_SCANCODE_RETURN:
+                    ti.lock()->doReturn();
+                    break;
+                default:
+                    break;
+                }
 
                 if (event.key.keysym.scancode == SDL_SCANCODE_LCTRL)
                 {
