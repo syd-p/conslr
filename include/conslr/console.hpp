@@ -10,6 +10,7 @@
 #include <memory>
 #include <functional>
 
+#include "conslr/keymapping.hpp"
 #include "conslr/widgetmanager.hpp"
 #include "conslr/theme.hpp"
 
@@ -111,6 +112,10 @@ namespace conslr
         ///
         ///@return Reference to the current screen
         [[nodiscard]] const Theme& getTheme() const;
+        ///Gets the current key mapping
+        ///
+        ///@return Reference to the consoles key map
+        [[nodiscard]] const KeyMapping& getKeyMap() const;
 
         //Setters
         ///Sets current screen index
@@ -135,6 +140,10 @@ namespace conslr
         ///
         ///@param theme Theme to set as console theme
         void setTheme(const Theme& theme);
+        ///Sets the mapping of the console
+        ///
+        ///@param keyMap Mapping to set
+        void setKeyMap(const KeyMapping& keyMap);
 
         //Const values
         static const int32_t MAX_SCREENS = 16; //!<Max screens that a console can have
@@ -153,6 +162,7 @@ namespace conslr
         //SDL data
         SDL_Window* mWindow;
         SDL_Renderer* mRenderer;
+        KeyMapping mKeyMap;
 
         //Screen data
         std::queue<int32_t> mFreeScreens;

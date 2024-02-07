@@ -8,6 +8,7 @@
 #include <SDL.h>
 
 #include "conslr/console.hpp"
+#include "conslr/keymapping.hpp"
 #include "conslr/widgets/textbox.hpp"
 #include "conslr/widgets/textinput.hpp"
 

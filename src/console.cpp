@@ -8,6 +8,7 @@
 
 #include "conslr/screen.hpp"
 #include "conslr/themes/defaulttheme.hpp"
+#include "keymapping.hpp"
 
 conslr::Console::Console(int32_t cellWidth, int32_t cellHeight, int32_t windowCellWidth, int32_t windowCellHeight) :
     mCellWidth{ cellWidth }, mCellHeight{ cellHeight },
@@ -322,6 +323,7 @@ conslr::WidgetManager& conslr::Console::getWidgetManager(int32_t index) const
 }
 
 const conslr::Theme& conslr::Console::getTheme() const { return mTheme; }
+const conslr::KeyMapping& conslr::Console::getKeyMap() const { return mKeyMap; }
 
 //Setters
 void conslr::Console::setCurrentScreenIndex(int32_t index) { assert(index < mScreens.size()); mCurrentScreen = index; }
@@ -346,6 +348,7 @@ void conslr::Console::setTheme(const Theme& theme)
 
     return;
 }
+void conslr::Console::setKeyMap(const KeyMapping& keyMap) { mKeyMap = keyMap; return; }
 
 //Console::Font
 conslr::Console::Font::~Font()
