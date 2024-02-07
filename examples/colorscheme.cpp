@@ -30,10 +30,14 @@ int main()
     //Creates a simple textbox widget
     auto& wm = console.getWidgetManager(scr);
     auto tb = wm.createWidget<conslr::widgets::TextBox>();
-    tb.lock()->setRegion({ 1, 1, 40, 20 });
-    tb.lock()->setText("Hello\nColor Schemes");
-    tb.lock()->setTitle("Text Box");
-    tb.lock()->showTitle();
+    {
+        auto tbPtr = tb.lock();
+
+        tbPtr->setRegion({ 1, 1, 40, 20 });
+        tbPtr->setText("Hello\nColor Schemes");
+        tbPtr->setTitle("Text Box");
+        tbPtr->showTitle();
+    }
 
     console.setTheme(conslr::themes::Default);
 

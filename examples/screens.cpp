@@ -23,15 +23,23 @@ int main()
     int32_t scr1 = console.createScreen();
     auto& wm1 = console.getWidgetManager(scr1);
     auto tb1 = wm1.createWidget<conslr::widgets::TextBox>();
-    tb1.lock()->setRegion({ 0, 0, 40, 20 });
-    tb1.lock()->setText("This is on screen 1!");
+    {
+        auto tbPtr = tb1.lock();
+
+        tbPtr->setRegion({ 0, 0, 40, 20 });
+        tbPtr->setText("This is on screen 1!");
+    }
 
     //Create screen 2
     int32_t scr2 = console.createScreen();
     auto& wm2 = console.getWidgetManager(scr2);
     auto tb2 = wm2.createWidget<conslr::widgets::TextBox>();
-    tb2.lock()->setRegion({ 0, 0, 40, 20 });
-    tb2.lock()->setText("This is on screen 2!");
+    {
+        auto tbPtr = tb2.lock();
+
+        tbPtr->setRegion({ 0, 0, 40, 20 });
+        tbPtr->setText("This is on screen 2!");
+    }
 
     console.setCurrentScreenIndex(scr1);
 

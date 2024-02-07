@@ -73,7 +73,9 @@ int main()
 
             if (event.type == SDL_KEYDOWN)
             {
-                if (event.key.keysym.scancode == SDL_SCANCODE_UP)
+                const auto& keys = console.getKeyMap();
+
+                if (event.key.keysym == keys.scrollUp)
                 {
                     if (currentWidget == 0)
                     {
@@ -84,7 +86,7 @@ int main()
                     }
                 }
 
-                if (event.key.keysym.scancode == SDL_SCANCODE_DOWN)
+                if (event.key.keysym == keys.scrollDown)
                 {
                     if (currentWidget == 0)
                     {
@@ -95,7 +97,7 @@ int main()
                     }
                 }
 
-                if (event.key.keysym.scancode == SDL_SCANCODE_RETURN)
+                if (event.key.keysym == keys.enter)
                 {
                     if (currentWidget == 0)
                     {
@@ -106,7 +108,7 @@ int main()
                     }
                 }
 
-                if (event.key.keysym.scancode == SDL_SCANCODE_TAB)
+                if (event.key.keysym == keys.tab)
                 {
                     if (listPtr.lock()->getActive())
                     {

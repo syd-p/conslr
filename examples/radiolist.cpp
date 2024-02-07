@@ -31,6 +31,7 @@ int main()
     auto listPtr = wm.createWidget<conslr::widgets::RadioList<int32_t>>();
     {
         auto sPtr = listPtr.lock();
+
         sPtr->setRegion({ 1, 1, 20, 23 });
         sPtr->showTitle();
         sPtr->setTitle("Radio List");
@@ -54,17 +55,19 @@ int main()
 
             if (event.type == SDL_KEYDOWN)
             {
-                if (event.key.keysym.scancode == SDL_SCANCODE_UP)
+                const auto& keys = console.getKeyMap();
+
+                if (event.key.keysym == keys.scrollUp)
                 {
                     listPtr.lock()->scrollUp();
                 }
 
-                if (event.key.keysym.scancode == SDL_SCANCODE_DOWN)
+                if (event.key.keysym == keys.scrollDown)
                 {
                     listPtr.lock()->scrollDown();
                 }
 
-                if (event.key.keysym.scancode == SDL_SCANCODE_RETURN)
+                if (event.key.keysym == keys.enter)
                 {
                     listPtr.lock()->chooseElement();
                 }

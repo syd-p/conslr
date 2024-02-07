@@ -74,32 +74,15 @@ int main()
 
             if (event.type == SDL_KEYDOWN)
             {
-                switch(event.key.keysym.scancode)
-                {
-                case SDL_SCANCODE_UP:
-                    ti.lock()->doKeyUp();
-                    break;
-                case SDL_SCANCODE_DOWN:
-                    ti.lock()->doKeyDown();
-                    break;
-                case SDL_SCANCODE_LEFT:
-                    ti.lock()->doKeyLeft();
-                    break;
-                case SDL_SCANCODE_RIGHT:
-                    ti.lock()->doKeyRight();
-                    break;
-                case SDL_SCANCODE_BACKSPACE:
-                    ti.lock()->doBackspace();
-                    break;
-                case SDL_SCANCODE_TAB:
-                    ti.lock()->doTab();
-                    break;
-                case SDL_SCANCODE_RETURN:
-                    ti.lock()->doReturn();
-                    break;
-                default:
-                    break;
-                }
+                const auto& keys = console.getKeyMap();
+
+                if (event.key.keysym == keys.scrollUp) { ti.lock()->doKeyUp(); }
+                else if (event.key.keysym == keys.scrollDown) { ti.lock()->doKeyDown(); }
+                else if (event.key.keysym == keys.scrollLeft) { ti.lock()->doKeyLeft(); }
+                else if (event.key.keysym == keys.scrollRight) { ti.lock()->doKeyRight(); }
+                else if (event.key.keysym == keys.backspace) { ti.lock()->doBackspace(); }
+                else if (event.key.keysym == keys.tab) { ti.lock()->doTab(); }
+                else if (event.key.keysym == keys.enter) { ti.lock()->doReturn(); }
 
                 if (event.key.keysym.scancode == SDL_SCANCODE_LCTRL)
                 {

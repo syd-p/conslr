@@ -33,22 +33,31 @@ int main()
 
     auto& wm = console.getWidgetManager(scr);
     //Creates list
-    auto listPtr = wm.createWidget<conslr::widgets::ScrollList<int32_t>>();
-    listPtr.lock()->setRegion({ 1, 1, 20, 23 });
-    listPtr.lock()->showTitle();
-    listPtr.lock()->setTitle("List");
-    for (auto i = 0; i < 30; i++)
+    auto l = wm.createWidget<conslr::widgets::ScrollList<int32_t>>();
     {
-        listPtr.lock()->addElement(i, std::to_string(i));
+        auto listPtr = l.lock();
+
+        listPtr->setRegion({ 1, 1, 20, 23 });
+        listPtr->showTitle();
+        listPtr->setTitle("List");
+        for (auto i = 0; i < 30; i++)
+        {
+            listPtr->addElement(i, std::to_string(i));
+        }
+        wm.activateWidget(listPtr->getId());
+
     }
-    wm.activateWidget(listPtr.lock()->getId());
 
     //Creates text box
-    auto tbPtr = wm.createWidget<conslr::widgets::TextBox>();
-    tbPtr.lock()->setRegion({ 21, 0, 20, 8 });
-    tbPtr.lock()->setText("This is a textbox!");
-    tbPtr.lock()->showTitle();
-    tbPtr.lock()->setTitle("Text Box");
+    auto tb = wm.createWidget<conslr::widgets::TextBox>();
+    {
+        auto tbPtr = tb.lock();
+
+        tbPtr->setRegion({ 21, 0, 20, 8 });
+        tbPtr->setText("This is a textbox!");
+        tbPtr->showTitle();
+        tbPtr->setTitle("Text Box");
+    }
 
     auto ttb = wm.createWidget<conslr::widgets::TaggedTextBox>();
     {
@@ -97,19 +106,21 @@ int main()
 
             if (event.type == SDL_KEYDOWN)
             {
-                if (event.key.keysym.scancode == SDL_SCANCODE_UP)
+                const auto& keys = console.getKeyMap();
+
+                if (event.key.keysym == keys.scrollUp)
                 {
-                    listPtr.lock()->scrollUp();
+                    l.lock()->scrollUp();
                 }
 
-                if (event.key.keysym.scancode == SDL_SCANCODE_DOWN)
+                if (event.key.keysym == keys.scrollDown)
                 {
-                    listPtr.lock()->scrollDown();
+                    l.lock()->scrollDown();
                 }
 
-                if (event.key.keysym.scancode == SDL_SCANCODE_RETURN)
+                if (event.key.keysym == keys.enter)
                 {
-                    std::cout << "Currently selected list element is: " << listPtr.lock()->getCurrentElement() << std::endl;
+                    std::cout << "Currently selected list element is: " << l.lock()->getCurrentElement() << std::endl;
                 }
             }
 

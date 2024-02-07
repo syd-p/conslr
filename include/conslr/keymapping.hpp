@@ -29,5 +29,11 @@ namespace conslr
 
         KeyPair tab = { SDL_SCANCODE_TAB, KMOD_NONE }; //!<Tab
         KeyPair enter = { SDL_SCANCODE_RETURN, KMOD_NONE }; //!<Enter
+        KeyPair backspace = { SDL_SCANCODE_BACKSPACE, KMOD_NONE }; //!<Backspace
     };
+}
+
+inline bool operator==(const conslr::KeyPair& keyPair, const SDL_Keysym& keySym)
+{
+    return (keyPair.scancode == keySym.scancode) && (keyPair.mod == keySym.mod);
 }
