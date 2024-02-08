@@ -324,6 +324,7 @@ conslr::WidgetManager& conslr::Console::getWidgetManager(int32_t index) const
 
 const conslr::Theme& conslr::Console::getTheme() const { return mTheme; }
 const conslr::KeyMapping& conslr::Console::getKeyMap() const { return mKeyMap; }
+int32_t conslr::Console::getWindowId() const { return SDL_GetWindowID(mWindow); }
 
 //Setters
 void conslr::Console::setCurrentScreenIndex(int32_t index) { assert(index < mScreens.size()); mCurrentScreen = index; }

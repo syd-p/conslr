@@ -116,6 +116,10 @@ namespace conslr
         ///
         ///@return Reference to the consoles key map
         [[nodiscard]] const KeyMapping& getKeyMap() const;
+        ///Gets the current window id
+        ///
+        ///@return Window id
+        [[nodiscard]] int32_t getWindowId() const;
 
         //Setters
         ///Sets current screen index
