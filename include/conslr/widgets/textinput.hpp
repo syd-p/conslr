@@ -223,7 +223,10 @@ namespace conslr::widgets
                     screen.renderText(mTextRegion.x, mTextRegion.y + i, mTextRegion.w, row.substr(mScrollX));
                 }
 
-                screen.setCellBackground(cursorX, cursorY, mTheme->selection);
+                if (mActive)
+                {
+                    screen.setCellBackground(cursorX, cursorY, mTheme->selection);
+                }
 
                 //Scrollbar
                 if (mRows.size() > mTextRegion.h)
