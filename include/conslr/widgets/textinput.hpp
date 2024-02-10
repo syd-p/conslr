@@ -6,6 +6,7 @@
 
 #include <string>
 #include <vector>
+#include <algorithm>
 
 #include <SDL_rect.h>
 
@@ -342,7 +343,7 @@ namespace conslr::widgets
         ///Sets the value of word wrap
         ///
         ///@param val Value to set it to
-        void setWordWrap(bool val) { mWordWrap = true; mRerender = true; }
+        void setWordWrap(bool val) { mWordWrap = val; mRerender = true; }
         ///Sets the max rows of the widget
         ///Excess rows are deleted
         ///
