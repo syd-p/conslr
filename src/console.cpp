@@ -108,39 +108,6 @@ void conslr::Console::doEvent(SDL_Event& event)
         }
     }
 
-    if (mCurrentScreen < 0)
-    {
-        return;
-    }
-
-    assert((mScreens.at(mCurrentScreen) != nullptr) && "Screen does not exist");
-    auto& scr = *mScreens.at(mCurrentScreen);
-    if (scr.eventCallback == nullptr)
-    {
-        return;
-    }
-
-    scr.eventCallback(scr, event);
-
-    return;
-}
-
-void conslr::Console::update()
-{
-    if (mCurrentScreen < 0)
-    {
-        return;
-    }
-
-    assert((mScreens.at(mCurrentScreen) != nullptr) && "Screen does not exist");
-    auto& scr = *mScreens.at(mCurrentScreen);
-    if (scr.update == nullptr)
-    {
-        return;
-    }
-
-    scr.update(scr);
-
     return;
 }
 
@@ -329,10 +296,6 @@ int32_t conslr::Console::getWindowId() const { return SDL_GetWindowID(mWindow); 
 //Setters
 void conslr::Console::setCurrentScreenIndex(int32_t index) { assert(index < mScreens.size()); mCurrentScreen = index; }
 void conslr::Console::setCurrentFontIndex(int32_t index) { assert(index < mFonts.size()); mCurrentFont = index; }
-
-void conslr::Console::setScreenEventCallback(int32_t index, std::function<void(Screen&, SDL_Event&)> callback) { mScreens.at(index)->eventCallback = callback; }
-void conslr::Console::setScreenUpdate(int32_t index, std::function<void(Screen&)> update) { mScreens.at(index)->update = update; }
-
 void conslr::Console::setTheme(const Theme& theme)
 {
     mTheme = theme;

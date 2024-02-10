@@ -71,7 +71,6 @@ int main()
             console.doEvent(event);
         }
 
-        console.update();
         console.render();
     }
 

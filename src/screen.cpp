@@ -7,7 +7,6 @@
 
 conslr::Screen::Screen(int32_t width, int32_t height) :
     mWidth{ width }, mHeight{ height },
-    eventCallback{ nullptr }, update{ nullptr },
     mRerender{ true }
 {
     mCells.resize(mWidth * mHeight, {});

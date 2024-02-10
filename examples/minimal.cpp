@@ -31,8 +31,6 @@ int main()
             console.doEvent(event);
         }
 
-        //Update and render
-        console.update();
         console.render();
     }
 

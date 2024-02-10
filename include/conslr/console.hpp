@@ -60,10 +60,6 @@ namespace conslr
         ///
         ///@param event SDL_Event being passed to the console
         void doEvent(SDL_Event& event);
-        ///Updates the current screen
-        ///
-        ///
-        void update();
         ///Renders the current screen
         ///
         ///Only called when screen.mUpdated is true
@@ -130,16 +126,6 @@ namespace conslr
         ///
         ///@param index Font index
         void setCurrentFontIndex(int32_t index);
-        ///Sets screen event callback
-        ///
-        ///@param index Index of the screen
-        ///@param callback Function pointer to event callback
-        void setScreenEventCallback(int32_t index, std::function<void(Screen&, SDL_Event&)> callback);
-        ///Sets screen update callback
-        ///
-        ///@param index Index of the screen
-        ///@param update Function pointer to update callback
-        void setScreenUpdate(int32_t index, std::function<void(Screen&)> update);
         ///Sets the theme of the console
         ///
         ///@param theme Theme to set as console theme

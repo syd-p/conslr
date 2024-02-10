@@ -6,7 +6,6 @@
 
 #include <cstdint>
 #include <vector>
-#include <functional>
 
 #include <SDL_pixels.h>
 
@@ -43,15 +42,6 @@ namespace conslr
         ///@param height Height in cells
         Screen(int32_t width, int32_t height);
 
-        ///Callback function for events
-        ///
-        ///@param Screen& Screen that eventCallback is being called on
-        ///@param SDL_Event& Event being passed to eventCallback
-        std::function<void(Screen&, SDL_Event&)> eventCallback;
-        ///Update function
-        ///
-        ///@param Screen& Screen that update is being called on
-        std::function<void(Screen&)> update;
         ///
         ///Renders the screen
         ///
