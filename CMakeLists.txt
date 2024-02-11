@@ -7,7 +7,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 configure_file(res/ibm_vga_fontsheet.bmp ${CMAKE_SOURCE_DIR}/build/ibm_vga_fontsheet.bmp COPYONLY)
 
-project(conslr VERSION 1.1.4 DESCRIPTION "Simple console emulator")
+project(conslr VERSION 1.1.5 DESCRIPTION "Simple console emulator")
 
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
