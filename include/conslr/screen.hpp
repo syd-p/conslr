@@ -10,6 +10,7 @@
 #include <SDL_pixels.h>
 
 #include <conslr/widgetmanager.hpp>
+#include <conslr/taggedstring.hpp>
 
 struct SDL_Renderer;
 struct SDL_Rect;
@@ -17,8 +18,6 @@ union SDL_Event;
 
 namespace conslr
 {
-    class TaggedString;
-
     ///
     ///Cell struct
     ///
@@ -194,7 +193,7 @@ namespace conslr
         ///@param str TaggedString to be rendered
         ///@param foreground Text foreground color
         ///@param background Text background color
-        void renderTextTagged(int32_t x, int32_t y, int32_t maxSize, const TaggedString& str, const SDL_Color& foreground, const SDL_Color& background);
+        void renderTextTagged(int32_t x, int32_t y, int32_t maxSize, const TaggedString& str, const TagSet& tags);
         ///Renders a string across multiple lines
         ///
         ///@param x X index of the starting cell
@@ -223,7 +222,7 @@ namespace conslr
         ///@param str TaggedString to be rendered
         ///@param foreground Text foreground color
         ///@param background Text background color
-        void renderMultilineTextTagged(int32_t x, int32_t y, int32_t maxWidth, int32_t maxHeight, const TaggedString& str, const SDL_Color& foreground, const SDL_Color& background);
+        void renderMultilineTextTagged(int32_t x, int32_t y, int32_t maxWidth, int32_t maxHeight, const TaggedString& str, const TagSet& tags);
 
         //Getters
         ///Gets the screens width

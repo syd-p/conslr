@@ -50,32 +50,51 @@ namespace conslr::widgets
             screen.renderMultilineTextTagged(
                     mRegion.x + 1, mRegion.y + 1,
                     mRegion.w - 2, mRegion.h - 2,
-                    mText,
-                    mTheme->text, mTheme->background);
+                    mString,
+                    mTags);
 
             return;
         }
 
+        //Getters
+        ///Returns the region
+        ///
+        ///@return Reference to the region
+        const SDL_Rect& getRegion() const { return mRegion; }
         ///Returns the tagged string
         ///
         ///@return Reference to the tagged string
-        TaggedString& getString() { return mText; }
+        const TaggedString& getString() const { return mString; }
+        ///Returns the tag set
+        ///
+        ///@return Reference to the tag set
+        const TagSet& getTags() const { return mTags; }
 
+        //Setters
         ///Sets the region of the widget
         ///
         ///@param region Region of the widget on screen
         void setRegion(const SDL_Rect& region)
         {
-            assert(((region.w > 2) && (region.h > 2)) && "Region is too small");
+            assert((region.w > 0 && region.h > 0) && "Region is too small");
 
             mRegion = region;
             mRerender = true;
 
             return;
         }
+        ///Sets the string of the widget
+        ///
+        ///@param str String to set it to
+        void setString(const TaggedString& str) { mString = str; }
+        ///Sets the tag set of the widget
+        ///
+        ///@param tags Tags to set it to
+        void setTags(const TagSet& tags) { mTags = tags; }
 
     protected:
         SDL_Rect mRegion; //!<Region of the widget on the screen
-        TaggedString mText; //!<Text of the widget
+        TaggedString mString; //!<Text of the widget
+        TagSet mTags; //!<Tags of the widget
     };
 }

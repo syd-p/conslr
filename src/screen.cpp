@@ -513,43 +513,29 @@ void conslr::Screen::renderMultilineTextColor(int32_t x, int32_t y, int32_t maxW
     return;
 }
 
-void conslr::Screen::renderTextTagged(int32_t x, int32_t y, int32_t maxSize, const TaggedString& str, const SDL_Color& foreground, const SDL_Color& background)
+void conslr::Screen::renderTextTagged(int32_t x, int32_t y, int32_t maxSize, const TaggedString& str, const TagSet& tags)
 {
     if (x < 0) { x = 0; }
     if (x >= mWidth) { x = mWidth - 1; }
     if (y < 0) { y = 0; }
     if (y >= mHeight) { y = mHeight - 1; }
 
-    //Gets tagged string vector
-    const auto& tstr = str.getString();
-    int32_t itrSize = std::min(maxSize, (int32_t)tstr.size());
+    int32_t itrSize = std::min(maxSize, (int32_t)str.size());
     int32_t start = (y * mWidth) + x;
     for (int i = 0; i < itrSize; i++)
     {
         auto& cell = mCells.at(start + i);
         //Current tagged character
-        const auto& tc = tstr.at(i);
+        const auto& tc = str.at(i);
         //Current indexs of the color tags
-        int8_t bg = tc.tags & TaggedString::TaggedChar::BACKGROUND_MASK;
-        int8_t fg = (tc.tags & TaggedString::TaggedChar::FOREGROUND_MASK) >> 4;
+        uint8_t bg = (tc.tags & BACKGROUND_MASK) >> 4;
+        uint8_t fg = tc.tags & FOREGROUND_MASK;
 
         cell.character = (int32_t)tc.character;
 
-        if (fg == 0)
-        {
-            cell.foreground = foreground;
-        } else
-        {
-            cell.foreground = str.getTag(fg);
-        }
 
-        if (bg == 0)
-        {
-            cell.background = background;
-        } else
-        {
-            cell.background = str.getTag(bg);
-        }
+        cell.foreground = tags.at(fg);
+        cell.background = tags.at(bg);
     }
 
     mRerender = true;
@@ -557,7 +543,7 @@ void conslr::Screen::renderTextTagged(int32_t x, int32_t y, int32_t maxSize, con
     return;
 }
 
-void conslr::Screen::renderMultilineTextTagged(int32_t x, int32_t y, int32_t maxWidth, int32_t maxHeight, const TaggedString& str, const SDL_Color& foreground, const SDL_Color& background)
+void conslr::Screen::renderMultilineTextTagged(int32_t x, int32_t y, int32_t maxWidth, int32_t maxHeight, const TaggedString& str, const TagSet& tags)
 {
     if (x < 0) { x = 0; }
     if (x >= mWidth) { x = mWidth - 1; }
@@ -566,7 +552,7 @@ void conslr::Screen::renderMultilineTextTagged(int32_t x, int32_t y, int32_t max
 
     int32_t i = 0;
     int32_t j = 0;
-    for (const auto& tc : str.getString())
+    for (const auto& tc : str)
     {
         if (tc.character == '\n')
         {
@@ -587,26 +573,13 @@ void conslr::Screen::renderMultilineTextTagged(int32_t x, int32_t y, int32_t max
         }
 
         auto& cell = mCells.at(((j + y) * mWidth) + x + i);
-        int8_t bg = tc.tags & TaggedString::TaggedChar::BACKGROUND_MASK;
-        int8_t fg = (tc.tags & TaggedString::TaggedChar::FOREGROUND_MASK) >> 4;
+        uint8_t bg = (tc.tags & BACKGROUND_MASK) >> 4;
+        uint8_t fg = tc.tags & FOREGROUND_MASK;
 
         cell.character = (int32_t)tc.character;
 
-        if (fg == 0)
-        {
-            cell.foreground = foreground;
-        } else
-        {
-            cell.foreground = str.getTag(fg);
-        }
-
-        if (bg == 0)
-        {
-            cell.background = background;
-        } else
-        {
-            cell.background = str.getTag(bg);
-        }
+        cell.foreground = tags.at(fg);
+        cell.background = tags.at(bg);
 
         i++;
     }

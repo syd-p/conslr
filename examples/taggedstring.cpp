@@ -1,13 +1,11 @@
 ///
 ///Example showing the use of the RenderTextTagged functions
 ///
-#include <string>
-
 #include <SDL.h>
 
 #include "conslr/console.hpp"
-#include "conslr/screen.hpp"
 #include "conslr/taggedstring.hpp"
+#include "conslr/themes/defaulttheme.hpp"
 #include "conslr/widgets/taggedtextbox.hpp"
 
 int main()
@@ -32,11 +30,23 @@ int main()
     {
         auto ttbPtr = ttb.lock();
 
-        //Tagged strings work like a stringstream, where FgTag and BgTag are used to set the index of the foreground and background tags respectively
-        //The index 0 is for the default foreground/background of the widget which typically comes from the theme
-        ttbPtr->getString() << "Some tagged text\n" << conslr::FgTag(1) << "With foreground\n" << conslr::FgTag(0) << conslr::BgTag(2) << "With background\n" << conslr::FgTag(1) << "With both!";
-        ttbPtr->getString().setTag(1, { 0, 0, 255, 255 });
-        ttbPtr->getString().setTag(2, { 255, 0, 0, 255 });
+        conslr::TaggedString str1{ conslr::createTaggedString("This is a tagged string\n", 0, 1) };
+        conslr::TaggedString str2{ conslr::createTaggedString("With foreground\n", 2, 1) };
+        conslr::TaggedString str3{ conslr::createTaggedString("With background\n", 0, 3) };
+        conslr::TaggedString str4{ conslr::createTaggedString("With both", 2, 3) };
+        conslr::TagSet tags;
+        tags.at(0) = conslr::themes::Default.text;
+        tags.at(1) = conslr::themes::Default.background;
+        tags.at(2) = { 255, 0, 0, 255 };
+        tags.at(3) = { 0, 0, 255, 255 };
+
+        conslr::TaggedString str = str1;
+        str.insert(str.end(), str2.begin(), str2.end());
+        str.insert(str.end(), str3.begin(), str3.end());
+        str.insert(str.end(), str4.begin(), str4.end());
+
+        ttbPtr->setString(str);
+        ttbPtr->setTags(tags);
         ttbPtr->setRegion({ 0, 0, 20, 20 });
     }
 
