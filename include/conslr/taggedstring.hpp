@@ -33,7 +33,7 @@ namespace conslr
     ///@param str String chars
     ///@param fg Foreground tag
     ///@param bg Background tag
-    inline TaggedString createTaggedString(const std::string& str, uint8_t fg, uint8_t bg)
+    inline constexpr TaggedString createTaggedString(const std::string& str, uint8_t fg, uint8_t bg)
     {
         TaggedString tmp{str.size()};
 
