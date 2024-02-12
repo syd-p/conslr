@@ -13,18 +13,26 @@
 
 namespace conslr
 {
+    ///
+    ///Wrapper class for TaggedString
+    ///
     struct TaggedChar
     {
         uint8_t character; //!<Character of the string
         uint8_t tags; //!<Color tags of the string
     };
 
-    const uint8_t FOREGROUND_MASK = 0x0F;
-    const uint8_t BACKGROUND_MASK = 0xF0;
+    const uint8_t FOREGROUND_MASK = 0x0F; //!<Mask for the foreground tag
+    const uint8_t BACKGROUND_MASK = 0xF0; //!<Mask for the background tag
 
-    using TaggedString = std::vector<TaggedChar>;
-    using TagSet = std::array<SDL_Color, 16>;
+    using TaggedString = std::vector<TaggedChar>; //!<TaggedString alias
+    using TagSet = std::array<SDL_Color, 16>; //!<TagSet alias
 
+    ///Creates a tagged string
+    ///
+    ///@param str String chars
+    ///@param fg Foreground tag
+    ///@param bg Background tag
     inline TaggedString createTaggedString(const std::string& str, uint8_t fg, uint8_t bg)
     {
         TaggedString tmp{str.size()};

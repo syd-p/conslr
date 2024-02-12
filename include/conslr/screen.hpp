@@ -191,8 +191,7 @@ namespace conslr
         ///@param y Y index of the starting cell
         ///@param maxSize Maximum length to be rendered
         ///@param str TaggedString to be rendered
-        ///@param foreground Text foreground color
-        ///@param background Text background color
+        ///@param tags Tags to use
         void renderTextTagged(int32_t x, int32_t y, int32_t maxSize, const TaggedString& str, const TagSet& tags);
         ///Renders a string across multiple lines
         ///
@@ -220,8 +219,7 @@ namespace conslr
         ///@param maxWidth Max width for a line
         ///@param maxHeight Max height for lines
         ///@param str TaggedString to be rendered
-        ///@param foreground Text foreground color
-        ///@param background Text background color
+        ///@param tags Tags to use
         void renderMultilineTextTagged(int32_t x, int32_t y, int32_t maxWidth, int32_t maxHeight, const TaggedString& str, const TagSet& tags);
 
         //Getters
