@@ -97,15 +97,14 @@ void conslr::Screen::fillCharacter(const int32_t& character)
 
 void conslr::Screen::fillRect(SDL_Rect rect, const SDL_Color& background, const SDL_Color& foreground, const int32_t& character)
 {
-    if (rect.x < 0) { rect.x = 0; }
-    if (rect.y < 0) { rect.y = 0; }
-    if (rect.x + rect.w > mWidth) { rect.w = mWidth - rect.x; }
-    if (rect.y + rect.h > mHeight) { rect.h = mHeight - rect.y; }
-
     for (auto i = rect.x; i < rect.x + rect.w; i++)
     {
+        if (i < 0 || i >= mWidth) { continue; }
+
         for (auto j = rect.y; j < rect.y + rect.h; j++)
         {
+            if (j < 0 || j >= mHeight) { continue; }
+
             int32_t index = (j * mWidth) + i;
             auto& cell = mCells.at(index);
             cell.background = background;
@@ -121,15 +120,14 @@ void conslr::Screen::fillRect(SDL_Rect rect, const SDL_Color& background, const 
 
 void conslr::Screen::fillRectBackground(SDL_Rect rect, const SDL_Color& background)
 {
-    if (rect.x < 0) { rect.x = 0; }
-    if (rect.y < 0) { rect.y = 0; }
-    if (rect.x + rect.w > mWidth) { rect.w = mWidth - rect.x; }
-    if (rect.y + rect.h > mHeight) { rect.h = mHeight - rect.y; }
-
     for (auto i = rect.x; i < rect.x + rect.w; i++)
     {
+        if (i < 0 || i >= mWidth) { continue; }
+
         for (auto j = rect.y; j < rect.y + rect.h; j++)
         {
+            if (j < 0 || j >= mHeight) { continue; }
+
             int32_t index = (j * mWidth) + i;
             auto& cell = mCells.at(index);
             cell.background = background;
@@ -143,15 +141,14 @@ void conslr::Screen::fillRectBackground(SDL_Rect rect, const SDL_Color& backgrou
 
 void conslr::Screen::fillRectForeground(SDL_Rect rect, const SDL_Color& foreground)
 {
-    if (rect.x < 0) { rect.x = 0; }
-    if (rect.y < 0) { rect.y = 0; }
-    if (rect.x + rect.w > mWidth) { rect.w = mWidth - rect.x; }
-    if (rect.y + rect.h > mHeight) { rect.h = mHeight - rect.y; }
-
     for (auto i = rect.x; i < rect.x + rect.w; i++)
     {
+        if (i < 0 || i >= mWidth) { continue; }
+
         for (auto j = rect.y; j < rect.y + rect.h; j++)
         {
+            if (j < 0 || j >= mHeight) { continue; }
+
             int32_t index = (j * mWidth) + i;
             auto& cell = mCells.at(index);
             cell.foreground = foreground;
@@ -165,15 +162,14 @@ void conslr::Screen::fillRectForeground(SDL_Rect rect, const SDL_Color& foregrou
 
 void conslr::Screen::fillRectForeground(SDL_Rect rect, const SDL_Color& foreground, const int32_t& character)
 {
-    if (rect.x < 0) { rect.x = 0; }
-    if (rect.y < 0) { rect.y = 0; }
-    if (rect.x + rect.w > mWidth) { rect.w = mWidth - rect.x; }
-    if (rect.y + rect.h > mHeight) { rect.h = mHeight - rect.y; }
-
     for (auto i = rect.x; i < rect.x + rect.w; i++)
     {
+        if (i < 0 || i >= mWidth) { continue; }
+
         for (auto j = rect.y; j < rect.y + rect.h; j++)
         {
+            if (j < 0 || j >= mHeight) { continue; }
+
             int32_t index = (j * mWidth) + i;
             auto& cell = mCells.at(index);
             cell.foreground = foreground;
@@ -188,15 +184,14 @@ void conslr::Screen::fillRectForeground(SDL_Rect rect, const SDL_Color& foregrou
 
 void conslr::Screen::fillRectCharacter(SDL_Rect rect, const int32_t& character)
 {
-    if (rect.x < 0) { rect.x = 0; }
-    if (rect.y < 0) { rect.y = 0; }
-    if (rect.x + rect.w > mWidth) { rect.w = mWidth - rect.x; }
-    if (rect.y + rect.h > mHeight) { rect.h = mHeight - rect.y; }
-
     for (auto i = rect.x; i < rect.x + rect.w; i++)
     {
+        if (i < 0 || i >= mWidth) { continue; }
+
         for (auto j = rect.y; j < rect.y + rect.h; j++)
         {
+            if (j < 0 || j >= mHeight) { continue; }
+
             int32_t index = (j * mWidth) + i;
             auto& cell = mCells.at(index);
             cell.character = character;
@@ -210,10 +205,7 @@ void conslr::Screen::fillRectCharacter(SDL_Rect rect, const int32_t& character)
 
 void conslr::Screen::setCell(int32_t x, int32_t y, const SDL_Color& background, const SDL_Color& foreground, const int32_t& character)
 {
-    if (x < 0) { x = 0; }
-    if (x >= mWidth) { x = mWidth - 1; }
-    if (y < 0) { y = 0; }
-    if (y >= mHeight) { y = mHeight - 1; }
+    if (x < 0 || x >= mWidth || y < 0 || y >= mHeight) { return; }
 
     int32_t index = (y * mWidth) + x;
     auto& cell = mCells.at(index);
@@ -228,10 +220,7 @@ void conslr::Screen::setCell(int32_t x, int32_t y, const SDL_Color& background, 
 
 void conslr::Screen::setCellBackground(int32_t x, int32_t y, const SDL_Color& background)
 {
-    if (x < 0) { x = 0; }
-    if (x >= mWidth) { x = mWidth - 1; }
-    if (y < 0) { y = 0; }
-    if (y >= mHeight) { y = mHeight - 1; }
+    if (x < 0 || x >= mWidth || y < 0 || y >= mHeight) { return; }
 
     int32_t index = (y * mWidth) + x;
     auto& cell = mCells.at(index);
@@ -244,10 +233,7 @@ void conslr::Screen::setCellBackground(int32_t x, int32_t y, const SDL_Color& ba
 
 void conslr::Screen::setCellForeground(int32_t x, int32_t y, const SDL_Color& foreground)
 {
-    if (x < 0) { x = 0; }
-    if (x >= mWidth) { x = mWidth - 1; }
-    if (y < 0) { y = 0; }
-    if (y >= mHeight) { y = mHeight - 1; }
+    if (x < 0 || x >= mWidth || y < 0 || y >= mHeight) { return; }
 
     int32_t index = (y * mWidth) + x;
     auto& cell = mCells.at(index);
@@ -260,10 +246,7 @@ void conslr::Screen::setCellForeground(int32_t x, int32_t y, const SDL_Color& fo
 
 void conslr::Screen::setCellForeground(int32_t x, int32_t y, const SDL_Color& foreground, const int32_t& character)
 {
-    if (x < 0) { x = 0; }
-    if (x >= mWidth) { x = mWidth - 1; }
-    if (y < 0) { y = 0; }
-    if (y >= mHeight) { y = mHeight - 1; }
+    if (x < 0 || x >= mWidth || y < 0 || y >= mHeight) { return; }
 
     int32_t index = (y * mWidth) + x;
     auto& cell = mCells.at(index);
@@ -277,10 +260,7 @@ void conslr::Screen::setCellForeground(int32_t x, int32_t y, const SDL_Color& fo
 
 void conslr::Screen::setCellCharacter(int32_t x, int32_t y, const int32_t& character)
 {
-    if (x < 0) { x = 0; }
-    if (x >= mWidth) { x = mWidth - 1; }
-    if (y < 0) { y = 0; }
-    if (y >= mHeight) { y = mHeight - 1; }
+    if (x < 0 || x >= mWidth || y < 0 || y >= mHeight) { return; }
 
     int32_t index = (y * mWidth) + x;
     auto& cell = mCells.at(index);
@@ -293,35 +273,70 @@ void conslr::Screen::setCellCharacter(int32_t x, int32_t y, const int32_t& chara
 
 void conslr::Screen::borderRect(SDL_Rect rect, int32_t horizontal, int32_t vertical, int32_t cornerTl, int32_t cornerTr, int32_t cornerBl, int32_t cornerBr)
 {
-    if (rect.x < 0) { rect.x = 0; }
-    if (rect.y < 0) { rect.y = 0; }
-    if (rect.x + rect.w > mWidth) { rect.w = mWidth - rect.x; }
-    if (rect.y + rect.h > mHeight) { rect.h = mHeight - rect.y; }
-
     for (auto i = rect.x; i < rect.x + rect.w; i++)
     {
+        if (i < 0 || i >= mWidth) { continue; }
+
         int32_t index = (rect.y * mWidth) + i;
         int32_t index2 = ((rect.y + rect.h - 1) * mWidth) + i;
 
-        mCells.at(index).character = horizontal;
-        mCells.at(index2).character = horizontal;
+        if (rect.y >= 0 && rect.y < mHeight)
+        {
+            mCells.at(index).character = horizontal;
+        }
+
+        if (rect.y + rect.h >= 0 && rect.y + rect.h < mHeight)
+        {
+            mCells.at(index2).character = horizontal;
+        }
     }
 
     for (auto j = rect.y; j < rect.y + rect.h; j++)
     {
+        if (j < 0 || j >= mHeight) { continue; }
+
         int32_t index = (j * mWidth) + rect.x;
         int32_t index2 = (j * mWidth) + rect.x + rect.w - 1;
 
-        mCells.at(index).character = vertical;
-        mCells.at(index2).character = vertical;
+        if (rect.x >= 0 && rect.x < mWidth)
+        {
+            mCells.at(index).character = vertical;
+        }
+
+        if (rect.x + rect.w >= 0 && rect.x + rect.w < mWidth)
+        {
+            mCells.at(index2).character = vertical;
+        }
     }
 
     int32_t tl = (rect.y * mWidth) + rect.x;
     int32_t bl = ((rect.y + rect.h - 1) * mWidth) + rect.x;
-    mCells.at(tl).character = cornerTl;
-    mCells.at(tl + rect.w - 1).character = cornerTr;
-    mCells.at(bl).character = cornerBl;
-    mCells.at(bl + rect.w - 1).character = cornerBr;
+
+    if (rect.y >= 0 && rect.y < mHeight)
+    {
+        if (rect.x >= 0 && rect.x < mWidth)
+        {
+            mCells.at(tl).character = cornerTl;
+        }
+
+        if (rect.x + rect.w >= 0 && rect.x + rect.w < mWidth)
+        {
+            mCells.at(tl + rect.w - 1).character = cornerTr;
+        }
+    }
+
+    if (rect.y + rect.h >= 0 && rect.y + rect.h < mHeight)
+    {
+        if (rect.x >= 0 && rect.x < mWidth)
+        {
+            mCells.at(bl).character = cornerBl;
+        }
+
+        if (rect.x + rect.w >= 0 && rect.x + rect.w < mWidth)
+        {
+            mCells.at(bl + rect.w - 1).character = cornerBr;
+        }
+    }
 
     mRerender = true;
 
