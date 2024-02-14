@@ -47,4 +47,15 @@ namespace conslr
 
         return tmp;
     }
+
+    inline constexpr TaggedString operator+(const TaggedString& a, const TaggedString& b)
+    {
+        TaggedString str;
+        str.reserve(a.size() + b.size());
+
+        str.insert(str.end(), a.begin(), a.end());
+        str.insert(str.end(), b.begin(), b.end());
+
+        return str;
+    }
 }

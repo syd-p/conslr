@@ -30,20 +30,17 @@ int main()
     {
         auto ttbPtr = ttb.lock();
 
-        conslr::TaggedString str1{ conslr::createTaggedString("This is a tagged string\n", 0, 1) };
-        conslr::TaggedString str2{ conslr::createTaggedString("With foreground\n", 2, 1) };
-        conslr::TaggedString str3{ conslr::createTaggedString("With background\n", 0, 3) };
-        conslr::TaggedString str4{ conslr::createTaggedString("With both", 2, 3) };
+        conslr::TaggedString str =
+            conslr::createTaggedString("This is a tagged string\n", 0, 1) +
+            conslr::createTaggedString("With foreground\n", 2, 1) +
+            conslr::createTaggedString("With background\n", 0, 3) +
+            conslr::createTaggedString("With both", 2, 3);
+
         conslr::TagSet tags;
         tags.at(0) = conslr::themes::Default.text;
         tags.at(1) = conslr::themes::Default.background;
         tags.at(2) = { 255, 0, 0, 255 };
         tags.at(3) = { 0, 0, 255, 255 };
-
-        conslr::TaggedString str = str1;
-        str.insert(str.end(), str2.begin(), str2.end());
-        str.insert(str.end(), str3.begin(), str3.end());
-        str.insert(str.end(), str4.begin(), str4.end());
 
         ttbPtr->setString(str);
         ttbPtr->setTags(tags);
