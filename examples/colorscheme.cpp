@@ -31,7 +31,7 @@ int main()
         auto tbPtr = tb.lock();
 
         tbPtr->setRegion({ 1, 1, 40, 20 });
-        tbPtr->setText("Hello\nColor Schemes");
+        tbPtr->setString("Hello\nColor Schemes");
         tbPtr->setTitle("Text Box");
         tbPtr->showTitle();
     }

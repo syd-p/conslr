@@ -121,25 +121,25 @@ int main()
                     else if (event.key.keysym.scancode == SDL_SCANCODE_B)
                     {
                         //Build
-                        save(textInput.lock()->getText());
+                        save(textInput.lock()->getString());
                         build();
                     }
                     else if (event.key.keysym.scancode == SDL_SCANCODE_R)
                     {
                         //Build and run
-                        save(textInput.lock()->getText());
+                        save(textInput.lock()->getString());
                         build();
                         run();
                     }
                     else if (event.key.keysym.scancode == SDL_SCANCODE_S)
                     {
                         //Save
-                        save(textInput.lock()->getText());
+                        save(textInput.lock()->getString());
                     }
                     else if (event.key.keysym.scancode == SDL_SCANCODE_L)
                     {
                         //Load
-                        textInput.lock()->setText(load());
+                        textInput.lock()->setString(load());
                     }
                 }
             }

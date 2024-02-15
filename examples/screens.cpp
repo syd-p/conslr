@@ -24,7 +24,7 @@ int main()
         auto tbPtr = tb1.lock();
 
         tbPtr->setRegion({ 0, 0, 40, 20 });
-        tbPtr->setText("This is on screen 1!");
+        tbPtr->setString("This is on screen 1!");
     }
 
     //Create screen 2
@@ -35,7 +35,7 @@ int main()
         auto tbPtr = tb2.lock();
 
         tbPtr->setRegion({ 0, 0, 40, 20 });
-        tbPtr->setText("This is on screen 2!");
+        tbPtr->setString("This is on screen 2!");
     }
 
     console.setCurrentScreenIndex(scr1);

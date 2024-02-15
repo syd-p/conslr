@@ -73,11 +73,11 @@ namespace conslr::widgets
         ///Sets the string of the widget
         ///
         ///@param str String to set it to
-        constexpr void setString(const TaggedString& str) { mString = str; }
+        constexpr void setString(const TaggedString& str) { mString = str; mRerender = true; }
         ///Sets the tag set of the widget
         ///
         ///@param tags Tags to set it to
-        constexpr void setTags(const TagSet& tags) { mTags = tags; }
+        constexpr void setTags(const TagSet& tags) { mTags = tags; mRerender = true; }
 
     protected:
         SDL_Rect mRegion; //!<Region of the widget on the screen

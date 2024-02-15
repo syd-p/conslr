@@ -52,7 +52,7 @@ int main()
         auto tbPtr = tb.lock();
 
         tbPtr->setRegion({ 21, 0, 20, 8 });
-        tbPtr->setText("This is a textbox!");
+        tbPtr->setString("This is a textbox!");
         tbPtr->showTitle();
         tbPtr->setTitle("Text Box");
     }
@@ -72,7 +72,7 @@ int main()
     {
         auto ftPtr = ft.lock();
         ftPtr->setRegion({ 41, 15, 20, 1 });
-        ftPtr->setText("Floating text widget");
+        ftPtr->setString("Floating text widget");
     }
 
     SDL_Event event;

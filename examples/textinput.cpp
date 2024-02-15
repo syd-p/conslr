@@ -33,7 +33,7 @@ int main()
         tiPtr->setRegion({ 0, 0, 40, 20 });
         tiPtr->setTitle("Enter text");
         tiPtr->showTitle();
-        tiPtr->setText("This is a text input widget\nYou can edit the text here");
+        tiPtr->setString("This is a text input widget\nYou can edit the text here");
 
         wm.activateWidget(tiPtr->getId());
     }
@@ -83,7 +83,7 @@ int main()
 
                 if (event.key.keysym.scancode == SDL_SCANCODE_LCTRL)
                 {
-                    tb.lock()->setText(ti.lock()->getText());
+                    tb.lock()->setString(ti.lock()->getString());
                 }
             }
 

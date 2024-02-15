@@ -41,5 +41,5 @@ namespace conslr
 ///@return True if scancode and mod are the same, otherwise false
 inline bool operator==(const conslr::KeyPair& keyPair, const SDL_Keysym& keySym)
 {
-    return (keyPair.scancode == keySym.scancode) && (keyPair.mod == keySym.mod);
+    return (keyPair.scancode == keySym.scancode);
 }

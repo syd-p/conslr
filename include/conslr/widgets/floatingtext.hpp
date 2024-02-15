@@ -38,12 +38,22 @@ namespace conslr::widgets
             screen.renderMultilineTextColor(
                     mRegion.x, mRegion.y,
                     mRegion.w, mRegion.h,
-                    mText,
+                    mString,
                     mTheme->text, mTheme->background
                     );
 
             return;
         }
+
+        //Getters
+        ///Returns the region
+        ///
+        ///@return Reference to region
+        constexpr const SDL_Rect& getRegion() const noexcept { return mRegion; }
+        ///Gets the string
+        ///
+        ///@return Reference to string
+        constexpr const std::string& getString() const noexcept { return mString; }
 
         ///Sets the region of the widget
         ///
@@ -59,17 +69,11 @@ namespace conslr::widgets
         }
         ///Sets the text of the widget
         ///
-        ///@param text Text of the widget
-        constexpr void setText(const std::string& text) 
-        {
-            mText = text;
-            mRerender = true;
-
-            return;
-        }
+        ///@param str Text of the widget
+        constexpr void setString(const std::string& str) { mString = str; mRerender = true; }
 
     protected:
         SDL_Rect mRegion; //!<Region of the widget on the screen
-        std::string mText; //!<Text of the widget
+        std::string mString; //!<Text of the widget
     };
 }

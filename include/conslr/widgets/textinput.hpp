@@ -275,10 +275,15 @@ namespace conslr::widgets
             return;
         }
 
+        //Getters
+        ///Gets the region of the widget
+        ///
+        ///@return Reference to the region
+        constexpr const SDL_Rect& getRegion() const noexcept { return mRegion; }
         ///Gets the current text
         ///
         ///@return Current text string
-        constexpr std::string getText() const
+        constexpr std::string getString() const
         {
             std::string str;
             for (const auto& row : mRows)
@@ -304,6 +309,7 @@ namespace conslr::widgets
         ///@return Max rows of the widget, negative is infinite
         constexpr int32_t getMaxRows() const noexcept { return mMaxRows; }
 
+        //Setters
         ///Sets the region of the widget
         ///
         ///@param region Region of the widget on screen
@@ -320,7 +326,7 @@ namespace conslr::widgets
         ///Sets the text of the widget
         ///
         ///@param text Text of the widget
-        constexpr void setText(const std::string& text)
+        constexpr void setString(const std::string& text)
         {
             mRows.clear();
             mCurrentRow = 0;
