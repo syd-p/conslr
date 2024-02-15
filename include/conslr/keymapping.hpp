@@ -15,6 +15,17 @@ namespace conslr
     {
         SDL_Scancode scancode; //!<Key that is hit
         uint16_t mod; //!<Modifiers to the key
+
+        ///Compares a KeyPair and Keysym
+        ///Ignores the keycode of the SDL_Keysym as that is part of the physical keyboard, scancode however is abstracted
+        ///
+        ///@param keySym Keysym to compare
+        ///
+        ///@return True if scancodes are the same, otherwise false
+        constexpr bool operator==(const SDL_Keysym& keySym) const noexcept
+        {
+            return (scancode == keySym.scancode);
+        }
     };
 
     ///
@@ -33,13 +44,3 @@ namespace conslr
     };
 }
 
-///Compares a KeyPair and Keysym
-///Ignores the keycode of the SDL_Keysym as that is part of the physical keyboard, scancode however is abstracted
-///
-///@param keyPair KeyMapping pair
-///@param keySym Keysym to compare
-///@return True if scancode and mod are the same, otherwise false
-inline bool operator==(const conslr::KeyPair& keyPair, const SDL_Keysym& keySym)
-{
-    return (keyPair.scancode == keySym.scancode);
-}
