@@ -8,7 +8,6 @@
 #include <array>
 #include <queue>
 #include <memory>
-#include <functional>
 
 #include "conslr/keymapping.hpp"
 #include "conslr/widgetmanager.hpp"
@@ -41,7 +40,7 @@ namespace conslr
         ///@param cellHeight Height of a cell
         ///@param windowCellWidth Width of the console in cells
         ///@param windowCellHeight Height of the console in cells
-        Console(int32_t cellWidth, int32_t cellHeight, int32_t windowCellWidth, int32_t windowCellHeight);
+        Console(int32_t cellWidth, int32_t cellHeight, int32_t windowCellWidth, int32_t windowCellHeight) noexcept;
         ///
         ///Destructor
         ///
@@ -94,46 +93,46 @@ namespace conslr
         ///Gets the current screen index
         ///
         ///@return Index of the current screen
-        [[nodiscard]] int32_t getCurrentScreenIndex() const;
+        [[nodiscard]] constexpr int32_t getCurrentScreenIndex() const noexcept { return mCurrentScreen; }
         ///Gets the current font index
         ///
         ///@return Index of the current font
-        [[nodiscard]] int32_t getCurrentFontIndex() const;
+        [[nodiscard]] constexpr int32_t getCurrentFontIndex() const noexcept { return mCurrentFont; }
         ///Returns the widget manager of a screen
         ///
         ///@param index Index of the screen
         ///@return Reference to the screen's WidgetManager
-        [[nodiscard]] WidgetManager& getWidgetManager(int32_t index) const;
+        [[nodiscard]] WidgetManager& getWidgetManager(int32_t index) const noexcept;
         ///Gets the current screen
         ///
         ///@return Reference to the current screen
-        [[nodiscard]] const Theme& getTheme() const;
+        [[nodiscard]] constexpr const Theme& getTheme() const noexcept { return mTheme; }
         ///Gets the current key mapping
         ///
         ///@return Reference to the consoles key map
-        [[nodiscard]] const KeyMapping& getKeyMap() const;
+        [[nodiscard]] constexpr const KeyMapping& getKeyMap() const noexcept { return mKeyMap; }
         ///Gets the current window id
         ///
         ///@return Window id
-        [[nodiscard]] int32_t getWindowId() const;
+        [[nodiscard]] constexpr int32_t getWindowId() const noexcept { return SDL_GetWindowID(mWindow); }
 
         //Setters
         ///Sets current screen index
         ///
         ///@param index Screen index
-        void setCurrentScreenIndex(int32_t index);
+        constexpr void setCurrentScreenIndex(int32_t index) noexcept { assert(index >= 0 && index < mScreens.size()); mCurrentScreen = index; }
         ///Sets current font index
         ///
         ///@param index Font index
-        void setCurrentFontIndex(int32_t index);
+        constexpr void setCurrentFontIndex(int32_t index) noexcept { assert(index >= 0 && index < mFonts.size()); mCurrentFont = index; }
         ///Sets the theme of the console
         ///
         ///@param theme Theme to set as console theme
-        void setTheme(const Theme& theme);
+        void setTheme(const Theme& theme) noexcept;
         ///Sets the mapping of the console
         ///
         ///@param keyMap Mapping to set
-        void setKeyMap(const KeyMapping& keyMap);
+        constexpr void setKeyMap(const KeyMapping& keyMap) noexcept { mKeyMap = keyMap; }
 
         //Const values
         static const int32_t MAX_SCREENS = 16; //!<Max screens that a console can have

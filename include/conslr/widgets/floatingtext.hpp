@@ -23,7 +23,7 @@ namespace conslr::widgets
         ///
         ///Internal constructor
         ///
-        FloatingText(int32_t id, int32_t priority) :
+        constexpr FloatingText(int32_t id, int32_t priority) noexcept :
             IWidget{ id, priority },
             mRegion{ 0, 0, 0, 0 }
         {}
@@ -48,7 +48,7 @@ namespace conslr::widgets
         ///Sets the region of the widget
         ///
         ///@param region Region of the widget on screen
-        void setRegion(const SDL_Rect& region)
+        constexpr void setRegion(const SDL_Rect& region) noexcept
         {
             assert((region.w > 0 && region.h > 0) && "Region is too small");
 
@@ -60,7 +60,7 @@ namespace conslr::widgets
         ///Sets the text of the widget
         ///
         ///@param text Text of the widget
-        void setText(const std::string& text)
+        constexpr void setText(const std::string& text) 
         {
             mText = text;
             mRerender = true;

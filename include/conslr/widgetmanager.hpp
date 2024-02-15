@@ -87,7 +87,7 @@ namespace conslr
         ///@param index Index of the widget
         ///@return Shared pointer to the widget as type T
         template<IsWidget T>
-        std::shared_ptr<T> getWidget(int index)
+        constexpr std::shared_ptr<T> getWidget(int index)
         {
             assert((index >= 0 && index < MAX_WIDGETS) && "Index out of bounds");
             assert((mWidgets.at(index) != nullptr) && "Widget does not exist");
@@ -97,18 +97,18 @@ namespace conslr
         ///Returns the list of renderable widgets
         ///
         ///@return A const reference to the list of renderable widgets
-        const std::list<std::shared_ptr<IRenderable>>& getRenderable() const { return mRenderable; }
+        constexpr const std::list<std::shared_ptr<IRenderable>>& getRenderable() const noexcept { return mRenderable; }
         ///Gets the current theme as a pointer
         ///
         ///@return Pointer to the current theme
-        const Theme* getTheme() const { return mTheme; }
+        constexpr const Theme* getTheme() const noexcept { return mTheme; }
 
         //Setters
         ///Sets the Color Scheme for widgets
         ///Note that the colorscheme passed must have a lifetime at least equal to the life time of the screen that the widget manager is held by
         ///
         ///@param theme Pointer to the color scheme
-        void setTheme(Theme* theme) { mTheme = theme; }
+        constexpr void setTheme(Theme* theme) noexcept { mTheme = theme; }
 
         static const int32_t MAX_WIDGETS = 16; //!<Max widgets that a WidgetManager can hold
 

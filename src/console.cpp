@@ -10,7 +10,7 @@
 #include "conslr/themes/defaulttheme.hpp"
 #include "keymapping.hpp"
 
-conslr::Console::Console(int32_t cellWidth, int32_t cellHeight, int32_t windowCellWidth, int32_t windowCellHeight) :
+conslr::Console::Console(int32_t cellWidth, int32_t cellHeight, int32_t windowCellWidth, int32_t windowCellHeight) noexcept :
     mCellWidth{ cellWidth }, mCellHeight{ cellHeight },
     mWindowCellWidth{ windowCellWidth }, mWindowCellHeight{ windowCellHeight },
     mWindowWidth{ cellWidth * windowCellWidth }, mWindowHeight{ cellHeight * windowCellHeight },
@@ -279,9 +279,7 @@ void conslr::Console::destroyFont(int32_t index)
 }
 
 //Getters
-int32_t conslr::Console::getCurrentScreenIndex() const { return mCurrentScreen; }
-int32_t conslr::Console::getCurrentFontIndex() const { return mCurrentFont; }
-conslr::WidgetManager& conslr::Console::getWidgetManager(int32_t index) const
+conslr::WidgetManager& conslr::Console::getWidgetManager(int32_t index) const noexcept
 {
     assert((index >= 0 && index < MAX_SCREENS) && "Index out of bounds");
     assert((mScreens.at(index) != nullptr) && "Screen does not exist");
@@ -289,14 +287,8 @@ conslr::WidgetManager& conslr::Console::getWidgetManager(int32_t index) const
     return mScreens.at(index)->mWidgetManager;
 }
 
-const conslr::Theme& conslr::Console::getTheme() const { return mTheme; }
-const conslr::KeyMapping& conslr::Console::getKeyMap() const { return mKeyMap; }
-int32_t conslr::Console::getWindowId() const { return SDL_GetWindowID(mWindow); }
-
 //Setters
-void conslr::Console::setCurrentScreenIndex(int32_t index) { assert(index < mScreens.size()); mCurrentScreen = index; }
-void conslr::Console::setCurrentFontIndex(int32_t index) { assert(index < mFonts.size()); mCurrentFont = index; }
-void conslr::Console::setTheme(const Theme& theme)
+void conslr::Console::setTheme(const Theme& theme) noexcept
 {
     mTheme = theme;
 
@@ -312,7 +304,6 @@ void conslr::Console::setTheme(const Theme& theme)
 
     return;
 }
-void conslr::Console::setKeyMap(const KeyMapping& keyMap) { mKeyMap = keyMap; return; }
 
 //Console::Font
 conslr::Console::Font::~Font()

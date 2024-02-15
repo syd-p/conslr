@@ -1,4 +1,5 @@
 #include "conslr/widgetmanager.hpp"
+
 #include <memory>
 
 conslr::WidgetManager::WidgetManager()
@@ -27,6 +28,8 @@ void conslr::WidgetManager::destroyWidget(int32_t index)
             break;
         }
     }
+
+    mFreeWidgets.push(index);
 
     return;
 }

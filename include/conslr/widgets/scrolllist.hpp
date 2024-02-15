@@ -38,7 +38,7 @@ namespace conslr::widgets
         ///
         ///Used internally, should not be called directly
         ///
-        ScrollList(int32_t id, int32_t priority) :
+        constexpr ScrollList(int32_t id, int32_t priority) noexcept :
             IWidget{ id, priority },
             mRegion{ 0, 0, 0, 0 }, mScrollY{ 0 }, mShowScrollbar{ true }
         {}
@@ -127,7 +127,7 @@ namespace conslr::widgets
         ///
         ///Scrolls the list up
         ///
-        virtual void scrollUp() override
+        virtual constexpr void scrollUp() noexcept override
         {
             if (mElements.size() == 0)
             {
@@ -147,7 +147,7 @@ namespace conslr::widgets
         ///
         ///Scrolls the list down
         ///
-        virtual void scrollDown() override
+        virtual constexpr void scrollDown() noexcept override
         {
             if (mElements.size() == 0)
             {
@@ -170,27 +170,27 @@ namespace conslr::widgets
         ///
         ///Shows the scrollbar if possible
         ///
-        void showScrollbar() { mShowScrollbar = true; mRerender = true; }
+        constexpr void showScrollbar() noexcept { mShowScrollbar = true; mRerender = true; }
         ///
         ///Hides the scrollbar
         ///
-        void hideScrollbar() { mShowScrollbar = false; mRerender = true; }
+        constexpr void hideScrollbar() noexcept { mShowScrollbar = false; mRerender = true; }
 
         //Getters
         ///Gets the current elements value
         ///
         ///@return Value of the currently selected element
-        const T& getCurrentElement() { return mElements.at(mSelection).mElement; }
+        constexpr const T& getCurrentElement() { return mElements.at(mSelection).mElement; }
         ///Gets the region of the widget
         ///
         ///@return Region
-        const SDL_Rect& getRegion() const { return mRegion; }
+        constexpr const SDL_Rect& getRegion() const noexcept { return mRegion; }
 
         //Setters
         ///Sets the region of the widget
         ///
         ///@param region Region in cells of the widget
-        void setRegion(const SDL_Rect& region)
+        constexpr void setRegion(const SDL_Rect& region) noexcept
         {
             assert(((region.w > 2) && (region.h > 2)) && "Region is too small");
 

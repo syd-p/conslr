@@ -22,7 +22,7 @@ namespace conslr::widgets
         ///
         ///Internal constructor
         ///
-        TaggedTextBox(int32_t id, int32_t priority) :
+        constexpr TaggedTextBox(int32_t id, int32_t priority) noexcept :
             IWidget{ id, priority },
             mRegion{ 0, 0, 0, 0 }
         {}
@@ -60,21 +60,21 @@ namespace conslr::widgets
         ///Returns the region
         ///
         ///@return Reference to the region
-        const SDL_Rect& getRegion() const { return mRegion; }
+        constexpr const SDL_Rect& getRegion() const noexcept { return mRegion; }
         ///Returns the tagged string
         ///
         ///@return Reference to the tagged string
-        const TaggedString& getString() const { return mString; }
+        constexpr const TaggedString& getString() const noexcept { return mString; }
         ///Returns the tag set
         ///
         ///@return Reference to the tag set
-        const TagSet& getTags() const { return mTags; }
+        constexpr const TagSet& getTags() const noexcept { return mTags; }
 
         //Setters
         ///Sets the region of the widget
         ///
         ///@param region Region of the widget on screen
-        void setRegion(const SDL_Rect& region)
+        constexpr void setRegion(const SDL_Rect& region) noexcept
         {
             assert((region.w > 0 && region.h > 0) && "Region is too small");
 
@@ -86,11 +86,11 @@ namespace conslr::widgets
         ///Sets the string of the widget
         ///
         ///@param str String to set it to
-        void setString(const TaggedString& str) { mString = str; }
+        constexpr void setString(const TaggedString& str) { mString = str; }
         ///Sets the tag set of the widget
         ///
         ///@param tags Tags to set it to
-        void setTags(const TagSet& tags) { mTags = tags; }
+        constexpr void setTags(const TagSet& tags) { mTags = tags; }
 
     protected:
         SDL_Rect mRegion; //!<Region of the widget on the screen

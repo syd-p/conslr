@@ -27,7 +27,7 @@ namespace conslr::widgets
         ///
         ///Internal constructor
         ///
-        TextInput(int32_t id, int32_t priority) :
+        constexpr TextInput(int32_t id, int32_t priority) noexcept :
             IWidget{ id, priority },
             mRegion{ 0, 0, 0, 0 }, mTextRegion{ 0, 0, 0, 0, },
             mMaxRows{ -1 },
@@ -43,7 +43,7 @@ namespace conslr::widgets
         ///
         ///Handles text input
         ///
-        virtual void doTextInput(SDL_TextInputEvent& event) override
+        virtual void doTextInput(SDL_TextInputEvent& event) noexcept override
         {
             if (!mActive)
             {
@@ -61,7 +61,7 @@ namespace conslr::widgets
         ///
         ///Move selection left
         ///
-        virtual void doKeyLeft()
+        virtual constexpr void doKeyLeft() noexcept
         {
             if (!mActive) { return; }
             mSelection = std::max(0, mSelection - 1);
@@ -71,7 +71,7 @@ namespace conslr::widgets
         ///
         ///Move selection right
         ///
-        virtual void doKeyRight()
+        virtual constexpr void doKeyRight() noexcept
         {
             if (!mActive) { return; }
             mSelection = std::min((int32_t)mRows.at(mCurrentRow).size(), mSelection + 1);
@@ -81,7 +81,7 @@ namespace conslr::widgets
         ///
         ///Move selection up
         ///
-        virtual void doKeyUp()
+        virtual constexpr void doKeyUp() noexcept
         {
             if (!mActive) { return; }
             mCurrentRow = std::max(0, mCurrentRow - 1);
@@ -92,7 +92,7 @@ namespace conslr::widgets
         ///
         ///Move selection down
         ///
-        virtual void doKeyDown()
+        virtual constexpr void doKeyDown() noexcept
         {
             if (!mActive) { return; }
             mCurrentRow = std::min((int32_t)mRows.size() - 1, mCurrentRow + 1);
@@ -103,7 +103,7 @@ namespace conslr::widgets
         ///
         ///Tab key
         ///
-        virtual void doTab()
+        virtual constexpr void doTab()
         {
             if (!mActive) { return; }
             mRows.at(mCurrentRow).insert(mSelection, "    ");
@@ -114,7 +114,7 @@ namespace conslr::widgets
         ///
         ///Backspace key
         ///
-        virtual void doBackspace()
+        virtual constexpr void doBackspace()
         {
             if (!mActive) { return; }
             if (mSelection != 0)
@@ -139,7 +139,7 @@ namespace conslr::widgets
         ///
         ///Return key
         ///
-        virtual void doReturn()
+        virtual constexpr void doReturn()
         {
             if (!mActive) { return; }
             if (mRows.size() + 1 > mMaxRows) { return; }
@@ -278,7 +278,7 @@ namespace conslr::widgets
         ///Gets the current text
         ///
         ///@return Current text string
-        std::string getText() const
+        constexpr std::string getText() const
         {
             std::string str;
             for (const auto& row : mRows)
@@ -288,23 +288,26 @@ namespace conslr::widgets
             }
 
             //Removes last newline char
-            str.pop_back();
+            if (str.size() > 0)
+            {
+                str.pop_back();
+            }
 
             return str;
         }
         ///Gets the value of word wrap
         ///
         ///@return Current value of word wrap
-        bool getWordWrap() const { return mWordWrap; }
+        constexpr bool getWordWrap() const noexcept { return mWordWrap; }
         ///Gets the max rows of the widget
         ///
         ///@return Max rows of the widget, negative is infinite
-        int32_t getMaxRows() const { return mMaxRows; }
+        constexpr int32_t getMaxRows() const noexcept { return mMaxRows; }
 
         ///Sets the region of the widget
         ///
         ///@param region Region of the widget on screen
-        void setRegion(const SDL_Rect& region)
+        constexpr void setRegion(const SDL_Rect& region) noexcept
         {
             assert(((region.w > 2) && (region.h > 2)) && "Region is too small");
 
@@ -317,7 +320,7 @@ namespace conslr::widgets
         ///Sets the text of the widget
         ///
         ///@param text Text of the widget
-        void setText(const std::string& text)
+        constexpr void setText(const std::string& text)
         {
             mRows.clear();
             mCurrentRow = 0;
@@ -343,12 +346,12 @@ namespace conslr::widgets
         ///Sets the value of word wrap
         ///
         ///@param val Value to set it to
-        void setWordWrap(bool val) { mWordWrap = val; mRerender = true; }
+        constexpr void setWordWrap(bool val) noexcept { mWordWrap = val; mRerender = true; }
         ///Sets the max rows of the widget
         ///Excess rows are deleted
         ///
         ///@param max New max value
-        void setMaxRows(int32_t max)
+        constexpr void setMaxRows(int32_t max)
         {
             mMaxRows = max;
             if (mMaxRows == -1)

@@ -30,7 +30,7 @@ namespace conslr
         ///
         ///Internal constructor
         ///
-        IWidget(int32_t id, int32_t priority) :
+        constexpr IWidget(int32_t id, int32_t priority) noexcept :
             mId{ id },
             mPriority{ priority },
             mActive{ false }
@@ -43,21 +43,21 @@ namespace conslr
         ///Gets the id of the widget
         ///
         ///@return Id of the widget
-        [[nodiscard]] int32_t getId() const { return mId; }
+        [[nodiscard]] constexpr int32_t getId() const noexcept { return mId; }
         ///Gets the priority of the widget
         ///
         ///@return Priority of the widget
-        [[nodiscard]] int32_t getPriority() const { return mPriority; }
+        [[nodiscard]] constexpr int32_t getPriority() const noexcept { return mPriority; }
         ///Gets if the widget is active
         ///
         ///@return If the widget is active
-        [[nodiscard]] bool getActive() const { return mActive; }
+        [[nodiscard]] constexpr bool getActive() const noexcept { return mActive; }
 
         ///Sets the active status of the widget
         ///Primarily internal
         ///
         ///@param val Value to set it to
-        void setActive(bool val) { mActive = val; }
+        constexpr void setActive(bool val) noexcept { mActive = val; }
 
     protected:
         int32_t mId; //!<Internal id of the widget
@@ -72,6 +72,15 @@ namespace conslr
     {
     public:
         ///
+        ///Default constructor
+        ///
+        constexpr IRenderable() noexcept :
+            mRerender{ true }, mVisible{ true },
+            mShowTitle{ false },
+            mTheme{ nullptr }
+        {}
+
+        ///
         ///Function called by the widget manager
         ///Screen that owns the widget manager
         ///
@@ -80,48 +89,48 @@ namespace conslr
         ///
         ///Shows the widget
         ///
-        void show() { mVisible = true; mRerender = true; }
+        constexpr void show() noexcept { mVisible = true; mRerender = true; }
         ///
         ///Hides the widget
         ///
-        void hide() { mVisible = false; mRerender = true; }
+        constexpr void hide() noexcept { mVisible = false; mRerender = true; }
         ///Gets the visibility of the widget
         ///
         ///@return True if the widget is visible, false if the widget is not visible
-        [[nodiscard]] bool isVisible() const { return mVisible; }
+        [[nodiscard]] constexpr bool isVisible() const noexcept { return mVisible; }
 
         ///
         ///Shows the widgets title
         ///
-        void showTitle() { mShowTitle = true; mRerender = true; }
+        constexpr void showTitle() noexcept { mShowTitle = true; mRerender = true; }
         ///
         ///Hides the widgets title
         ///
-        void hideTitle() { mShowTitle = false; mRerender = true; }
+        constexpr void hideTitle() noexcept { mShowTitle = false; mRerender = true; }
 
         ///Gets the widgets title
         ///
         ///@return Title of the widget
-        [[nodiscard]] const std::string& getTitle() const { return mTitle; }
+        [[nodiscard]] constexpr const std::string& getTitle() const noexcept { return mTitle; }
 
         ///Sets the widgets title
         ///
         ///@param title Title of the widget
-        void setTitle(const std::string& title) { mTitle = title; }
+        constexpr void setTitle(const std::string& title) { mTitle = title; }
         ///Sets the widgets theme
         ///Should primarily be internally used
         ///Assumes that the theme pointer is always valid
         ///
         ///@param theme Pointer to the theme
-        void setTheme(Theme* theme) { mTheme = theme; }
+        constexpr void setTheme(Theme* theme) noexcept { mTheme = theme; }
 
-        bool mRerender = true; //!<If the widget is to be rerendered
+        bool mRerender; //!<If the widget is to be rerendered
     protected:
-        bool mVisible = true; //!<If the widget is to be rendered
-        bool mShowTitle = false; //!<If the widget is to display its title
+        bool mVisible; //!<If the widget is to be rendered
+        bool mShowTitle; //!<If the widget is to display its title
         std::string mTitle; //!<Title of the widget
 
-        Theme* mTheme = nullptr; //!<Current theme, typically the theme of the console
+        Theme* mTheme; //!<Current theme, typically the theme of the console
     };
 
     ///
@@ -131,21 +140,28 @@ namespace conslr
     {
     public:
         ///
+        ///Default constructor
+        ///
+        constexpr IScrollable() noexcept :
+            mSelection{ 0 }
+        {}
+
+        ///
         ///Scrolls up
         ///
-        virtual void scrollUp() {}
+        virtual constexpr void scrollUp() noexcept {}
         ///
         ///Scrolls down
         ///
-        virtual void scrollDown() {}
+        virtual constexpr void scrollDown() noexcept {}
 
         ///Gets the index of the currently selected item
         ///
         ///@return Index of the current item
-        [[nodiscard]] int32_t getSelection() const { return mSelection; }
+        [[nodiscard]] constexpr int32_t getSelection() const noexcept { return mSelection; }
 
     protected:
-        int32_t mSelection = 0; //!<Currently selected item
+        int32_t mSelection; //!<Currently selected item
     };
 
     ///
@@ -154,10 +170,15 @@ namespace conslr
     class ITextInput
     {
     public:
+        ///
+        ///Default constructor
+        ///
+        constexpr ITextInput() noexcept {}
+
         ///Handles text input
         ///
         ///@param event Text input event
-        virtual void doTextInput(SDL_TextInputEvent& event) {}
+        virtual void doTextInput(SDL_TextInputEvent& event) noexcept {}
     };
 
     template <typename T>
