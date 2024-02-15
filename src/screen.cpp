@@ -285,7 +285,7 @@ void conslr::Screen::borderRect(SDL_Rect rect, int32_t horizontal, int32_t verti
             mCells.at(index).character = horizontal;
         }
 
-        if (rect.y + rect.h >= 0 && rect.y + rect.h < mHeight)
+        if (rect.y + rect.h - 1 >= 0 && rect.y + rect.h - 1 < mHeight)
         {
             mCells.at(index2).character = horizontal;
         }
@@ -303,7 +303,7 @@ void conslr::Screen::borderRect(SDL_Rect rect, int32_t horizontal, int32_t verti
             mCells.at(index).character = vertical;
         }
 
-        if (rect.x + rect.w >= 0 && rect.x + rect.w < mWidth)
+        if (rect.x + rect.w - 1 >= 0 && rect.x + rect.w - 1 < mWidth)
         {
             mCells.at(index2).character = vertical;
         }
@@ -319,20 +319,20 @@ void conslr::Screen::borderRect(SDL_Rect rect, int32_t horizontal, int32_t verti
             mCells.at(tl).character = cornerTl;
         }
 
-        if (rect.x + rect.w >= 0 && rect.x + rect.w < mWidth)
+        if (rect.x + rect.w - 1 >= 0 && rect.x + rect.w - 1 < mWidth)
         {
             mCells.at(tl + rect.w - 1).character = cornerTr;
         }
     }
 
-    if (rect.y + rect.h >= 0 && rect.y + rect.h < mHeight)
+    if (rect.y + rect.h - 1 >= 0 && rect.y + rect.h - 1 < mHeight)
     {
         if (rect.x >= 0 && rect.x < mWidth)
         {
             mCells.at(bl).character = cornerBl;
         }
 
-        if (rect.x + rect.w >= 0 && rect.x + rect.w < mWidth)
+        if (rect.x + rect.w - 1 >= 0 && rect.x + rect.w - 1 < mWidth)
         {
             mCells.at(bl + rect.w - 1).character = cornerBr;
         }
