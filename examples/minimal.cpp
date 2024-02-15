@@ -9,11 +9,7 @@ int main()
 {
     //Creates console where cells are 32x64, and the console is 80x24 cells large
     conslr::Console console{ 32, 64, 80, 24 };
-    if (console.init("Minimal Example") < 0)
-    {
-        //Console failed to init for some reason
-        exit(-1);
-    }
+    console.setTitle("Minimal");
 
     //Normal SDL loop
     SDL_Event event;

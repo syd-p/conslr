@@ -51,10 +51,7 @@ void run()
 int main()
 {
     conslr::Console console{ 32, 64, 80, 24 };
-    if (console.init("C++ Editor") != 0)
-    {
-        return -1;
-    }
+    console.setTitle("C++ Editor");
 
     int32_t scr = console.createScreen();
     console.setCurrentScreenIndex(scr);
@@ -69,7 +66,7 @@ int main()
     auto textInput = wm.createWidget<conslr::widgets::TextInput>(10);
     {
         auto ptr = textInput.lock();
-        ptr->setRegion({ 0, 1, 80, 23 });
+        ptr->setRegion({ 0, 0, 79, 23 });
     }
 
     SDL_Event event;

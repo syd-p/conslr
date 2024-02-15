@@ -16,10 +16,7 @@ int main()
 {
     //Init console
     conslr::Console console{ 32, 64, 80, 24 };
-    if (console.init("Widget Example") < 0)
-    {
-        exit(-1);
-    }
+    console.setTitle("Text Input");
 
     //Init font
     int32_t font = console.createFont("ibm_vga_fontsheet.bmp", 8, 16);

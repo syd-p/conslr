@@ -46,15 +46,6 @@ namespace conslr
         ///
         ~Console();
 
-        ///Initializes a console
-        ///
-        ///@param title Title of the console window
-        ///@param icon Icon of the console window
-        ///
-        ///@return 0 on success, < 0 on failure
-        ///@return -2 Failed to create window
-        ///@return -3 Failed to create renderer
-        [[nodiscard]] int32_t init(const char* title = "Console", SDL_Surface* icon = nullptr);
         ///Processes events for the console
         ///
         ///@param event SDL_Event being passed to the console
@@ -133,6 +124,8 @@ namespace conslr
         ///
         ///@param keyMap Mapping to set
         constexpr void setKeyMap(const KeyMapping& keyMap) noexcept { mKeyMap = keyMap; }
+        constexpr void setTitle(const std::string& str) noexcept { SDL_SetWindowTitle(mWindow, str.c_str()); }
+        constexpr void setIcon(SDL_Surface* icon) noexcept { SDL_SetWindowIcon(mWindow, icon); }
 
         //Const values
         static const int32_t MAX_SCREENS = 16; //!<Max screens that a console can have

@@ -8,7 +8,6 @@
 
 #include "conslr/screen.hpp"
 #include "conslr/themes/defaulttheme.hpp"
-#include "keymapping.hpp"
 
 conslr::Console::Console(int32_t cellWidth, int32_t cellHeight, int32_t windowCellWidth, int32_t windowCellHeight) noexcept :
     mCellWidth{ cellWidth }, mCellHeight{ cellHeight },
@@ -33,18 +32,6 @@ conslr::Console::Console(int32_t cellWidth, int32_t cellHeight, int32_t windowCe
         mFonts.at(i).reset(nullptr);
     }
 
-    return;
-}
-
-conslr::Console::~Console()
-{
-    destroy();
-
-    return;
-}
-
-int32_t conslr::Console::init(const char* title, SDL_Surface* icon)
-{
     //init was already called for this console or the object is somehow malformed
     assert((mWindow == nullptr && mRenderer == nullptr) && "Console was already initialized");
 
@@ -57,32 +44,35 @@ int32_t conslr::Console::init(const char* title, SDL_Surface* icon)
         }
     }
 
-    mWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, mWindowWidth, mWindowHeight, 0);
+    mWindow = SDL_CreateWindow("Console", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, mWindowWidth, mWindowHeight, 0);
     if (!mWindow)
     {
-        std::cerr << "Failed to create window with title: " << title << ", " << SDL_GetError() << std::endl;
+        std::cerr << "Failed to create window, " << SDL_GetError() << std::endl;
         mWindow = nullptr;
 
-        return -2;
+        exit(-2);
     }
 
     mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if (!mRenderer)
     {
-        std::cerr << "Failed to create renderer for window with title: " << title << ", " << SDL_GetError() << std::endl;
+        std::cerr << "Failed to create renderer, " << SDL_GetError() << std::endl;
         SDL_DestroyWindow(mWindow);
         mWindow = nullptr;
         mRenderer = nullptr;
 
-        return -3;
+        exit(-3);
     }
 
-    if (icon != nullptr)
-    {
-        SDL_SetWindowIcon(mWindow, icon);
-    }
 
-    return 0;
+    return;
+}
+
+conslr::Console::~Console()
+{
+    destroy();
+
+    return;
 }
 
 void conslr::Console::doEvent(SDL_Event& event)
