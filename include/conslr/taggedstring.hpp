@@ -4,6 +4,7 @@
 ///
 #pragma once
 
+#include <algorithm>
 #include <cstdint>
 #include <vector>
 #include <array>
@@ -22,40 +23,60 @@ namespace conslr
         uint8_t tags; //!<Color tags of the string
     };
 
+    ///
+    ///Wrapper class for std::vector<TaggedChar>
+    ///
+    struct TaggedString
+    {
+        constexpr TaggedString() noexcept {} //!<Default constructor
+        ///Creates a tagged string from std::string
+        ///
+        ///@param str std::string to use
+        ///@param fg Foreground tag
+        ///@param bg Background tag
+        constexpr TaggedString(const std::string& str, uint8_t fg, uint8_t bg) noexcept :
+            str{ str.size() }
+        {
+            uint8_t tag = ((bg & 0x0F) << 4) | (fg & 0x0F);
+
+            for (auto i = 0; i < str.size(); i++)
+            {
+                this->str.at(i).character = str.at(i);
+                this->str.at(i).tags = tag;
+            }
+
+            return;
+        }
+        constexpr TaggedString(const TaggedString& other) : str{ other.str } {} //!<Copy constructor
+        constexpr TaggedString(TaggedString&& other) noexcept : str{ std::move(other.str) } {} //!<Move constructor
+        constexpr TaggedString& operator=(const TaggedString& other) { *this = TaggedString(other); return *this; } //!<Copy assignment
+        constexpr TaggedString& operator=(TaggedString&& other) noexcept { str = std::move(other.str); return *this; } //!<Move assignment
+
+        ///
+        ///Concat operator
+        ///
+        constexpr TaggedString operator+(const TaggedString& other)
+        {
+            str.insert(str.end(), other.str.begin(), other.str.end());
+
+            return *this;
+        }
+
+        ///
+        ///Append operator
+        ///
+        constexpr TaggedString& operator+=(const TaggedString& other)
+        {
+            str.insert(str.end(), other.str.begin(), other.str.end());
+
+            return *this;
+        }
+
+        std::vector<TaggedChar> str; //!<Tagged string
+    };
+
     const uint8_t FOREGROUND_MASK = 0x0F; //!<Mask for the foreground tag
     const uint8_t BACKGROUND_MASK = 0xF0; //!<Mask for the background tag
 
-    using TaggedString = std::vector<TaggedChar>; //!<TaggedString alias
     using TagSet = std::array<SDL_Color, 16>; //!<TagSet alias
-
-    ///Creates a tagged string
-    ///
-    ///@param str String chars
-    ///@param fg Foreground tag
-    ///@param bg Background tag
-    inline constexpr TaggedString createTaggedString(const std::string& str, uint8_t fg, uint8_t bg)
-    {
-        TaggedString tmp{str.size()};
-
-        uint8_t tag = ((bg & 0x0F) << 4) | (fg & 0x0F);
-
-        for (auto i = 0; i < tmp.size(); i++)
-        {
-            tmp.at(i).character = str.at(i);
-            tmp.at(i).tags = tag;
-        }
-
-        return tmp;
-    }
-
-    inline constexpr TaggedString operator+(const TaggedString& a, const TaggedString& b)
-    {
-        TaggedString str;
-        str.reserve(a.size() + b.size());
-
-        str.insert(str.end(), a.begin(), a.end());
-        str.insert(str.end(), b.begin(), b.end());
-
-        return str;
-    }
 }

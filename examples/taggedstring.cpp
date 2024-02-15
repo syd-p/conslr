@@ -27,11 +27,12 @@ int main()
     {
         auto ttbPtr = ttb.lock();
 
-        conslr::TaggedString str =
-            conslr::createTaggedString("This is a tagged string\n", 0, 1) +
-            conslr::createTaggedString("With foreground\n", 2, 1) +
-            conslr::createTaggedString("With background\n", 0, 3) +
-            conslr::createTaggedString("With both", 2, 3);
+        conslr::TaggedString str{
+            conslr::TaggedString("This is a tagged string\n", 0, 1) +
+            conslr::TaggedString("With foreground\n", 2, 1) +
+            conslr::TaggedString("With background\n", 0, 3) +
+            conslr::TaggedString("With both", 2, 3)
+        };
 
         conslr::TagSet tags;
         tags.at(0) = conslr::themes::Default.text;

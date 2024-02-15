@@ -124,7 +124,13 @@ namespace conslr
         ///
         ///@param keyMap Mapping to set
         constexpr void setKeyMap(const KeyMapping& keyMap) noexcept { mKeyMap = keyMap; }
+        ///Sets the title of the window
+        ///
+        ///@param str String to set
         constexpr void setTitle(const std::string& str) noexcept { SDL_SetWindowTitle(mWindow, str.c_str()); }
+        ///Sets the icon of the window
+        ///
+        ///@param icon Icon to set
         constexpr void setIcon(SDL_Surface* icon) noexcept { SDL_SetWindowIcon(mWindow, icon); }
 
         //Const values
