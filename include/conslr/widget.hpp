@@ -54,6 +54,7 @@ namespace conslr
         [[nodiscard]] constexpr bool getActive() const noexcept { return mActive; }
 
         ///Sets the active status of the widget
+        ///May be used prior to initial render, as this does not make the screen rerender
         ///Primarily internal
         ///
         ///@param val Value to set it to
