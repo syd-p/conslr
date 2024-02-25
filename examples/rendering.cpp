@@ -56,7 +56,20 @@ private:
 
 int main()
 {
-    Console console(16, 32, 80, 33);
+    SDL_DisplayMode dm;
+    SDL_GetCurrentDisplayMode(0, &dm);
+
+    int cellW = 16;
+    int cellH = 32;
+
+    if (dm.w > 1920)
+    {
+        cellW = 32;
+        cellH = 64;
+    }
+
+    //Init console
+    conslr::Console console{ cellW, cellH, 80, 24 };
 
     int32_t font = console.createFont("ibm_vga_fontsheet.bmp", 8, 16);
     console.setCurrentFontIndex(font);
