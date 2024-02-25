@@ -105,7 +105,7 @@ namespace conslr
         ///Gets the current window id
         ///
         ///@return Window id
-        [[nodiscard]] constexpr int32_t getWindowId() const noexcept { return SDL_GetWindowID(mWindow); }
+        [[nodiscard]] int32_t getWindowId() const noexcept { return SDL_GetWindowID(mWindow); }
 
         //Setters
         ///Sets current screen index
@@ -127,11 +127,11 @@ namespace conslr
         ///Sets the title of the window
         ///
         ///@param str String to set
-        constexpr void setTitle(const std::string& str) noexcept { SDL_SetWindowTitle(mWindow, str.c_str()); }
+        void setTitle(const std::string& str) noexcept { SDL_SetWindowTitle(mWindow, str.c_str()); }
         ///Sets the icon of the window
         ///
         ///@param icon Icon to set
-        constexpr void setIcon(SDL_Surface* icon) noexcept { SDL_SetWindowIcon(mWindow, icon); }
+        void setIcon(SDL_Surface* icon) noexcept { SDL_SetWindowIcon(mWindow, icon); }
 
         //Const values
         static const int32_t MAX_SCREENS = 16; //!<Max screens that a console can have

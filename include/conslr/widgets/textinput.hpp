@@ -232,12 +232,11 @@ namespace conslr::widgets
                 //Scrollbar
                 if (mRows.size() > mTextRegion.h)
                 {
-                    //Y scrollbar
-                    int32_t visiblePercent = (mTextRegion.h * 100) / mRows.size();
-                    int32_t percentDown = (mScrollY * 100) / mRows.size();
+                    double visiblePercent = (double)mTextRegion.h / (double)mRows.size();
+                    double percentDown = (double)mScrollY / (double)mRows.size();
 
-                    int32_t scrollbarOffset = (percentDown * mTextRegion.h) / 100;
-                    int32_t scrollbarHeight = (visiblePercent * mTextRegion.h) / 100;
+                    int32_t scrollbarOffset = percentDown * mTextRegion.h;
+                    int32_t scrollbarHeight = visiblePercent * mTextRegion.h;
 
                     screen.fillRectCharacter({
                             mRegion.x,
@@ -245,6 +244,7 @@ namespace conslr::widgets
                             1,
                             std::min(scrollbarHeight + 1, mTextRegion.h - scrollbarOffset)
                             }, mTheme->scrollbarCharacter);
+                            
                 }
 
                 //Finds size of longest string
@@ -257,11 +257,11 @@ namespace conslr::widgets
                 if (maxWidth > mTextRegion.w)
                 {
                     //X scrollbar
-                    int32_t visiblePercent = (mTextRegion.w * 100) / maxWidth;
-                    int32_t percentOver = (mScrollX * 100) / maxWidth;
+                    double visiblePercent = (double)mTextRegion.w / (double)maxWidth;
+                    double percentOver = (double)mScrollX / (double)maxWidth;
 
-                    int32_t scrollbarOffset = (percentOver * mTextRegion.w) / 100;
-                    int32_t scrollbarWidth = (visiblePercent * mTextRegion.w) / 100;
+                    int32_t scrollbarOffset = percentOver * mTextRegion.w;
+                    int32_t scrollbarWidth = visiblePercent * mTextRegion.w;
 
                     screen.fillRectCharacter({
                             mTextRegion.x + scrollbarOffset,
