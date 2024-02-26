@@ -64,7 +64,6 @@ conslr::Console::Console(int32_t cellWidth, int32_t cellHeight, int32_t windowCe
         exit(-3);
     }
 
-
     return;
 }
 
@@ -264,6 +263,21 @@ void conslr::Console::destroyFont(int32_t index)
 
     mFonts.at(index).reset(nullptr);
     mFreeFonts.push(index);
+
+    return;
+}
+
+void conslr::Console::resizeCells(int32_t width, int32_t height) noexcept
+{
+    assert((width > 0 && height > 0) && "Cells can not be 0 wide/high");
+
+    mCellWidth = width;
+    mCellHeight = height;
+
+    mWindowWidth = mCellWidth * mWindowCellWidth;
+    mWindowHeight = mCellHeight * mWindowCellHeight;
+
+    SDL_SetWindowSize(mWindow, mWindowWidth, mWindowHeight);
 
     return;
 }

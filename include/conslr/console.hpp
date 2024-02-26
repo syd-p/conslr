@@ -80,6 +80,12 @@ namespace conslr
         ///@param index Font to destroy
         void destroyFont(int32_t index);
 
+        ///Resizes the cells of the window
+        ///
+        ///@param width New cell width
+        ///@param height New cell height
+        void resizeCells(int32_t width, int32_t height) noexcept;
+
         //Getters
         ///Gets the current screen index
         ///
