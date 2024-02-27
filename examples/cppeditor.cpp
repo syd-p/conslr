@@ -50,7 +50,20 @@ void run()
 
 int main()
 {
-    conslr::Console console{ 32, 64, 80, 24 };
+    SDL_DisplayMode dm;
+    SDL_GetCurrentDisplayMode(0, &dm);
+
+    int cellW = 16;
+    int cellH = 32;
+
+    if (dm.w > 1920)
+    {
+        cellW = 32;
+        cellH = 64;
+    }
+
+    //Init console
+    conslr::Console console{ cellW, cellH, 80, 24 };
     console.setTitle("C++ Editor");
 
     int32_t scr = console.createScreen();

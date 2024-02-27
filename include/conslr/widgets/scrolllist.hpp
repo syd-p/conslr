@@ -88,12 +88,12 @@ namespace conslr::widgets
 
             if (mShowScrollbar && mElements.size() > freeHeight)
             {
-                int32_t visiblePercent = (freeHeight * 100) / mElements.size(); //Percent of elements shown
-                int32_t percentDown = (mScrollY * 100) / mElements.size(); //How far down the first element is
+                double visiblePercent = (double)freeHeight / (double)mElements.size(); //Percent of elements shown
+                double percentDown = (double)mScrollY / (double)mElements.size(); //How far down the first element is
 
                 //Render scrollbar
-                int32_t scrollbarOffset = (percentDown * freeHeight) / 100;
-                int32_t scrollbarHeight = (visiblePercent * freeHeight) / 100;
+                int32_t scrollbarOffset = percentDown * freeHeight;
+                int32_t scrollbarHeight = visiblePercent * freeHeight;
 
                 screen.fillRectCharacter({ mRegion.x, yOffset + scrollbarOffset, 1, std::min(scrollbarHeight + 1, freeHeight - scrollbarOffset) }, mTheme->scrollbarCharacter);
             }

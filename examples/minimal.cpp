@@ -7,8 +7,20 @@
 
 int main()
 {
-    //Creates console where cells are 32x64, and the console is 80x24 cells large
-    conslr::Console console{ 32, 64, 80, 24 };
+    SDL_DisplayMode dm;
+    SDL_GetCurrentDisplayMode(0, &dm);
+
+    int cellW = 16;
+    int cellH = 32;
+
+    if (dm.w > 1920)
+    {
+        cellW = 32;
+        cellH = 64;
+    }
+
+    //Init console
+    conslr::Console console{ cellW, cellH, 80, 24 };
     console.setTitle("Minimal");
 
     //Normal SDL loop
