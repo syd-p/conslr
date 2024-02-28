@@ -8,6 +8,8 @@
 
 #include <SDL_pixels.h>
 
+struct ExtendedTheme;
+
 namespace conslr
 {
     ///Theme struct
@@ -29,5 +31,7 @@ namespace conslr
         SDL_Color text = { 255, 255, 255, 255 }; //!<Text for widgets
         SDL_Color border = { 255, 255, 255, 255 }; //!<Border foreground for widgets
         SDL_Color selection = { 100, 100, 100, 255 }; //!<Selection background color for highlighting
+                                                      
+        ExtendedTheme* extended = nullptr; //!<User implemented theme
     };
 }

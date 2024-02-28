@@ -1,3 +1,6 @@
+///Simple rendering program
+///
+///Renders a bouncing dot
 #include <SDL.h>
 
 #include <conslr/console.hpp>
