@@ -20,6 +20,8 @@ namespace conslr::widgets
     class Canvas : public IWidget, public IRenderable
     {
     public:
+        friend class Screen;
+
         ///
         ///Internal constructor
         ///
@@ -29,6 +31,21 @@ namespace conslr::widgets
             mRender{ nullptr }
         {}
 
+        ///Gets region of the widget
+        ///
+        ///@return Region of the widget
+        constexpr const SDL_Rect& getRegion() const noexcept { return mRegion; }
+
+        ///Sets the region of the widget
+        ///
+        ///@param region New region of the widget
+        constexpr void setRegion(const SDL_Rect& region) noexcept { mRegion = region; }
+        ///Sets the render function to be called
+        ///
+        ///@param func Render function to be used
+        void setRenderFunction(std::function<void(const SDL_Rect&, conslr::Screen&)> func) { mRender = func; }
+
+    protected:
         ///
         ///Internal
         ///
@@ -50,21 +67,6 @@ namespace conslr::widgets
             return;
         }
 
-        ///Gets region of the widget
-        ///
-        ///@return Region of the widget
-        constexpr const SDL_Rect& getRegion() const noexcept { return mRegion; }
-
-        ///Sets the region of the widget
-        ///
-        ///@param region New region of the widget
-        constexpr void setRegion(const SDL_Rect& region) noexcept { mRegion = region; }
-        ///Sets the render function to be called
-        ///
-        ///@param func Render function to be used
-        void setRenderFunction(std::function<void(const SDL_Rect&, conslr::Screen&)> func) { mRender = func; }
-
-    private:
         SDL_Rect mRegion; //!<Region of the widget
         std::function<void(const SDL_Rect&, conslr::Screen&)> mRender; //!<Render function
     };

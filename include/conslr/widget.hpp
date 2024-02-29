@@ -72,6 +72,8 @@ namespace conslr
     class IRenderable
     {
     public:
+        friend class Screen;
+
         ///
         ///Default constructor
         ///
@@ -80,12 +82,6 @@ namespace conslr
             mShowTitle{ false },
             mTheme{ nullptr }
         {}
-
-        ///
-        ///Function called by the widget manager
-        ///Screen that owns the widget manager
-        ///
-        virtual void render(Screen&) {}
 
         ///
         ///Shows the widget
@@ -127,6 +123,12 @@ namespace conslr
 
         bool mRerender; //!<If the widget is to be rerendered
     protected:
+        ///
+        ///Function called by the widget manager
+        ///Screen that owns the widget manager
+        ///
+        virtual void render(Screen&) {}
+
         bool mVisible; //!<If the widget is to be rendered
         bool mShowTitle; //!<If the widget is to display its title
         std::string mTitle; //!<Title of the widget

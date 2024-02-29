@@ -20,6 +20,8 @@ namespace conslr::widgets
     class FloatingText : public IWidget, public IRenderable
     {
     public:
+        friend class Screen;
+
         ///
         ///Internal constructor
         ///
@@ -27,23 +29,6 @@ namespace conslr::widgets
             IWidget{ id, priority },
             mRegion{ 0, 0, 0, 0 }
         {}
-
-        ///
-        ///Internal
-        ///
-        virtual void render(Screen& screen)
-        {
-            assert((mRegion.w > 0 && mRegion.h > 0) && "Region is too small to render");
-
-            screen.renderMultilineTextColor(
-                    mRegion.x, mRegion.y,
-                    mRegion.w, mRegion.h,
-                    mString,
-                    mTheme->text, mTheme->background
-                    );
-
-            return;
-        }
 
         //Getters
         ///Returns the region
@@ -73,6 +58,23 @@ namespace conslr::widgets
         constexpr void setString(const std::string& str) { mString = str; mRerender = true; }
 
     protected:
+        ///
+        ///Internal
+        ///
+        virtual void render(Screen& screen)
+        {
+            assert((mRegion.w > 0 && mRegion.h > 0) && "Region is too small to render");
+
+            screen.renderMultilineTextColor(
+                    mRegion.x, mRegion.y,
+                    mRegion.w, mRegion.h,
+                    mString,
+                    mTheme->text, mTheme->background
+                    );
+
+            return;
+        }
+
         SDL_Rect mRegion; //!<Region of the widget on the screen
         std::string mString; //!<Text of the widget
     };

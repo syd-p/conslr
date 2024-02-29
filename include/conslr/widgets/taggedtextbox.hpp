@@ -19,6 +19,8 @@ namespace conslr::widgets
     class TaggedTextBox : public IWidget, public IRenderable
     {
     public:
+        friend class Screen;
+
         ///
         ///Internal constructor
         ///
@@ -26,35 +28,6 @@ namespace conslr::widgets
             IWidget{ id, priority },
             mRegion{ 0, 0, 0, 0 }
         {}
-
-        ///
-        ///Internal
-        ///
-        virtual void render(Screen& screen) override
-        {
-            assert((mRegion.w > 2 && mRegion.h > 2) && "Scroll List is too small to render");
-
-            screen.fillRect(mRegion, mTheme->background, mTheme->border, 0);
-            screen.borderRect(mRegion, mTheme->borderHorizontal, mTheme->borderVertical, mTheme->borderCornerTl, mTheme->borderCornerTr, mTheme->borderCornerBl, mTheme->borderCornerBr);
-
-            if (mShowTitle)
-            {
-                screen.renderTextColor(
-                        mRegion.x + 1, mRegion.y,
-                        std::min(mRegion.w - 2, (int32_t)mTitle.size()),
-                        mTitle,
-                        mTheme->border
-                        );
-            }
-
-            screen.renderMultilineTextTagged(
-                    mRegion.x + 1, mRegion.y + 1,
-                    mRegion.w - 2, mRegion.h - 2,
-                    mString,
-                    mTags);
-
-            return;
-        }
 
         //Getters
         ///Returns the region
@@ -93,6 +66,35 @@ namespace conslr::widgets
         constexpr void setTags(const TagSet& tags) { mTags = tags; }
 
     protected:
+        ///
+        ///Internal
+        ///
+        virtual void render(Screen& screen) override
+        {
+            assert((mRegion.w > 2 && mRegion.h > 2) && "Scroll List is too small to render");
+
+            screen.fillRect(mRegion, mTheme->background, mTheme->border, 0);
+            screen.borderRect(mRegion, mTheme->borderHorizontal, mTheme->borderVertical, mTheme->borderCornerTl, mTheme->borderCornerTr, mTheme->borderCornerBl, mTheme->borderCornerBr);
+
+            if (mShowTitle)
+            {
+                screen.renderTextColor(
+                        mRegion.x + 1, mRegion.y,
+                        std::min(mRegion.w - 2, (int32_t)mTitle.size()),
+                        mTitle,
+                        mTheme->border
+                        );
+            }
+
+            screen.renderMultilineTextTagged(
+                    mRegion.x + 1, mRegion.y + 1,
+                    mRegion.w - 2, mRegion.h - 2,
+                    mString,
+                    mTags);
+
+            return;
+        }
+
         SDL_Rect mRegion; //!<Region of the widget on the screen
         TaggedString mString; //!<Text of the widget
         TagSet mTags; //!<Tags of the widget

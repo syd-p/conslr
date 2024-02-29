@@ -26,6 +26,8 @@ namespace conslr::widgets
     class RadioList : public IWidget, public IRenderable, public IScrollable
     {
     public:
+        friend class Screen;
+
         ///
         ///Used internally, should not be called directly
         ///
@@ -34,69 +36,6 @@ namespace conslr::widgets
             mRegion{ 0, 0, 0, 0 }, mScrollY{ 0 }, mShowScrollbar{ true },
             mChosenElement{ -1 }
         {}
-
-        ///
-        ///Internal
-        ///
-        virtual void render(Screen& screen) override
-        {
-            assert((mRegion.w > 2 && mRegion.h > 2) && "Scroll List is too small to render");
-
-            screen.fillRect(mRegion, mTheme->background, mTheme->border, 0);
-            screen.borderRect(mRegion, mTheme->borderHorizontal, mTheme->borderVertical, mTheme->borderCornerTl, mTheme->borderCornerTr, mTheme->borderCornerBl, mTheme->borderCornerBr);
-
-            if (mElements.size() == 0)
-            {
-                return;
-            }
-
-            //Render the elements
-            int32_t xOffset = mRegion.x + 1;
-            int32_t yOffset = mRegion.y + 1;
-            int32_t freeWidth = mRegion.w - 2;
-            int32_t freeHeight = mRegion.h - 2;
-
-            int32_t maxShown = std::min(freeHeight, (int32_t)mElements.size());
-            for (auto i = 0; i < maxShown; i++)
-            {
-                const auto& element = mElements.at(mScrollY + i);
-                screen.renderTextColor(xOffset, yOffset + i, freeWidth, "[ ]" + element.mName, mTheme->text);
-
-                if (mChosenElement == mScrollY + i)
-                {
-                    screen.setCellCharacter(xOffset + 1, yOffset + i, mTheme->selectionTick);
-                }
-            }
-
-            //Current selection
-            if (mActive)
-            {
-                screen.setCellBackground(xOffset, yOffset + mSelection - mScrollY, mTheme->selection);
-            }
-
-            if (mShowTitle)
-            {
-                screen.renderTextColor(
-                        mRegion.x + 1, mRegion.y,
-                        std::min(freeWidth, (int32_t)mTitle.size()),
-                        mTitle,
-                        mTheme->border);
-            }
-
-            if (mShowScrollbar && mElements.size() > freeHeight)
-            {
-                double visiblePercent = (double)freeHeight / (double)mElements.size(); //Percent of elements shown
-                double percentDown = (double)mScrollY / (double)mElements.size(); //How far down the first element is
-
-                //Render scrollbar
-                int32_t scrollbarOffset = percentDown * freeHeight;
-                int32_t scrollbarHeight = visiblePercent * freeHeight;
-
-                screen.fillRectCharacter({ mRegion.x, yOffset + scrollbarOffset, 1, std::min(scrollbarHeight + 1, freeHeight - scrollbarOffset) }, mTheme->scrollbarCharacter);
-            }
-
-            return;
-        }
 
         ///Adds an element to the list
         ///
@@ -208,6 +147,69 @@ namespace conslr::widgets
         }
 
     protected:
+        ///
+        ///Internal
+        ///
+        virtual void render(Screen& screen) override
+        {
+            assert((mRegion.w > 2 && mRegion.h > 2) && "Scroll List is too small to render");
+
+            screen.fillRect(mRegion, mTheme->background, mTheme->border, 0);
+            screen.borderRect(mRegion, mTheme->borderHorizontal, mTheme->borderVertical, mTheme->borderCornerTl, mTheme->borderCornerTr, mTheme->borderCornerBl, mTheme->borderCornerBr);
+
+            if (mElements.size() == 0)
+            {
+                return;
+            }
+
+            //Render the elements
+            int32_t xOffset = mRegion.x + 1;
+            int32_t yOffset = mRegion.y + 1;
+            int32_t freeWidth = mRegion.w - 2;
+            int32_t freeHeight = mRegion.h - 2;
+
+            int32_t maxShown = std::min(freeHeight, (int32_t)mElements.size());
+            for (auto i = 0; i < maxShown; i++)
+            {
+                const auto& element = mElements.at(mScrollY + i);
+                screen.renderTextColor(xOffset, yOffset + i, freeWidth, "[ ]" + element.mName, mTheme->text);
+
+                if (mChosenElement == mScrollY + i)
+                {
+                    screen.setCellCharacter(xOffset + 1, yOffset + i, mTheme->selectionTick);
+                }
+            }
+
+            //Current selection
+            if (mActive)
+            {
+                screen.setCellBackground(xOffset, yOffset + mSelection - mScrollY, mTheme->selection);
+            }
+
+            if (mShowTitle)
+            {
+                screen.renderTextColor(
+                        mRegion.x + 1, mRegion.y,
+                        std::min(freeWidth, (int32_t)mTitle.size()),
+                        mTitle,
+                        mTheme->border);
+            }
+
+            if (mShowScrollbar && mElements.size() > freeHeight)
+            {
+                double visiblePercent = (double)freeHeight / (double)mElements.size(); //Percent of elements shown
+                double percentDown = (double)mScrollY / (double)mElements.size(); //How far down the first element is
+
+                //Render scrollbar
+                int32_t scrollbarOffset = percentDown * freeHeight;
+                int32_t scrollbarHeight = visiblePercent * freeHeight;
+
+                screen.fillRectCharacter({ mRegion.x, yOffset + scrollbarOffset, 1, std::min(scrollbarHeight + 1, freeHeight - scrollbarOffset) }, mTheme->scrollbarCharacter);
+            }
+
+            return;
+        }
+
         std::vector<ScrollListContainer<T>> mElements; //!<Elements of the list
 
         SDL_Rect mRegion; //!<Region of the widget on screen

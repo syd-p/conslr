@@ -24,6 +24,8 @@ namespace conslr::widgets
     class TextInput : public IWidget, public IRenderable, public ITextInput
     {
     public:
+        friend class Screen;
+
         ///
         ///Internal constructor
         ///
@@ -152,6 +154,107 @@ namespace conslr::widgets
             return;
         }
 
+        //Getters
+        ///Gets the region of the widget
+        ///
+        ///@return Reference to the region
+        constexpr const SDL_Rect& getRegion() const noexcept { return mRegion; }
+        ///Gets the current text
+        ///
+        ///@return Current text string
+        constexpr std::string getString() const
+        {
+            std::string str;
+            for (const auto& row : mRows)
+            {
+                str.append(row);
+                str += '\n';
+            }
+
+            //Removes last newline char
+            if (str.size() > 0)
+            {
+                str.pop_back();
+            }
+
+            return str;
+        }
+        ///Gets the value of word wrap
+        ///
+        ///@return Current value of word wrap
+        constexpr bool getWordWrap() const noexcept { return mWordWrap; }
+        ///Gets the max rows of the widget
+        ///
+        ///@return Max rows of the widget, negative is infinite
+        constexpr int32_t getMaxRows() const noexcept { return mMaxRows; }
+
+        //Setters
+        ///Sets the region of the widget
+        ///
+        ///@param region Region of the widget on screen
+        constexpr void setRegion(const SDL_Rect& region) noexcept
+        {
+            assert(((region.w > 2) && (region.h > 2)) && "Region is too small");
+
+            mRegion = region;
+            mTextRegion = { mRegion.x + 1, mRegion.y + 1, mRegion.w - 2, mRegion.h - 2 };
+
+            mRerender = true;
+            return;
+        }
+        ///Sets the text of the widget
+        ///
+        ///@param text Text of the widget
+        constexpr void setString(const std::string& text)
+        {
+            mRows.clear();
+            mCurrentRow = 0;
+            mSelection = 0;
+
+            std::string str;
+            for (const auto& c : text)
+            {
+                if (c == '\n')
+                {
+                    mRows.emplace_back(str);
+                    str.clear();
+                    continue;
+                }
+
+                str += c;
+            }
+            mRows.emplace_back(str);
+
+            mRerender = true;
+            return;
+        }
+        ///Sets the value of word wrap
+        ///
+        ///@param val Value to set it to
+        constexpr void setWordWrap(bool val) noexcept { mWordWrap = val; mRerender = true; }
+        ///Sets the max rows of the widget
+        ///Excess rows are deleted
+        ///
+        ///@param max New max value
+        constexpr void setMaxRows(int32_t max)
+        {
+            mMaxRows = max;
+            if (mMaxRows == -1)
+            {
+                return;
+            }
+
+            if (mMaxRows < mRows.size())
+            {
+                //Removes excess rows
+                mRows = { mRows.begin(), mRows.begin() + mMaxRows };
+            }
+
+            mRerender = true;
+            return;
+        }
+
+    protected:
         ///
         ///Internal
         ///
@@ -275,107 +378,6 @@ namespace conslr::widgets
             return;
         }
 
-        //Getters
-        ///Gets the region of the widget
-        ///
-        ///@return Reference to the region
-        constexpr const SDL_Rect& getRegion() const noexcept { return mRegion; }
-        ///Gets the current text
-        ///
-        ///@return Current text string
-        constexpr std::string getString() const
-        {
-            std::string str;
-            for (const auto& row : mRows)
-            {
-                str.append(row);
-                str += '\n';
-            }
-
-            //Removes last newline char
-            if (str.size() > 0)
-            {
-                str.pop_back();
-            }
-
-            return str;
-        }
-        ///Gets the value of word wrap
-        ///
-        ///@return Current value of word wrap
-        constexpr bool getWordWrap() const noexcept { return mWordWrap; }
-        ///Gets the max rows of the widget
-        ///
-        ///@return Max rows of the widget, negative is infinite
-        constexpr int32_t getMaxRows() const noexcept { return mMaxRows; }
-
-        //Setters
-        ///Sets the region of the widget
-        ///
-        ///@param region Region of the widget on screen
-        constexpr void setRegion(const SDL_Rect& region) noexcept
-        {
-            assert(((region.w > 2) && (region.h > 2)) && "Region is too small");
-
-            mRegion = region;
-            mTextRegion = { mRegion.x + 1, mRegion.y + 1, mRegion.w - 2, mRegion.h - 2 };
-
-            mRerender = true;
-            return;
-        }
-        ///Sets the text of the widget
-        ///
-        ///@param text Text of the widget
-        constexpr void setString(const std::string& text)
-        {
-            mRows.clear();
-            mCurrentRow = 0;
-            mSelection = 0;
-
-            std::string str;
-            for (const auto& c : text)
-            {
-                if (c == '\n')
-                {
-                    mRows.emplace_back(str);
-                    str.clear();
-                    continue;
-                }
-
-                str += c;
-            }
-            mRows.emplace_back(str);
-
-            mRerender = true;
-            return;
-        }
-        ///Sets the value of word wrap
-        ///
-        ///@param val Value to set it to
-        constexpr void setWordWrap(bool val) noexcept { mWordWrap = val; mRerender = true; }
-        ///Sets the max rows of the widget
-        ///Excess rows are deleted
-        ///
-        ///@param max New max value
-        constexpr void setMaxRows(int32_t max)
-        {
-            mMaxRows = max;
-            if (mMaxRows == -1)
-            {
-                return;
-            }
-
-            if (mMaxRows < mRows.size())
-            {
-                //Removes excess rows
-                mRows = { mRows.begin(), mRows.begin() + mMaxRows };
-            }
-
-            mRerender = true;
-            return;
-        }
-
-    protected:
         SDL_Rect mRegion; //!<Region of the widget on the screen
         SDL_Rect mTextRegion; //!<Region that text can be rendered in
         std::vector<std::string> mRows; //!<Text of the widget

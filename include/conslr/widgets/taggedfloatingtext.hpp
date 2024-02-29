@@ -18,6 +18,8 @@ namespace conslr::widgets
     class TaggedFloatingText : public IWidget, public IRenderable
     {
     public:
+        friend class Screen;
+
         ///
         ///Internal constructor
         ///
@@ -25,23 +27,6 @@ namespace conslr::widgets
             IWidget{ id, priority },
             mRegion{ 0, 0, 0, 0 }
         {}
-
-        ///
-        ///Internal
-        ///
-        virtual void render(Screen& screen)
-        {
-            assert((mRegion.w > 0 && mRegion.h > 0) && "Region is too small to render");
-
-            screen.renderMultilineTextTagged(
-                    mRegion.x, mRegion.y,
-                    mRegion.w, mRegion.h,
-                    mString,
-                    mTags
-                    );
-
-            return;
-        }
 
         //Getters
         ///Returns the region
@@ -80,6 +65,23 @@ namespace conslr::widgets
         constexpr void setTags(const TagSet& tags) { mTags = tags; mRerender = true; }
 
     protected:
+        ///
+        ///Internal
+        ///
+        virtual void render(Screen& screen)
+        {
+            assert((mRegion.w > 0 && mRegion.h > 0) && "Region is too small to render");
+
+            screen.renderMultilineTextTagged(
+                    mRegion.x, mRegion.y,
+                    mRegion.w, mRegion.h,
+                    mString,
+                    mTags
+                    );
+
+            return;
+        }
+
         SDL_Rect mRegion; //!<Region of the widget on the screen
         TaggedString mString; //!<Text of the widget
         TagSet mTags; //!<Tags of the widget
