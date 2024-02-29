@@ -27,9 +27,6 @@ namespace conslr::widgets
         friend class conslr::Screen;
         friend class conslr::WidgetManager;
 
-        ///
-        ///Handles text input
-        ///
         virtual void doTextInput(SDL_TextInputEvent& event) noexcept override
         {
             if (!mActive)
@@ -45,9 +42,6 @@ namespace conslr::widgets
             return;
         }
 
-        ///
-        ///Move selection left
-        ///
         virtual constexpr void doKeyLeft() noexcept
         {
             if (!mActive) { return; }
@@ -55,9 +49,6 @@ namespace conslr::widgets
             mRerender = true;
             return;
         }
-        ///
-        ///Move selection right
-        ///
         virtual constexpr void doKeyRight() noexcept
         {
             if (!mActive) { return; }
@@ -65,9 +56,6 @@ namespace conslr::widgets
             mRerender = true;
             return;
         }
-        ///
-        ///Move selection up
-        ///
         virtual constexpr void doKeyUp() noexcept
         {
             if (!mActive) { return; }
@@ -76,9 +64,6 @@ namespace conslr::widgets
             mRerender = true;
             return;
         }
-        ///
-        ///Move selection down
-        ///
         virtual constexpr void doKeyDown() noexcept
         {
             if (!mActive) { return; }
@@ -87,9 +72,6 @@ namespace conslr::widgets
             mRerender = true;
             return;
         }
-        ///
-        ///Tab key
-        ///
         virtual constexpr void doTab()
         {
             if (!mActive) { return; }
@@ -98,9 +80,6 @@ namespace conslr::widgets
             mRerender = true;
             return;
         }
-        ///
-        ///Backspace key
-        ///
         virtual constexpr void doBackspace()
         {
             if (!mActive) { return; }
@@ -123,9 +102,6 @@ namespace conslr::widgets
 
             return;
         }
-        ///
-        ///Return key
-        ///
         virtual constexpr void doReturn()
         {
             if (!mActive) { return; }
@@ -140,13 +116,7 @@ namespace conslr::widgets
         }
 
         //Getters
-        ///Gets the region of the widget
-        ///
-        ///@return Reference to the region
         constexpr const SDL_Rect& getRegion() const noexcept { return mRegion; }
-        ///Gets the current text
-        ///
-        ///@return Current text string
         constexpr std::string getString() const
         {
             std::string str;
@@ -164,19 +134,10 @@ namespace conslr::widgets
 
             return str;
         }
-        ///Gets the value of word wrap
-        ///
-        ///@return Current value of word wrap
         constexpr bool getWordWrap() const noexcept { return mWordWrap; }
-        ///Gets the max rows of the widget
-        ///
-        ///@return Max rows of the widget, negative is infinite
         constexpr int32_t getMaxRows() const noexcept { return mMaxRows; }
 
         //Setters
-        ///Sets the region of the widget
-        ///
-        ///@param region Region of the widget on screen
         constexpr void setRegion(const SDL_Rect& region) noexcept
         {
             assert(((region.w > 2) && (region.h > 2)) && "Region is too small");
@@ -187,9 +148,6 @@ namespace conslr::widgets
             mRerender = true;
             return;
         }
-        ///Sets the text of the widget
-        ///
-        ///@param text Text of the widget
         constexpr void setString(const std::string& text)
         {
             mRows.clear();
@@ -213,14 +171,7 @@ namespace conslr::widgets
             mRerender = true;
             return;
         }
-        ///Sets the value of word wrap
-        ///
-        ///@param val Value to set it to
         constexpr void setWordWrap(bool val) noexcept { mWordWrap = val; mRerender = true; }
-        ///Sets the max rows of the widget
-        ///Excess rows are deleted
-        ///
-        ///@param max New max value
         constexpr void setMaxRows(int32_t max)
         {
             mMaxRows = max;
@@ -240,9 +191,6 @@ namespace conslr::widgets
         }
 
     protected:
-        ///
-        ///Internal constructor
-        ///
         constexpr TextInput(int32_t id, int32_t priority) noexcept :
             IWidget{ id, priority },
             mRegion{ 0, 0, 0, 0 }, mTextRegion{ 0, 0, 0, 0, },
@@ -256,9 +204,6 @@ namespace conslr::widgets
             return;
         }
 
-        ///
-        ///Internal
-        ///
         virtual void render(Screen& screen) override
         {
             assert((mRegion.w > 2 && mRegion.h > 2) && "Scroll List is too small to render");
@@ -379,14 +324,14 @@ namespace conslr::widgets
             return;
         }
 
-        SDL_Rect mRegion; //!<Region of the widget on the screen
-        SDL_Rect mTextRegion; //!<Region that text can be rendered in
-        std::vector<std::string> mRows; //!<Text of the widget
-        int32_t mMaxRows; //!<Max rows for the input, negative is infinite
-        int32_t mCurrentRow; //!<Currently selected row
-        int32_t mSelection; //!<Index of current selection on row
-        bool mWordWrap; //!<If word wrap is enabled
-        int32_t mScrollX; //!<X scroll of the text
-        int32_t mScrollY; //!<Y scroll of the text
+        SDL_Rect mRegion;
+        SDL_Rect mTextRegion;
+        std::vector<std::string> mRows;
+        int32_t mMaxRows; //!<Negative values indicate infinite rows
+        int32_t mCurrentRow;
+        int32_t mSelection;
+        bool mWordWrap;
+        int32_t mScrollX;
+        int32_t mScrollY;
     };
 }

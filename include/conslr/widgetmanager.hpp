@@ -22,15 +22,9 @@ namespace conslr
 {
     struct Theme;
 
-    ///
-    ///WidgetManager class
-    ///
     class WidgetManager
     {
     public:
-        ///
-        ///Default constructor
-        ///
         WidgetManager();
         WidgetManager(const WidgetManager&) = delete;
         WidgetManager(WidgetManager&&) = delete;
@@ -66,26 +60,12 @@ namespace conslr
 
             return ptr;
         }
-        ///Destroys a widget
-        ///
-        ///@param index Index of widget to destroy
         void destroyWidget(int32_t index);
 
-        ///Activates a widget
-        ///
-        ///@param index Index of the widget to activate
         void activateWidget(int32_t index);
-        ///Deactivates a widget
-        ///
-        ///@param index Index of the widget to deactivate
         void deactivateWidget(int32_t index);
 
         //Getters
-        ///Gets a widget as a shared pointer
-        ///
-        ///@tparam T Type to return the widget as
-        ///@param index Index of the widget
-        ///@return Shared pointer to the widget as type T
         template<IsWidget T>
         constexpr std::shared_ptr<T> getWidget(int index)
         {
@@ -94,13 +74,7 @@ namespace conslr
 
             return std::dynamic_pointer_cast<T>(mWidgets.at(index));
         }
-        ///Returns the list of renderable widgets
-        ///
-        ///@return A const reference to the list of renderable widgets
         constexpr const std::list<std::shared_ptr<IRenderable>>& getRenderable() const noexcept { return mRenderable; }
-        ///Gets the current theme as a pointer
-        ///
-        ///@return Pointer to the current theme
         constexpr const Theme* getTheme() const noexcept { return mTheme; }
 
         //Setters
@@ -110,7 +84,7 @@ namespace conslr
         ///@param theme Pointer to the color scheme
         constexpr void setTheme(Theme* theme) noexcept { mTheme = theme; }
 
-        static const int32_t MAX_WIDGETS = 16; //!<Max widgets that a WidgetManager can hold
+        static const int32_t MAX_WIDGETS = 16;
 
     private:
         std::queue<int32_t> mFreeWidgets;

@@ -25,19 +25,10 @@ namespace conslr::widgets
         friend class conslr::WidgetManager;
 
         //Getters
-        ///Gets the region
-        ///
-        ///@return Reference to the region
         constexpr const SDL_Rect& getRegion() const noexcept { return mRegion; }
-        ///Gets the string
-        ///
-        ///@return Reference to the text
         constexpr const std::string& getString() const noexcept { return mString; }
 
         //Setters
-        ///Sets the region of the widget
-        ///
-        ///@param region Region of the widget on screen
         constexpr void setRegion(const SDL_Rect& region) noexcept
         {
             assert(((region.w > 2) && (region.h > 2)) && "Region is too small");
@@ -47,23 +38,14 @@ namespace conslr::widgets
 
             return;
         }
-        ///Sets the text of the widget
-        ///
-        ///@param str Text of the widget
         constexpr void setString(const std::string& str) { mString = str; mRerender = true; }
 
     protected:
-        ///
-        ///Internal constructor
-        ///
         constexpr TextBox(int32_t id, int32_t priority) noexcept :
             IWidget{ id, priority },
             mRegion{ 0, 0, 0, 0 }
         {}
 
-        ///
-        ///Internal
-        ///
         virtual void render(Screen& screen) override
         {
             assert((mRegion.w > 2 && mRegion.h > 2) && "Scroll List is too small to render");
@@ -90,7 +72,7 @@ namespace conslr::widgets
             return;
         }
 
-        SDL_Rect mRegion; //!<Region of the widget on the screen
-        std::string mString; //!<Text of the widget
+        SDL_Rect mRegion;
+        std::string mString;
     };
 }

@@ -23,9 +23,6 @@ namespace conslr
 {
     struct Screen;
 
-    ///
-    ///Console class
-    ///
     class Console
     {
     public:
@@ -34,21 +31,9 @@ namespace conslr
         Console(Console&&) = delete;
         Console& operator=(const Console&) = delete;
         Console& operator=(Console&&) = delete;
-        ///Constructs a console
-        ///
-        ///@param cellWidth Width of a cell
-        ///@param cellHeight Height of a cell
-        ///@param windowCellWidth Width of the console in cells
-        ///@param windowCellHeight Height of the console in cells
         Console(int32_t cellWidth, int32_t cellHeight, int32_t windowCellWidth, int32_t windowCellHeight) noexcept;
-        ///
-        ///Destructor
-        ///
         ~Console();
 
-        ///Processes events for the console
-        ///
-        ///@param event SDL_Event being passed to the console
         void doEvent(SDL_Event& event);
         ///Renders the current screen
         ///
@@ -80,63 +65,22 @@ namespace conslr
         ///@param index Font to destroy
         void destroyFont(int32_t index);
 
-        ///Resizes the cells of the window
-        ///
-        ///@param width New cell width
-        ///@param height New cell height
         void resizeCells(int32_t width, int32_t height) noexcept;
 
         //Getters
-        ///Gets the current screen index
-        ///
-        ///@return Index of the current screen
         [[nodiscard]] constexpr int32_t getCurrentScreenIndex() const noexcept { return mCurrentScreen; }
-        ///Gets the current font index
-        ///
-        ///@return Index of the current font
         [[nodiscard]] constexpr int32_t getCurrentFontIndex() const noexcept { return mCurrentFont; }
-        ///Returns the widget manager of a screen
-        ///
-        ///@param index Index of the screen
-        ///@return Reference to the screen's WidgetManager
         [[nodiscard]] WidgetManager& getWidgetManager(int32_t index) const noexcept;
-        ///Gets the current screen
-        ///
-        ///@return Reference to the current screen
         [[nodiscard]] constexpr const Theme& getTheme() const noexcept { return mTheme; }
-        ///Gets the current key mapping
-        ///
-        ///@return Reference to the consoles key map
         [[nodiscard]] constexpr const KeyMapping& getKeyMap() const noexcept { return mKeyMap; }
-        ///Gets the current window id
-        ///
-        ///@return Window id
         [[nodiscard]] int32_t getWindowId() const noexcept { return SDL_GetWindowID(mWindow); }
 
         //Setters
-        ///Sets current screen index
-        ///
-        ///@param index Screen index
         constexpr void setCurrentScreenIndex(int32_t index) noexcept { assert(index >= 0 && index < mScreens.size()); mCurrentScreen = index; }
-        ///Sets current font index
-        ///
-        ///@param index Font index
         constexpr void setCurrentFontIndex(int32_t index) noexcept { assert(index >= 0 && index < mFonts.size()); mCurrentFont = index; }
-        ///Sets the theme of the console
-        ///
-        ///@param theme Theme to set as console theme
         void setTheme(const Theme& theme) noexcept;
-        ///Sets the mapping of the console
-        ///
-        ///@param keyMap Mapping to set
         constexpr void setKeyMap(const KeyMapping& keyMap) noexcept { mKeyMap = keyMap; }
-        ///Sets the title of the window
-        ///
-        ///@param str String to set
         void setTitle(const std::string& str) noexcept { SDL_SetWindowTitle(mWindow, str.c_str()); }
-        ///Sets the icon of the window
-        ///
-        ///@param icon Icon to set
         void setIcon(SDL_Surface* icon) noexcept { SDL_SetWindowIcon(mWindow, icon); }
 
         //Const values

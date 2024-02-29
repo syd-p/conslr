@@ -13,12 +13,9 @@
 
 namespace conslr
 {
-    ///
-    ///Wrapper class for TaggedString
-    ///
     struct TaggedChar
     {
-        uint8_t character; //!<Character of the string
+        uint8_t character;
         uint8_t tags; //!<Color tags of the string
     };
 
@@ -27,7 +24,7 @@ namespace conslr
     ///
     struct TaggedString
     {
-        constexpr TaggedString() noexcept {} //!<Default constructor
+        constexpr TaggedString() noexcept {}
         ///Creates a tagged string from std::string
         ///
         ///@param str std::string to use
@@ -51,19 +48,12 @@ namespace conslr
         constexpr TaggedString& operator=(const TaggedString& other) { *this = TaggedString(other); return *this; } //!<Copy assignment
         constexpr TaggedString& operator=(TaggedString&& other) noexcept { str = std::move(other.str); return *this; } //!<Move assignment
 
-        ///
-        ///Concat operator
-        ///
         constexpr TaggedString operator+(const TaggedString& other)
         {
             str.insert(str.end(), other.str.begin(), other.str.end());
 
             return *this;
         }
-
-        ///
-        ///Append operator
-        ///
         constexpr TaggedString& operator+=(const TaggedString& other)
         {
             str.insert(str.end(), other.str.begin(), other.str.end());
@@ -71,11 +61,11 @@ namespace conslr
             return *this;
         }
 
-        std::vector<TaggedChar> str; //!<Tagged string
+        std::vector<TaggedChar> str;
     };
 
     const uint8_t FOREGROUND_MASK = 0x0F; //!<Mask for the foreground tag
     const uint8_t BACKGROUND_MASK = 0xF0; //!<Mask for the background tag
 
-    using TagSet = std::array<SDL_Color, 16>; //!<TagSet alias
+    using TagSet = std::array<SDL_Color, 16>;
 }

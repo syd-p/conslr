@@ -12,9 +12,6 @@ struct ExtendedTheme;
 
 namespace conslr
 {
-    ///Theme struct
-    ///
-    ///Provides a unified list data, but does not specify their usage by widgets
     struct Theme
     {
         int32_t borderHorizontal = '-'; //!<Horizontal border character

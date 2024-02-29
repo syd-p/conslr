@@ -29,10 +29,6 @@ namespace conslr::widgets
         friend class conslr::Screen;
         friend class conslr::WidgetManager;
 
-        ///Adds an element to the list
-        ///
-        ///@param t Object value to be added
-        ///@param name Name for rendering the list
         void addElement(const T& t, const std::string& name)
         {
             mElements.emplace_back(mElements.size(), t, name);
@@ -40,10 +36,6 @@ namespace conslr::widgets
 
             return;
         }
-        ///Adds an element to the list
-        ///
-        ///@param t Object value to be added
-        ///@param name Name for rendering the list
         void addElement(T&& t, const std::string& name)
         {
             mElements.emplace_back(mElements.size(), t, name);
@@ -52,9 +44,6 @@ namespace conslr::widgets
             return;
         }
 
-        ///
-        ///Scrolls the list up
-        ///
         virtual constexpr void scrollUp() noexcept override
         {
             if (mElements.size() == 0)
@@ -72,9 +61,6 @@ namespace conslr::widgets
 
             return;
         }
-        ///
-        ///Scrolls the list down
-        ///
         virtual constexpr void scrollDown() noexcept override
         {
             if (mElements.size() == 0)
@@ -94,9 +80,6 @@ namespace conslr::widgets
 
             return;
         }
-        ///
-        ///Chooses the currently selected element
-        ///
         virtual constexpr void chooseElement() noexcept
         {
             mChosenElement = mSelection;
@@ -105,29 +88,14 @@ namespace conslr::widgets
             return;
         }
 
-        ///
-        ///Shows the scrollbar if possible
-        ///
         constexpr void showScrollbar() noexcept { mShowScrollbar = true; mRerender = true; }
-        ///
-        ///Hides the scrollbar
-        ///
         constexpr void hideScrollbar() noexcept { mShowScrollbar = false; mRerender = true; }
 
         //Getters
-        ///Gets the current elements value
-        ///
-        ///@return Value of the currently selected element
         constexpr const T& getCurrentElement() { return mElements.at(mSelection).mElement; }
-        ///Gets the region of the widget
-        ///
-        ///@return Region
         constexpr const SDL_Rect& getRegion() const noexcept { return mRegion; }
 
         //Setters
-        ///Sets the region of the widget
-        ///
-        ///@param region Region in cells of the widget
         constexpr void setRegion(const SDL_Rect& region) noexcept
         {
             assert(((region.w > 2) && (region.h > 2)) && "Region is too small");
@@ -139,18 +107,12 @@ namespace conslr::widgets
         }
 
     protected:
-        ///
-        ///Used internally, should not be called directly
-        ///
         constexpr RadioList(int32_t id, int32_t priority) noexcept :
             IWidget{ id, priority },
             mRegion{ 0, 0, 0, 0 }, mScrollY{ 0 }, mShowScrollbar{ true },
             mChosenElement{ -1 }
         {}
 
-        ///
-        ///Internal
-        ///
         virtual void render(Screen& screen) override
         {
             assert((mRegion.w > 2 && mRegion.h > 2) && "Scroll List is too small to render");
@@ -211,11 +173,11 @@ namespace conslr::widgets
             return;
         }
 
-        std::vector<ScrollListContainer<T>> mElements; //!<Elements of the list
+        std::vector<ScrollListContainer<T>> mElements;
 
-        SDL_Rect mRegion; //!<Region of the widget on screen
-        int32_t mScrollY; //!<Scroll offset of the list
-        bool mShowScrollbar; //!<Shows scrollbar if true
+        SDL_Rect mRegion;
+        int32_t mScrollY;
+        bool mShowScrollbar;
         int32_t mChosenElement; //!<Element currently chosen in the list, negative numbers are no selection
     };
 }

@@ -7,6 +7,9 @@
 ///2) Inherit from needed Interfaces
 ///3) Create a constructor that takes id and priority and passes to IWidget contstructor
 ///4) Overload interface functions
+///5) (For renderables) Make Screen a friend class
+///
+///Optionally (but encouraged) the constructor and the render method should be marked protected or private and the WidgetManager made a friend class
 #pragma once
 
 #include <cstdint>
@@ -22,30 +25,16 @@ namespace conslr
     class WidgetManager;
     struct Theme;
 
-    ///
-    ///Interface for all widgets
-    ///
     class IWidget
     {
     public:
         friend class conslr::WidgetManager;
        
-        ///
-        ///Internal destructor
-        ///
         virtual ~IWidget() {}
 
-        ///Gets the id of the widget
-        ///
-        ///@return Id of the widget
+        //Getters
         [[nodiscard]] constexpr int32_t getId() const noexcept { return mId; }
-        ///Gets the priority of the widget
-        ///
-        ///@return Priority of the widget
         [[nodiscard]] constexpr int32_t getPriority() const noexcept { return mPriority; }
-        ///Gets if the widget is active
-        ///
-        ///@return If the widget is active
         [[nodiscard]] constexpr bool getActive() const noexcept { return mActive; }
 
         ///Sets the active status of the widget
@@ -56,9 +45,6 @@ namespace conslr
         constexpr void setActive(bool val) noexcept { mActive = val; }
 
     protected:
-        ///
-        ///Internal constructor
-        ///
         constexpr IWidget(int32_t id, int32_t priority) noexcept :
             mId{ id },
             mPriority{ priority },
@@ -70,45 +56,22 @@ namespace conslr
         bool mActive; //!<If this widget is currently active, used for changing behavior of widgets
     };
 
-    ///
-    ///Interface for renderable widgets
-    ///
     class IRenderable
     {
     public:
         friend class conslr::Screen;
         friend class conslr::WidgetManager;
 
-        ///
-        ///Shows the widget
-        ///
         constexpr void show() noexcept { mVisible = true; mRerender = true; }
-        ///
-        ///Hides the widget
-        ///
         constexpr void hide() noexcept { mVisible = false; mRerender = true; }
-        ///Gets the visibility of the widget
-        ///
-        ///@return True if the widget is visible, false if the widget is not visible
         [[nodiscard]] constexpr bool isVisible() const noexcept { return mVisible; }
 
-        ///
-        ///Shows the widgets title
-        ///
         constexpr void showTitle() noexcept { mShowTitle = true; mRerender = true; }
-        ///
-        ///Hides the widgets title
-        ///
         constexpr void hideTitle() noexcept { mShowTitle = false; mRerender = true; }
 
-        ///Gets the widgets title
-        ///
-        ///@return Title of the widget
+        //Getters
         [[nodiscard]] constexpr const std::string& getTitle() const noexcept { return mTitle; }
 
-        ///Sets the widgets title
-        ///
-        ///@param title Title of the widget
         constexpr void setTitle(const std::string& title) { mTitle = title; }
         ///Sets the widgets theme
         ///Should primarily be internally used
@@ -119,76 +82,47 @@ namespace conslr
 
         bool mRerender; //!<If the widget is to be rerendered
     protected:
-        ///
-        ///Default constructor
-        ///
         constexpr IRenderable() noexcept :
             mRerender{ true }, mVisible{ true },
             mShowTitle{ false },
             mTheme{ nullptr }
         {}
 
-        ///
-        ///Function called by the widget manager
-        ///Screen that owns the widget manager
-        ///
         virtual void render(Screen&) {}
 
         bool mVisible; //!<If the widget is to be rendered
-        bool mShowTitle; //!<If the widget is to display its title
-        std::string mTitle; //!<Title of the widget
+        bool mShowTitle; 
+        std::string mTitle; 
 
         Theme* mTheme; //!<Current theme, typically the theme of the console
     };
 
-    ///
-    ///Interface for scrollable widgets
-    ///
     class IScrollable
     {
     public:
-        ///
-        ///Default constructor
-        ///
+        friend class conslr::WidgetManager;
+
+        virtual constexpr void scrollUp() noexcept {}
+        virtual constexpr void scrollDown() noexcept {}
+
+        [[nodiscard]] constexpr int32_t getSelection() const noexcept { return mSelection; }
+
+    protected:
         constexpr IScrollable() noexcept :
             mSelection{ 0 }
         {}
 
-        ///
-        ///Scrolls up
-        ///
-        virtual constexpr void scrollUp() noexcept {}
-        ///
-        ///Scrolls down
-        ///
-        virtual constexpr void scrollDown() noexcept {}
-
-        ///Gets the index of the currently selected item
-        ///
-        ///@return Index of the current item
-        [[nodiscard]] constexpr int32_t getSelection() const noexcept { return mSelection; }
-
-    protected:
         int32_t mSelection; //!<Currently selected item
     };
 
-    ///
-    ///Interface for widgets that can take text input
-    ///
     class ITextInput
     {
     public:
         friend class conslr::WidgetManager;
 
-        ///Handles text input
-        ///
-        ///@param event Text input event
         virtual void doTextInput(SDL_TextInputEvent& event) noexcept {}
 
     protected:
-        ///
-        ///Default constructor
-        ///
         constexpr ITextInput() noexcept {}
     };
 

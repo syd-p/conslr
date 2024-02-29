@@ -8,29 +8,22 @@
 
 namespace conslr
 {
-    ///
-    ///Pair used by KeyMapping
-    ///
     struct KeyPair
     {
-        SDL_Scancode scancode; //!<Key that is hit
-        uint16_t mod; //!<Modifiers to the key
+        SDL_Scancode scancode;
+        uint16_t mod;
 
         ///Compares a KeyPair and Keysym
         ///Ignores the keycode of the SDL_Keysym as that is part of the physical keyboard, scancode however is abstracted
         ///
         ///@param keySym Keysym to compare
-        ///
         ///@return True if scancodes are the same, otherwise false
         constexpr bool operator==(const SDL_Keysym& keySym) const noexcept
         {
-            return (scancode == keySym.scancode);
+            return (scancode == keySym.scancode) && (mod == keySym.mod);
         }
     };
 
-    ///
-    ///Collection of mappings for input
-    ///
     struct KeyMapping
     {
         KeyPair scrollUp = { SDL_SCANCODE_UP, KMOD_NONE }; //!<Scroll up
