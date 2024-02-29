@@ -46,12 +46,12 @@ namespace conslr
             requires IsNotInterface<T>
         [[nodiscard]] std::weak_ptr<T> createWidget(int32_t priority = 0)
         {
-            assert(!mFreeWidgets.empty() && "Max number of widgets created");
+           assert(!mFreeWidgets.empty() && "Max number of widgets created");
 
             int32_t index = mFreeWidgets.front();
             mFreeWidgets.pop();
 
-            std::shared_ptr<T> ptr = std::make_shared<T>(index, priority);
+            std::shared_ptr<T> ptr{ new T(index, priority) };
             mWidgets.at(index) = ptr;
 
             if (std::is_base_of<IRenderable, T>())

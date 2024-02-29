@@ -24,23 +24,8 @@ namespace conslr::widgets
     class TextInput : public IWidget, public IRenderable, public ITextInput
     {
     public:
-        friend class Screen;
-
-        ///
-        ///Internal constructor
-        ///
-        constexpr TextInput(int32_t id, int32_t priority) noexcept :
-            IWidget{ id, priority },
-            mRegion{ 0, 0, 0, 0 }, mTextRegion{ 0, 0, 0, 0, },
-            mMaxRows{ -1 },
-            mCurrentRow{ 0 }, mSelection{ 0 },
-            mWordWrap{ false },
-            mScrollX{ 0 }, mScrollY{ 0 }
-        {
-            mRows.emplace_back();
-
-            return;
-        }
+        friend class conslr::Screen;
+        friend class conslr::WidgetManager;
 
         ///
         ///Handles text input
@@ -255,6 +240,22 @@ namespace conslr::widgets
         }
 
     protected:
+        ///
+        ///Internal constructor
+        ///
+        constexpr TextInput(int32_t id, int32_t priority) noexcept :
+            IWidget{ id, priority },
+            mRegion{ 0, 0, 0, 0 }, mTextRegion{ 0, 0, 0, 0, },
+            mMaxRows{ -1 },
+            mCurrentRow{ 0 }, mSelection{ 0 },
+            mWordWrap{ false },
+            mScrollX{ 0 }, mScrollY{ 0 }
+        {
+            mRows.emplace_back();
+
+            return;
+        }
+
         ///
         ///Internal
         ///

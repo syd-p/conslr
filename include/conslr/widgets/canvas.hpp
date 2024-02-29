@@ -20,16 +20,8 @@ namespace conslr::widgets
     class Canvas : public IWidget, public IRenderable
     {
     public:
-        friend class Screen;
-
-        ///
-        ///Internal constructor
-        ///
-        Canvas(int32_t id, int32_t priority) noexcept :
-            IWidget{ id, priority },
-            mRegion{ 0, 0, 0, 0 },
-            mRender{ nullptr }
-        {}
+        friend class conslr::Screen;
+        friend class conslr::WidgetManager;
 
         ///Gets region of the widget
         ///
@@ -46,6 +38,15 @@ namespace conslr::widgets
         void setRenderFunction(std::function<void(const SDL_Rect&, conslr::Screen&)> func) { mRender = func; }
 
     protected:
+        ///
+        ///Internal constructor
+        ///
+        Canvas(int32_t id, int32_t priority) noexcept :
+            IWidget{ id, priority },
+            mRegion{ 0, 0, 0, 0 },
+            mRender{ nullptr }
+        {}
+
         ///
         ///Internal
         ///

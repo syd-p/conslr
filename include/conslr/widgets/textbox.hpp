@@ -11,6 +11,7 @@
 #include "conslr/widget.hpp"
 #include "conslr/screen.hpp"
 #include "conslr/theme.hpp"
+#include "conslr/widgetmanager.hpp"
 
 namespace conslr::widgets
 {
@@ -20,15 +21,8 @@ namespace conslr::widgets
     class TextBox : public IWidget, public IRenderable
     {
     public:
-        friend class Screen;
-
-        ///
-        ///Internal constructor
-        ///
-        constexpr TextBox(int32_t id, int32_t priority) noexcept :
-            IWidget{ id, priority },
-            mRegion{ 0, 0, 0, 0 }
-        {}
+        friend class conslr::Screen;
+        friend class conslr::WidgetManager;
 
         //Getters
         ///Gets the region
@@ -59,6 +53,14 @@ namespace conslr::widgets
         constexpr void setString(const std::string& str) { mString = str; mRerender = true; }
 
     protected:
+        ///
+        ///Internal constructor
+        ///
+        constexpr TextBox(int32_t id, int32_t priority) noexcept :
+            IWidget{ id, priority },
+            mRegion{ 0, 0, 0, 0 }
+        {}
+
         ///
         ///Internal
         ///

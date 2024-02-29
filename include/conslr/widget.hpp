@@ -19,6 +19,7 @@
 namespace conslr
 {
     class Screen;
+    class WidgetManager;
     struct Theme;
 
     ///
@@ -27,14 +28,8 @@ namespace conslr
     class IWidget
     {
     public:
-        ///
-        ///Internal constructor
-        ///
-        constexpr IWidget(int32_t id, int32_t priority) noexcept :
-            mId{ id },
-            mPriority{ priority },
-            mActive{ false }
-        {}
+        friend class conslr::WidgetManager;
+       
         ///
         ///Internal destructor
         ///
@@ -61,6 +56,15 @@ namespace conslr
         constexpr void setActive(bool val) noexcept { mActive = val; }
 
     protected:
+        ///
+        ///Internal constructor
+        ///
+        constexpr IWidget(int32_t id, int32_t priority) noexcept :
+            mId{ id },
+            mPriority{ priority },
+            mActive{ false }
+        {}
+
         int32_t mId; //!<Internal id of the widget
         int32_t mPriority; //!<Priority of the widget, higher values will be drawn above lower values
         bool mActive; //!<If this widget is currently active, used for changing behavior of widgets
@@ -72,16 +76,8 @@ namespace conslr
     class IRenderable
     {
     public:
-        friend class Screen;
-
-        ///
-        ///Default constructor
-        ///
-        constexpr IRenderable() noexcept :
-            mRerender{ true }, mVisible{ true },
-            mShowTitle{ false },
-            mTheme{ nullptr }
-        {}
+        friend class conslr::Screen;
+        friend class conslr::WidgetManager;
 
         ///
         ///Shows the widget
@@ -123,6 +119,15 @@ namespace conslr
 
         bool mRerender; //!<If the widget is to be rerendered
     protected:
+        ///
+        ///Default constructor
+        ///
+        constexpr IRenderable() noexcept :
+            mRerender{ true }, mVisible{ true },
+            mShowTitle{ false },
+            mTheme{ nullptr }
+        {}
+
         ///
         ///Function called by the widget manager
         ///Screen that owns the widget manager
@@ -173,15 +178,18 @@ namespace conslr
     class ITextInput
     {
     public:
-        ///
-        ///Default constructor
-        ///
-        constexpr ITextInput() noexcept {}
+        friend class conslr::WidgetManager;
 
         ///Handles text input
         ///
         ///@param event Text input event
         virtual void doTextInput(SDL_TextInputEvent& event) noexcept {}
+
+    protected:
+        ///
+        ///Default constructor
+        ///
+        constexpr ITextInput() noexcept {}
     };
 
     template <typename T>

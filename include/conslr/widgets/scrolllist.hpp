@@ -35,15 +35,8 @@ namespace conslr::widgets
     class ScrollList : public IWidget, public IRenderable, public IScrollable
     {
     public:
-        friend class Screen;
-
-        ///
-        ///Used internally, should not be called directly
-        ///
-        constexpr ScrollList(int32_t id, int32_t priority) noexcept :
-            IWidget{ id, priority },
-            mRegion{ 0, 0, 0, 0 }, mScrollY{ 0 }, mShowScrollbar{ true }
-        {}
+        friend class conslr::Screen;
+        friend class conslr::WidgetManager;
 
         ///Adds an element to the list
         ///
@@ -145,6 +138,14 @@ namespace conslr::widgets
         }
 
     protected:
+        ///
+        ///Used internally, should not be called directly
+        ///
+        constexpr ScrollList(int32_t id, int32_t priority) noexcept :
+            IWidget{ id, priority },
+            mRegion{ 0, 0, 0, 0 }, mScrollY{ 0 }, mShowScrollbar{ true }
+        {}
+
         ///
         ///Internal
         ///

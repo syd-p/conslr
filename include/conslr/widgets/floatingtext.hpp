@@ -20,15 +20,8 @@ namespace conslr::widgets
     class FloatingText : public IWidget, public IRenderable
     {
     public:
-        friend class Screen;
-
-        ///
-        ///Internal constructor
-        ///
-        constexpr FloatingText(int32_t id, int32_t priority) noexcept :
-            IWidget{ id, priority },
-            mRegion{ 0, 0, 0, 0 }
-        {}
+        friend class conslr::Screen;
+        friend class conslr::WidgetManager;
 
         //Getters
         ///Returns the region
@@ -58,6 +51,14 @@ namespace conslr::widgets
         constexpr void setString(const std::string& str) { mString = str; mRerender = true; }
 
     protected:
+        ///
+        ///Internal constructor
+        ///
+        constexpr FloatingText(int32_t id, int32_t priority) noexcept :
+            IWidget{ id, priority },
+            mRegion{ 0, 0, 0, 0 }
+        {}
+
         ///
         ///Internal
         ///

@@ -18,15 +18,8 @@ namespace conslr::widgets
     class TaggedFloatingText : public IWidget, public IRenderable
     {
     public:
-        friend class Screen;
-
-        ///
-        ///Internal constructor
-        ///
-        constexpr TaggedFloatingText(int32_t id, int32_t priority) noexcept :
-            IWidget{ id, priority },
-            mRegion{ 0, 0, 0, 0 }
-        {}
+        friend class conslr::Screen;
+        friend class conslr::WidgetManager;
 
         //Getters
         ///Returns the region
@@ -65,6 +58,14 @@ namespace conslr::widgets
         constexpr void setTags(const TagSet& tags) { mTags = tags; mRerender = true; }
 
     protected:
+        ///
+        ///Internal constructor
+        ///
+        constexpr TaggedFloatingText(int32_t id, int32_t priority) noexcept :
+            IWidget{ id, priority },
+            mRegion{ 0, 0, 0, 0 }
+        {}
+
         ///
         ///Internal
         ///
