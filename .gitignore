@@ -3,9 +3,21 @@
 
 Debug/*
 Release/*
-build/*
 docs/*
 tests/*
+
+build/bin/*
+build/lib/*
+build/.*
+build/Makefile
+build/CMakeFiles/*
+build/CMakeCache.txt
+build/build.ninja
+build/cmake_install.cmake
+build/compile_commands.json
+build/ibm_vga_fontsheet.bmp
+build/install_manifest.txt
+build/custombuild.sh
 
 compile_commands.json
 
