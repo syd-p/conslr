@@ -32,6 +32,13 @@ namespace conslr
         Console& operator=(const Console&) = delete;
         Console& operator=(Console&&) = delete;
         Console(int32_t cellWidth, int32_t cellHeight, int32_t windowCellWidth, int32_t windowCellHeight) noexcept;
+        ///Creates a console with cell size relative to the display
+        ///
+        ///@param windowCellWidth Window width in cells
+        ///@param windowCellHeight Window height in cells
+        ///@param widthPercent Ratio between window width and display width in range (0-1]
+        ///@param heightPerecent Ratio between window height and display height in range (0-1]
+        Console(int32_t windowCellWidth, int32_t windowCellHeight, double widthPercent, double heightPercent) noexcept;
         ~Console();
 
         void doEvent(SDL_Event& event);

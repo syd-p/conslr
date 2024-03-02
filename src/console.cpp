@@ -32,9 +32,6 @@ conslr::Console::Console(int32_t cellWidth, int32_t cellHeight, int32_t windowCe
         mFonts.at(i).reset(nullptr);
     }
 
-    //init was already called for this console or the object is somehow malformed
-    assert((mWindow == nullptr && mRenderer == nullptr) && "Console was already initialized");
-
     if (!SDL_WasInit(SDL_INIT_VIDEO))
     {
         if (SDL_InitSubSystem(SDL_INIT_VIDEO) < 0)
@@ -66,6 +63,78 @@ conslr::Console::Console(int32_t cellWidth, int32_t cellHeight, int32_t windowCe
 
     return;
 }
+
+conslr::Console::Console(int32_t windowCellWidth, int32_t windowCellHeight, double widthPercent, double heightPercent) noexcept :
+    mCellWidth{ 0 }, mCellHeight{ 0 },
+    mWindowCellWidth{ windowCellWidth }, mWindowCellHeight{ windowCellHeight },
+    mWindowWidth{ 0 }, mWindowHeight{ 0 },
+    mWindow{ nullptr }, mRenderer{ nullptr },
+    mTheme{ themes::Default },
+    mCurrentScreen{ -1 },
+    mCurrentFont{ -1 }
+{
+    assert((widthPercent > 0.0 && widthPercent <= 1.0) && "Invalid width percent");
+    assert((heightPercent > 0.0 && heightPercent <= 1.0) && "Invalid height percent");
+
+    if (!SDL_WasInit(SDL_INIT_VIDEO))
+    {
+        if (SDL_InitSubSystem(SDL_INIT_VIDEO) < 0)
+        {
+            std::cerr << "Failed to init SDL video: " << SDL_GetError() << std::endl;
+            exit(-1);
+        }
+    }
+
+    SDL_DisplayMode dm;
+    if (SDL_GetCurrentDisplayMode(0, &dm) < 0)
+    {
+        std::cerr << SDL_GetError() << std::endl;
+        exit(-4);
+    }
+
+    mWindowWidth = dm.w * widthPercent;
+    mWindowHeight = dm.h * heightPercent;
+
+    mCellWidth = std::max(1, mWindowWidth / windowCellWidth);
+    mCellHeight = std::max(1, mWindowHeight / windowCellHeight);
+
+    assert((mCellWidth > 0 && mCellHeight > 0 && windowCellWidth > 0 && windowCellHeight > 0) && "Console size is 0");
+
+    for (auto i = 0; i < MAX_SCREENS; i++)
+    {
+        mFreeScreens.push(i);
+        mScreens.at(i).reset(nullptr);
+    }
+
+    for (auto i = 0; i < MAX_FONTS; i++)
+    {
+        mFreeFonts.push(i);
+        mFonts.at(i).reset(nullptr);
+    }
+
+    mWindow = SDL_CreateWindow("Console", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, mWindowWidth, mWindowHeight, 0);
+    if (!mWindow)
+    {
+        std::cerr << "Failed to create window, " << SDL_GetError() << std::endl;
+        mWindow = nullptr;
+
+        exit(-2);
+    }
+
+    mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    if (!mRenderer)
+    {
+        std::cerr << "Failed to create renderer, " << SDL_GetError() << std::endl;
+        SDL_DestroyWindow(mWindow);
+        mWindow = nullptr;
+        mRenderer = nullptr;
+
+        exit(-3);
+    }
+
+    return;
+}
+
 
 conslr::Console::~Console()
 {
