@@ -14,24 +14,12 @@ To do so do the following
 git clone https://github.com/syd-p/conslr.git
 cd conslr
 ```
-2. Create a directory to build in:
+2. Change to the build directory and run build.sh 
 ```
-mkdir build 
 cd build
+./build.sh
 ```
-3. Create the make files from CMake:
-```
-cmake [-DCMAKE_BUILD_TYPE=[type]] ..
-```
-4. Build:
-```
-cmake --build .
-```
-This should create two folders, lib contains the build library and bin contains some example programs such as:
-```
-./bin/widgets
-```
-5. Install:
+3. Install:
 ```
 cmake --install .
 ```
