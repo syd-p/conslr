@@ -69,9 +69,12 @@ void conslr::WidgetManager::deactivateWidget(int32_t index)
 
 void conslr::WidgetManager::loadFromFile(const std::string& file)
 {
+    clear();
     WidgetFactory::initialize();
 
-    WidgetFactory::createWidget("TextBox", *this, {});
+    //Todo Add File Loading
+
+    WidgetFactory::createWidget("FloatingText", *this, {});
 
     return;
 }

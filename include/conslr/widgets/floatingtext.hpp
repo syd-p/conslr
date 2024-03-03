@@ -11,6 +11,8 @@
 #include "conslr/widget.hpp"
 #include "conslr/screen.hpp"
 #include "conslr/theme.hpp"
+#include "conslr/widgetmanager.hpp"
+#include "conslr/widgetfactory.hpp"
 
 namespace conslr::widgets
 {
@@ -61,4 +63,20 @@ namespace conslr::widgets
         SDL_Rect mRegion;
         std::string mString; //!<Text of the widget
     };
+
+    inline void constructFloatingText(WidgetManager& wm, const WidgetParameterMap& params)
+    {
+        int priority = 0;
+        if (params.contains("priority"))
+        {
+            priority = std::stoi(params.at("priority"));
+        }
+        auto wptr = wm.createWidget<FloatingText>(priority);
+
+        wptr.lock()->setRegion({ 0, 0, 10, 2 });
+        wptr.lock()->setString("Text");
+
+        return;
+    } 
+
 }
