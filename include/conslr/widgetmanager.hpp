@@ -65,6 +65,8 @@ namespace conslr
         void activateWidget(int32_t index);
         void deactivateWidget(int32_t index);
 
+        void clear();
+
         //Getters
         template<IsWidget T>
         constexpr std::shared_ptr<T> getWidget(int index)

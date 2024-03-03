@@ -1,6 +1,7 @@
 #include "conslr/widgetmanager.hpp"
 
 #include <memory>
+#include <utility>
 
 conslr::WidgetManager::WidgetManager()
 {
@@ -60,6 +61,23 @@ void conslr::WidgetManager::deactivateWidget(int32_t index)
     }
 
     mWidgets.at(index)->setActive(false);
+
+    return;
+}
+
+void conslr::WidgetManager::clear()
+{
+    std::queue<int32_t> empty;
+    std::swap(mFreeWidgets, empty);
+    for (auto i = 0; i < MAX_WIDGETS; i++)
+    {
+        mFreeWidgets.push(i);
+    }
+    
+    std::array<std::shared_ptr<IWidget>, MAX_WIDGETS> emptyArr{};
+    std::swap(mWidgets, emptyArr);
+
+    mRenderable.clear();
 
     return;
 }
