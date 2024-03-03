@@ -35,7 +35,7 @@ namespace conslr
         {
             uint8_t tag = ((bg & 0x0F) << 4) | (fg & 0x0F);
 
-            for (auto i = 0; i < str.size(); i++)
+            for (size_t i = 0; i < str.size(); i++)
             {
                 this->str.at(i).character = str.at(i);
                 this->str.at(i).tags = tag;

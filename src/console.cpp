@@ -13,8 +13,8 @@ conslr::Console::Console(int32_t cellWidth, int32_t cellHeight, int32_t windowCe
     mCellWidth{ cellWidth }, mCellHeight{ cellHeight },
     mWindowCellWidth{ windowCellWidth }, mWindowCellHeight{ windowCellHeight },
     mWindowWidth{ cellWidth * windowCellWidth }, mWindowHeight{ cellHeight * windowCellHeight },
-    mWindow{ nullptr }, mRenderer{ nullptr },
     mTheme{ themes::Default },
+    mWindow{ nullptr }, mRenderer{ nullptr },
     mCurrentScreen{ -1 },
     mCurrentFont{ -1 }
 {
@@ -68,8 +68,8 @@ conslr::Console::Console(int32_t windowCellWidth, int32_t windowCellHeight, doub
     mCellWidth{ 0 }, mCellHeight{ 0 },
     mWindowCellWidth{ windowCellWidth }, mWindowCellHeight{ windowCellHeight },
     mWindowWidth{ 0 }, mWindowHeight{ 0 },
-    mWindow{ nullptr }, mRenderer{ nullptr },
     mTheme{ themes::Default },
+    mWindow{ nullptr }, mRenderer{ nullptr },
     mCurrentScreen{ -1 },
     mCurrentFont{ -1 }
 {
@@ -199,7 +199,7 @@ void conslr::Console::render()
 
     const auto& cells = scr.getCells();
     //Ensure size of screen is same as size of console
-    assert((cells.size() == mWindowCellWidth * mWindowCellHeight) && "Size of console and size of screen do not match");
+    assert((cells.size() == (size_t)(mWindowCellWidth * mWindowCellHeight)) && "Size of console and size of screen do not match");
     for (auto i = 0; i < mWindowCellWidth * mWindowCellHeight; i++)
     {
         const auto& cell = cells.at(i);

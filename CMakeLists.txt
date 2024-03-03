@@ -37,6 +37,8 @@ target_include_directories(conslr PRIVATE ${SDL2_INCLUDE_DIR})
 target_link_libraries(conslr PRIVATE ${SDL2_LIBRARIES})
 target_link_libraries(conslr PRIVATE ${SDL2_IMAGE_LIBRARIES})
 
+target_compile_options(conslr PRIVATE -Wall -Wextra -pedantic)
+
 #examples
 
 file(GLOB EXAMPLE_SOURCES examples/*.cpp)

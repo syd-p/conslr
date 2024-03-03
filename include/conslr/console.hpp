@@ -21,7 +21,7 @@ union SDL_Event;
 
 namespace conslr
 {
-    struct Screen;
+    class Screen;
 
     class Console
     {
@@ -83,8 +83,8 @@ namespace conslr
         [[nodiscard]] int32_t getWindowId() const noexcept { return SDL_GetWindowID(mWindow); }
 
         //Setters
-        constexpr void setCurrentScreenIndex(int32_t index) noexcept { assert(index >= 0 && index < mScreens.size()); mCurrentScreen = index; }
-        constexpr void setCurrentFontIndex(int32_t index) noexcept { assert(index >= 0 && index < mFonts.size()); mCurrentFont = index; }
+        constexpr void setCurrentScreenIndex(int32_t index) noexcept { assert(index >= 0 && (size_t)index < mScreens.size()); mCurrentScreen = index; }
+        constexpr void setCurrentFontIndex(int32_t index) noexcept { assert(index >= 0 && (size_t)index < mFonts.size()); mCurrentFont = index; }
         void setTheme(const Theme& theme) noexcept;
         constexpr void setKeyMap(const KeyMapping& keyMap) noexcept { mKeyMap = keyMap; }
         void setTitle(const std::string& str) noexcept { SDL_SetWindowTitle(mWindow, str.c_str()); }

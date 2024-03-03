@@ -120,7 +120,7 @@ namespace conslr
     public:
         friend class conslr::WidgetManager;
 
-        virtual void doTextInput(SDL_TextInputEvent& event) noexcept {}
+        virtual void doTextInput(SDL_TextInputEvent& event) noexcept { (void)event; }
 
     protected:
         constexpr ITextInput() noexcept {}
