@@ -17,6 +17,7 @@ add_library(conslr SHARED
     src/console.cpp
     src/screen.cpp
     src/widgetmanager.cpp
+    src/widgetfactory.cpp
 )
 
 file(GLOB conslr_headers include/conslr/*)

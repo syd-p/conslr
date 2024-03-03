@@ -65,6 +65,8 @@ namespace conslr
         void activateWidget(int32_t index);
         void deactivateWidget(int32_t index);
 
+        void loadFromFile(const std::string& file);
+
         void clear();
 
         //Getters

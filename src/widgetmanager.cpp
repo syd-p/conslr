@@ -3,6 +3,8 @@
 #include <memory>
 #include <utility>
 
+#include "conslr/widgetfactory.hpp"
+
 conslr::WidgetManager::WidgetManager()
 {
     for (int i = 0; i < MAX_WIDGETS; i++)
@@ -61,6 +63,15 @@ void conslr::WidgetManager::deactivateWidget(int32_t index)
     }
 
     mWidgets.at(index)->setActive(false);
+
+    return;
+}
+
+void conslr::WidgetManager::loadFromFile(const std::string& file)
+{
+    WidgetFactory::initialize();
+
+    WidgetFactory::createWidget("TextBox", *this, {});
 
     return;
 }
