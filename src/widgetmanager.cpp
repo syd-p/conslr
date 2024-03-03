@@ -74,7 +74,11 @@ void conslr::WidgetManager::loadFromFile(const std::string& file)
 
     //Todo Add File Loading
 
-    WidgetFactory::createWidget("FloatingText", *this, {});
+    WidgetFactory::createWidget("FloatingText", *this, 
+            {
+            { "region", "0 0 20 4" },
+            { "string", "Hello world!" }
+            });
 
     return;
 }

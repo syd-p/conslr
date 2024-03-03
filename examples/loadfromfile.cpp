@@ -1,16 +1,8 @@
 #include <string>
-#include <iostream>
 
 #include <SDL.h>
 
 #include "conslr/console.hpp"
-#include "conslr/taggedstring.hpp"
-#include "conslr/theme.hpp"
-#include "conslr/themes/defaulttheme.hpp"
-#include "conslr/widgets/scrolllist.hpp"
-#include "conslr/widgets/textbox.hpp"
-#include "conslr/widgets/taggedtextbox.hpp"
-#include "conslr/widgets/floatingtext.hpp"
 
 int main()
 {

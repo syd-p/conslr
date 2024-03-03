@@ -1,3 +1,7 @@
+///
+///@file conslr/widgetfactory.hpp
+///@brief Definition for the WidgetFactory used to load from files
+///
 #pragma once
 
 #include <unordered_map>
