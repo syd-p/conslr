@@ -26,6 +26,11 @@ namespace conslr
 
         static void registerWidget(const std::string& key, WidgetFactorySignature factory)
         {
+            if (mFactories.contains(key))
+            {
+                throw std::runtime_error("Key already registered, key: " + key);
+            }
+
             mFactories.insert({ key, factory });
 
             return;

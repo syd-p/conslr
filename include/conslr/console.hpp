@@ -14,6 +14,7 @@
 #include "conslr/keymapping.hpp"
 #include "conslr/widgetmanager.hpp"
 #include "conslr/theme.hpp"
+#include "conslr/screen.hpp"
 
 struct SDL_Window;
 struct SDL_Renderer;
@@ -23,8 +24,6 @@ union SDL_Event;
 
 namespace conslr
 {
-    class Screen;
-
     class Console
     {
     public:
@@ -37,9 +36,6 @@ namespace conslr
         ~Console();
 
         void doEvent(SDL_Event& event);
-        ///Renders the current screen
-        ///
-        ///Only called when screen.mUpdated is true
         void render();
         ///Destroys the console
         ///
@@ -72,7 +68,19 @@ namespace conslr
         //Getters
         [[nodiscard]] constexpr int32_t getCurrentScreenIndex() const noexcept { return mCurrentScreen; }
         [[nodiscard]] constexpr int32_t getCurrentFontIndex() const noexcept { return mCurrentFont; }
-        [[nodiscard]] WidgetManager& getWidgetManager(int32_t index) const;
+        [[nodiscard]] constexpr WidgetManager& getWidgetManager(int32_t index) const
+        {
+            if (!(index >= 0 && index < MAX_SCREENS))
+            {
+                throw std::invalid_argument("Screen index is out of bounds, index: " + std::to_string(index));
+            }
+            if (mScreens.at(index) == nullptr)
+            {
+                throw std::runtime_error("Screen at index is already nullptr, index: " + std::to_string(index));
+            }
+
+            return mScreens.at(index)->mWidgetManager;
+        }
         [[nodiscard]] constexpr const Theme& getTheme() const noexcept { return mTheme; }
         [[nodiscard]] constexpr const KeyMapping& getKeyMap() const noexcept { return mKeyMap; }
         [[nodiscard]] int32_t getWindowId() const noexcept { return SDL_GetWindowID(mWindow); }

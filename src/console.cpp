@@ -44,29 +44,20 @@ conslr::Console::Console(int32_t cellWidth, int32_t cellHeight, int32_t windowCe
     {
         if (SDL_InitSubSystem(SDL_INIT_VIDEO) < 0)
         {
-            std::cerr << "Failed to init SDL video: " << SDL_GetError() << std::endl;
-            exit(-1);
+            throw std::runtime_error(std::string("Failed to init video: ") + SDL_GetError());
         }
     }
 
     mWindow = SDL_CreateWindow("Console", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, mWindowWidth, mWindowHeight, 0);
     if (!mWindow)
     {
-        std::cerr << "Failed to create window, " << SDL_GetError() << std::endl;
-        mWindow = nullptr;
-
-        exit(-2);
+        throw std::runtime_error(std::string("Failed to create window: ") + SDL_GetError());
     }
 
     mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     if (!mRenderer)
     {
-        std::cerr << "Failed to create renderer, " << SDL_GetError() << std::endl;
-        SDL_DestroyWindow(mWindow);
-        mWindow = nullptr;
-        mRenderer = nullptr;
-
-        exit(-3);
+        throw std::runtime_error(std::string("Failed to create renderer: ") + SDL_GetError());
     }
 
     return;
@@ -310,21 +301,6 @@ void conslr::Console::resizeCells(int32_t width, int32_t height)
     SDL_SetWindowSize(mWindow, mWindowWidth, mWindowHeight);
 
     return;
-}
-
-//Getters
-conslr::WidgetManager& conslr::Console::getWidgetManager(int32_t index) const 
-{
-    if (!(index >= 0 && index < MAX_SCREENS))
-    {
-        throw std::invalid_argument("Screen index is out of bounds, index: " + std::to_string(index));
-    }
-    if (mScreens.at(index) == nullptr)
-    {
-        throw std::runtime_error("Screen at index is already nullptr, index: " + std::to_string(index));
-    }
-
-    return mScreens.at(index)->mWidgetManager;
 }
 
 //Setters
