@@ -1,6 +1,7 @@
 #include "conslr/widgetmanager.hpp"
 
 #include <memory>
+#include <string>
 #include <unordered_map>
 #include <utility>
 #include <fstream>
@@ -106,8 +107,20 @@ std::unordered_map<std::string, int32_t> conslr::WidgetManager::loadFromFile(con
         }
 
         auto name = WidgetFactory::createWidget(params.at("type"), *this, params);        
-        //Todo handle copies
-        widgetNames.insert(name);
+        //No copies found
+        if (!widgetNames.contains(name.first))
+        {
+            widgetNames.insert(name);
+            continue;
+        }
+
+        int32_t copyIndex = 1;
+        while (widgetNames.contains(name.first + '(' + std::to_string(copyIndex) + ')'))
+        {
+            copyIndex++;
+        }
+
+        widgetNames.insert({ name.first + '(' + std::to_string(copyIndex) + ')', name.second });
     }
 
     return widgetNames;
