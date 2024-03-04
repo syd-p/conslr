@@ -56,6 +56,8 @@ namespace conslr
         ///@param str String to process
         TaggedString(std::string str)
         {
+            //Todo: this but better somehow
+            
             this->str.resize(str.size());
 
             //Initial tags, bg = 1, fg = 0
