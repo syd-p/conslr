@@ -9,7 +9,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 configure_file(res/ibm_vga_fontsheet.bmp ${CMAKE_SOURCE_DIR}/build/ibm_vga_fontsheet.bmp COPYONLY)
 configure_file(res/examplescr.json ${CMAKE_SOURCE_DIR}/build/examplescr.json COPYONLY)
 
-project(conslr VERSION 1.2.0 DESCRIPTION "Simple console emulator")
+project(conslr VERSION 1.2.1 DESCRIPTION "Simple console emulator")
 
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
