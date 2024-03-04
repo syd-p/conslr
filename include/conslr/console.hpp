@@ -8,6 +8,8 @@
 #include <array>
 #include <queue>
 #include <memory>
+#include <stdexcept>
+#include <string>
 
 #include "conslr/keymapping.hpp"
 #include "conslr/widgetmanager.hpp"
@@ -31,14 +33,7 @@ namespace conslr
         Console(Console&&) = delete;
         Console& operator=(const Console&) = delete;
         Console& operator=(Console&&) = delete;
-        Console(int32_t cellWidth, int32_t cellHeight, int32_t windowCellWidth, int32_t windowCellHeight) noexcept;
-        ///Creates a console with cell size relative to the display
-        ///
-        ///@param windowCellWidth Window width in cells
-        ///@param windowCellHeight Window height in cells
-        ///@param widthPercent Ratio between window width and display width in range (0-1]
-        ///@param heightPercent Ratio between window height and display height in range (0-1]
-        Console(int32_t windowCellWidth, int32_t windowCellHeight, double widthPercent, double heightPercent) noexcept;
+        Console(int32_t cellWidth, int32_t cellHeight, int32_t windowCellWidth, int32_t windowCellHeight);
         ~Console();
 
         void doEvent(SDL_Event& event);
@@ -72,19 +67,27 @@ namespace conslr
         ///@param index Font to destroy
         void destroyFont(int32_t index);
 
-        void resizeCells(int32_t width, int32_t height) noexcept;
+        void resizeCells(int32_t width, int32_t height);
 
         //Getters
         [[nodiscard]] constexpr int32_t getCurrentScreenIndex() const noexcept { return mCurrentScreen; }
         [[nodiscard]] constexpr int32_t getCurrentFontIndex() const noexcept { return mCurrentFont; }
-        [[nodiscard]] WidgetManager& getWidgetManager(int32_t index) const noexcept;
+        [[nodiscard]] WidgetManager& getWidgetManager(int32_t index) const;
         [[nodiscard]] constexpr const Theme& getTheme() const noexcept { return mTheme; }
         [[nodiscard]] constexpr const KeyMapping& getKeyMap() const noexcept { return mKeyMap; }
         [[nodiscard]] int32_t getWindowId() const noexcept { return SDL_GetWindowID(mWindow); }
 
         //Setters
-        constexpr void setCurrentScreenIndex(int32_t index) noexcept { assert(index >= 0 && (size_t)index < mScreens.size()); mCurrentScreen = index; }
-        constexpr void setCurrentFontIndex(int32_t index) noexcept { assert(index >= 0 && (size_t)index < mFonts.size()); mCurrentFont = index; }
+        constexpr void setCurrentScreenIndex(int32_t index)
+        { 
+            if (!(index >= 0 && (size_t)index < mScreens.size())) { throw std::invalid_argument("Index is out of bounds, index: " + std::to_string(index)); } 
+            mCurrentScreen = index; 
+        }
+        constexpr void setCurrentFontIndex(int32_t index) 
+        { 
+            if (!(index >= 0 && (size_t)index < mFonts.size())) { throw std::invalid_argument("Index is out of bounds, index: " + std::to_string(index)); } 
+            mCurrentFont = index; 
+        }
         void setTheme(const Theme& theme) noexcept;
         constexpr void setKeyMap(const KeyMapping& keyMap) noexcept { mKeyMap = keyMap; }
         void setTitle(const std::string& str) noexcept { SDL_SetWindowTitle(mWindow, str.c_str()); }
