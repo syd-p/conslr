@@ -43,6 +43,16 @@ namespace conslr
 
             return;
         }
+        ///Creates a tagged string from a formatted std::string
+        ///Tags in the string are marked by {[b/f]n} where b is background tag, f is foreground tag, and n is the tag index
+        ///
+        ///@param str String to process
+        constexpr TaggedString(const std::string& str) noexcept
+        {
+            //Todo process string
+
+            return;
+        }
         constexpr TaggedString(const TaggedString& other) : str{ other.str } {} //!<Copy constructor
         constexpr TaggedString(TaggedString&& other) noexcept : str{ std::move(other.str) } {} //!<Move constructor
         constexpr TaggedString& operator=(const TaggedString& other) { *this = TaggedString(other); return *this; } //!<Copy assignment
@@ -68,4 +78,16 @@ namespace conslr
     const uint8_t BACKGROUND_MASK = 0xF0; //!<Mask for the background tag
 
     using TagSet = std::array<SDL_Color, 16>;
+
+    ///Creates a TagSet from a string
+    ///The string should be in the format of "tagIndex R G B A"
+    ///
+    ///@param str String to process
+    ///@return Created TagSet
+    constexpr TagSet createTaggedSetFromString(const std::string& str)
+    {
+        TagSet tags;
+
+        return tags;
+    }
 }

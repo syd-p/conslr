@@ -141,12 +141,14 @@ namespace conslr::widgets
 
         if (params.contains("string"))
         {
-            //Todo create tagged string
+            //Loads a formatted string
+            ptr->setString(TaggedString{ params.at("string") });
         }
 
         if (params.contains("tags"))
         {
-            //Todo create tags
+            //Loads a formatted tagset
+            ptr->setTags(createTaggedSetFromString(params.at("tags")));
         }
 
         if (params.contains("title"))
