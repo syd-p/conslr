@@ -3,6 +3,7 @@
 #include <SDL.h>
 
 #include "conslr/console.hpp"
+#include "conslr/widgets/scrolllist.hpp"
 
 int main()
 {
@@ -18,7 +19,8 @@ int main()
     int32_t scr = console.createScreen();
     console.setCurrentScreenIndex(scr);
 
-    console.getWidgetManager(scr).loadFromFile("examplescr.json");
+    auto widgetIds = console.getWidgetManager(scr).loadFromFile("examplescr.json");
+    auto list = console.getWidgetManager(scr).getWidget<conslr::widgets::ScrollList<int32_t>>(widgetIds.at("ScrollList1"));
 
     SDL_Event event;
     bool running = true;
@@ -29,6 +31,19 @@ int main()
             if (event.type == SDL_QUIT)
             {
                 running = false;
+            }
+
+            if (event.type == SDL_KEYDOWN)
+            {
+                if (event.key.keysym.scancode == SDL_SCANCODE_DOWN)
+                {
+                    list.lock()->scrollDown();
+                }
+
+                if (event.key.keysym.scancode == SDL_SCANCODE_UP)
+                {
+                    list.lock()->scrollUp();
+                }
             }
 
             console.doEvent(event);
