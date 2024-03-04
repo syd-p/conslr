@@ -123,7 +123,7 @@ std::unordered_map<std::string, int32_t> conslr::WidgetManager::loadFromFile(con
 
         if (!params.contains("type"))
         {
-            throw std::runtime_error("Widget does not have specified type, file: " + file);
+            throw std::runtime_error("Widget does not have specified type, file: " + file + ", \njson: " + nlohmann::to_string(widget.value()));
         }
 
         auto name = WidgetFactory::createWidget(params.at("type"), *this, params);        
