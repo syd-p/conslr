@@ -2,8 +2,6 @@
 ///
 ///Enter text into the text box, press left ctrl to print the text
 #include <string>
-#include <iostream>
-#include <chrono>
 
 #include <SDL.h>
 
@@ -46,11 +44,6 @@ int main()
         tbPtr->showTitle();
     }
 
-    //Made to track the efficacy of textinput
-    //Mainly for my personal testing
-    int32_t frames = 0;
-    auto start = std::chrono::steady_clock::now();
-
     SDL_StartTextInput();
 
     SDL_Event event;
@@ -91,20 +84,9 @@ int main()
         }
 
         console.render();
-
-        //Approximate updates per second
-        frames++;
-        if (frames % 100 == 0)
-        {
-            auto current = std::chrono::steady_clock::now();
-            std::cout << "Frames per second: " << (double)frames / (double)std::chrono::duration_cast<std::chrono::seconds>(current - start).count() << '\r';
-            std::cout.flush();
-        }
     }
 
     SDL_StopTextInput();
-
-    std::cout << std::endl;
 
     console.destroy();
     SDL_Quit();
