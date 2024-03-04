@@ -33,8 +33,7 @@ set_target_properties(conslr PROPERTIES CXX_STANDARD 20)
 set_target_properties(conslr PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(conslr PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR})
 
-target_include_directories(conslr PUBLIC include)
-target_include_directories(conslr PRIVATE src)
+target_include_directories(conslr PRIVATE include)
 target_include_directories(conslr PRIVATE ${SDL2_INCLUDE_DIR})
 
 target_link_libraries(conslr PRIVATE ${SDL2_LIBRARIES})

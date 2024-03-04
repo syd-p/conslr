@@ -32,6 +32,8 @@ namespace conslr
 
         [[nodiscard]] static std::pair<std::string, int32_t> createWidget(const std::string& key, WidgetManager& wm, const WidgetParameterMap& params)
         {
+            assert((mFactories.contains(key)) && "Key has not been registered to factory");
+
             return mFactories.at(key)(wm, params);
         }
 

@@ -82,13 +82,7 @@ void conslr::WidgetManager::deactivateWidget(int32_t index)
 std::unordered_map<std::string, int32_t> conslr::WidgetManager::loadFromFile(const std::string& file)
 {
     std::ifstream ifs(file);
-    if (!ifs.good())
-    {
-        std::cerr << "Failed to find file: " << file << std::endl;
-
-        ifs.close();
-        return {};
-    }
+    assert((ifs.good()) && "Failed to open file");
 
     nlohmann::json data = nlohmann::json::parse(ifs);
     ifs.close();
@@ -106,7 +100,10 @@ std::unordered_map<std::string, int32_t> conslr::WidgetManager::loadFromFile(con
             params[param.key()] = param.value();
         }
 
+        assert((params.contains("type")) && "Widget does not have specified type");
+
         auto name = WidgetFactory::createWidget(params.at("type"), *this, params);        
+
         //No copies found
         if (!widgetNames.contains(name.first))
         {
