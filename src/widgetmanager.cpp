@@ -90,6 +90,7 @@ void conslr::WidgetManager::loadFromFile(const std::string& file)
     }
 
     nlohmann::json data = nlohmann::json::parse(ifs);
+    ifs.close();
 
     clear();
     WidgetFactory::initialize();
