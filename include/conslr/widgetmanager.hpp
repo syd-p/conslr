@@ -77,7 +77,7 @@ namespace conslr
 
         //Getters
         template<IsWidget T>
-        [[nodiscard]] constexpr std::shared_ptr<T> getWidget(int index)
+        [[nodiscard]] constexpr std::weak_ptr<T> getWidget(int index)
         {
             assert((index >= 0 && index < MAX_WIDGETS) && "Index out of bounds");
             assert((mWidgets.at(index) != nullptr) && "Widget does not exist");
