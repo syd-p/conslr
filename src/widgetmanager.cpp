@@ -1,7 +1,12 @@
 #include "conslr/widgetmanager.hpp"
 
 #include <memory>
+#include <unordered_map>
 #include <utility>
+#include <fstream>
+#include <iostream>
+
+#include <nlohmann/json.hpp>
 
 #include "conslr/widgetfactory.hpp"
 
@@ -69,30 +74,31 @@ void conslr::WidgetManager::deactivateWidget(int32_t index)
 
 void conslr::WidgetManager::loadFromFile(const std::string& file)
 {
+    std::ifstream ifs(file);
+    if (!ifs.good())
+    {
+        std::cerr << "Failed to find file: " << file << std::endl;
+
+        ifs.close();
+        return;
+    }
+
+    nlohmann::json data = nlohmann::json::parse(ifs);
+
     clear();
     WidgetFactory::initialize();
 
-    //Todo Add File Loading
+    for (auto& widget : data["Widgets"].items())
+    {
+        std::unordered_map<std::string, std::string> params;
 
-    WidgetFactory::createWidget("FloatingText", *this, 
-            {
-            { "region", "0 0 20 4" },
-            { "string", "Hello world!" }
-            });
+        for (auto& param : widget.value().items())
+        {
+            params[param.key()] = param.value();
+        }
 
-    WidgetFactory::createWidget("TextBox", *this,
-            {
-            { "priority", "2" },
-            { "region", "2 0 5 5" },
-            { "string", "Overlaid!" }
-            });
-    WidgetFactory::createWidget("RadioListStr", *this,
-            {
-            { "active", "true" },
-            { "elements", "One one Two two" },
-            { "region", "0 0 25 10" },
-            { "priority", "3" }
-            });
+        WidgetFactory::createWidget(params.at("type"), *this, params);        
+    }
 
     return;
 }

@@ -30,7 +30,7 @@ int main()
     int32_t scr = console.createScreen();
     console.setCurrentScreenIndex(scr);
 
-    console.getWidgetManager(scr).loadFromFile("str");
+    console.getWidgetManager(scr).loadFromFile("examplescr.json");
 
     SDL_Event event;
     bool running = true;
