@@ -135,7 +135,7 @@ namespace conslr::widgets
         if (params.contains("tags"))
         {
             //Loads a formatted tagset
-            ptr->setTags(createTaggedSetFromString(params.at("tags")));
+            ptr->setTags(createTagSetFromString(params.at("tags")));
         }
 
         if (params.contains("title"))

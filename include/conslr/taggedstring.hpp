@@ -21,6 +21,9 @@ namespace conslr
         uint8_t tags; //!<Color tags of the string
     };
 
+    const uint8_t FOREGROUND_MASK = 0x0F; //!<Mask for the foreground tag
+    const uint8_t BACKGROUND_MASK = 0xF0; //!<Mask for the background tag
+
     ///
     ///Wrapper class for std::vector<TaggedChar>
     ///
@@ -47,11 +50,54 @@ namespace conslr
         }
         ///Creates a tagged string from a formatted std::string
         ///Tags in the string are marked by {[b/f]n} where b is background tag, f is foreground tag, and n is the tag index
+        ///Very rudimentary
+        ///Example: "This is plain [f2][b3]This has a different foreground and background"
         ///
         ///@param str String to process
-        TaggedString(const std::string& str) noexcept
+        TaggedString(std::string str)
         {
-            //Todo process string
+            this->str.resize(str.size());
+
+            //Initial tags, bg = 1, fg = 0
+            uint8_t tag = (1 << 4) | (0 & FOREGROUND_MASK);
+
+            for (size_t i = 0; i < str.size(); i++)
+            {
+                if (str.at(i) == '[')
+                {
+                    //Open tag
+
+                    auto it = str.find(']', i);
+                    if (it != str.size() && it - i <= 4)
+                    {
+                        std::string o{ str.begin() + i, str.begin() + it + 1 };
+
+                        if (o.at(1) == 'f') 
+                        {
+                            uint8_t b = tag & BACKGROUND_MASK;
+                            uint8_t f = std::stoi(std::string{ o.begin() + 2, o.end() - 1 }) & 0x0F;
+                            tag = b | f;
+                        }
+                        else if (o.at(1) == 'b')
+                        {
+                            uint8_t b = (std::stoi(std::string{ o.begin() + 2, o.end() - 1 }) & 0x0F) << 4; 
+                            uint8_t f = tag  & FOREGROUND_MASK;
+                            tag = b | f;                          
+                        }
+
+                        str.erase(i, it - i + 1);
+                        if (i != 0)
+                        {
+                            i--;
+                        }
+                    }
+                }
+
+                this->str.at(i).character = str.at(i);
+                this->str.at(i).tags = tag;
+            }
+
+            this->str.resize(str.size());
 
             return;
         }
@@ -75,9 +121,6 @@ namespace conslr
 
         std::vector<TaggedChar> str;
     };
-
-    const uint8_t FOREGROUND_MASK = 0x0F; //!<Mask for the foreground tag
-    const uint8_t BACKGROUND_MASK = 0xF0; //!<Mask for the background tag
 
     using TagSet = std::array<SDL_Color, 16>;
 
