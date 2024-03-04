@@ -86,6 +86,13 @@ void conslr::WidgetManager::loadFromFile(const std::string& file)
             { "region", "2 0 5 5" },
             { "string", "Overlaid!" }
             });
+    WidgetFactory::createWidget("RadioListStr", *this,
+            {
+            { "active", "true" },
+            { "elements", "One one Two two" },
+            { "region", "0 0 25 10" },
+            { "priority", "3" }
+            });
 
     return;
 }

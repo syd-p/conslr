@@ -4,11 +4,14 @@
 ///
 #pragma once
 
+#include <memory>
+#include <stdexcept>
 #include <vector>
 #include <string>
 #include <cassert>
 #include <algorithm>
 #include <sstream>
+#include <concepts>
 
 #include <SDL_rect.h>
 
@@ -157,7 +160,7 @@ namespace conslr::widgets
                         mTheme->border);
             }
 
-            if (mShowScrollbar && mElements.size() > freeHeight)
+            if (mShowScrollbar && mElements.size() > (size_t)freeHeight)
             {
                 double visiblePercent = (double)freeHeight / (double)mElements.size(); //Percent of elements shown
                 double percentDown = (double)mScrollY / (double)mElements.size(); //How far down the first element is
@@ -178,6 +181,105 @@ namespace conslr::widgets
         int32_t mScrollY;
         bool mShowScrollbar;
     };
+
+    ///
+    ///Populates a list if possible
+    ///Custom data types must have their own specialized function
+    ///
+    template <typename T>
+    inline void constructListElements(std::shared_ptr<ScrollList<T>> ptr, const std::string& str)
+    {
+        (void)ptr; (void)str;
+        assert(0 && "Unimplemented type for constructListElements");
+
+        return;
+    }
+
+    //Signed int specialization
+    template<std::signed_integral T>
+    inline void constructListElements(std::shared_ptr<ScrollList<T>> ptr, const std::string& str)
+    {
+        std::stringstream ss{ str };
+
+        std::string name; 
+        std::string val;
+
+        while (ss >> name >> val)
+        {
+            ptr->addElement(std::stoll(val), name);
+        }
+
+        return;
+    }
+
+    //Unsigned int specialization
+    template<std::unsigned_integral T>
+    inline void constructListElements(std::shared_ptr<ScrollList<T>> ptr, const std::string& str)
+    {
+        std::stringstream ss{ str };
+
+        std::string name; 
+        std::string val;
+
+        while (ss >> name >> val)
+        {
+            ptr->addElement(std::stoull(val), name);
+        }
+
+        return;
+    }
+
+    //Floating point specialization
+    template<std::floating_point T>
+    inline void constructListElements(std::shared_ptr<ScrollList<T>> ptr, const std::string& str)
+    {
+        std::stringstream ss{ str };
+
+        std::string name; 
+        std::string val;
+
+        while (ss >> name >> val)
+        {
+            ptr->addElement(std::stold(val), name);
+        }
+
+        return;
+    }
+
+    //String specialization
+    template<>
+    inline void constructListElements<std::string>(std::shared_ptr<ScrollList<std::string>> ptr, const std::string& str)
+    {
+        std::stringstream ss{ str };
+
+        std::string name; 
+        std::string val;
+
+        while (ss >> name >> val)
+        {
+            ptr->addElement(val, name);
+        }
+
+        return;
+    }
+
+    //Char specialization
+    template<>
+    inline void constructListElements<char>(std::shared_ptr<ScrollList<char>> ptr, const std::string& str)
+    {
+        std::stringstream ss{ str };
+
+        std::string name; 
+        char val;
+
+        while (ss >> name >> val)
+        {
+            ptr->addElement(val, name);
+        }
+
+        return;
+    }
+
 
     ///
     ///Must be registered manually for all types used
@@ -241,11 +343,6 @@ namespace conslr::widgets
             }
         }
 
-        if (params.contains("string"))
-        {
-            ptr->setString(params.at("string"));
-        }
-
         if (params.contains("title"))
         {
             ptr->setTitle(params.at("title"));
@@ -270,7 +367,7 @@ namespace conslr::widgets
 
         if (params.contains("elements"))
         {
-            //Todo load elements
+            constructListElements<T>(ptr, params.at("elements"));
         }
 
         return;

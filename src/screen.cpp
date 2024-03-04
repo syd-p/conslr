@@ -6,8 +6,8 @@
 #include "conslr/theme.hpp"
 
 conslr::Screen::Screen(int32_t width, int32_t height) :
-    mWidth{ width }, mHeight{ height },
-    mRerender{ true }
+    mRerender{ true },
+    mWidth{ width }, mHeight{ height }
 {
     mCells.resize(mWidth * mHeight, {});
 
