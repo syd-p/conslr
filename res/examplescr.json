@@ -8,6 +8,13 @@
             "title": "Hello World!",
             "string": "This was loaded from a file! :)",
             "region": "0 0 40 6"
+        },
+        {
+            "type": "ScrollListInt",
+            "priority": "11",
+            "region": "0 6 30 8",
+            "active": "true",
+            "elements": "One 1 Two 2 Three 3"
         }
     ]
 }
