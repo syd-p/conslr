@@ -30,12 +30,15 @@ Although it is probably simpler to do it manually, the options there
 
 Mainly WidgetFactory exists to interface with WidgetManager in creating widgets from a file
 
-To construct a Widget using the WidgetFactory (and by extenstion through json) you must register a constructor function with a key which is typically the type of widget
+To construct a Widget using the WidgetFactory you must register a constructor function with a key which is typically the type of widget
 
 By default, the built-in widgets are all registered with WidgetFactory automatically
 
 ```c++
-console.getWidgetManager(index).loadFromFile("somefile.json"); //Loading through WidgetManager
+auto widgetNames = console.getWidgetManager(index).loadFromFile("somefile.json"); //Loading through WidgetManager
+```
+
+```c++
 //Creating using the factory directly
 WidgetFactory::createWidget("TextBox", console.getWidgetManager(index),
   {
@@ -47,8 +50,11 @@ WidgetFactory::createWidget("TextBox", console.getWidgetManager(index),
 //Some class you made
 class MyWidget : public IWidget, public IRenderable { ... }
 //Function which constructs a widget using params
-void constructMyWidget(WidgetManager& wm, const WidgetParameterMap& params)
-{ ... }
+std::pair<std::string, int32_t> constructMyWidget(WidgetManager& wm, const WidgetParameterMap& params)
+{ 
+    ... 
+    return { widgetName, widgetId };
+}
 
 int main()
 {
