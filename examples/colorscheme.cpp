@@ -12,20 +12,8 @@
 
 int main()
 {
-    SDL_DisplayMode dm;
-    SDL_GetCurrentDisplayMode(0, &dm);
-
-    int cellW = 16;
-    int cellH = 32;
-
-    if (dm.w > 1920)
-    {
-        cellW = 32;
-        cellH = 64;
-    }
-
     //Init console
-    conslr::Console console{ cellW, cellH, 80, 24 };
+    conslr::Console console{ 16, 32, 80, 24 };
     console.setTitle("Themes");
 
     //Init font

@@ -30,19 +30,7 @@ private:
 
 int main()
 {
-    SDL_DisplayMode dm;
-    SDL_GetCurrentDisplayMode(0, &dm);
-
-    int cellW = 16;
-    int cellH = 32;
-
-    if (dm.w > 1920)
-    {
-        cellW = 32;
-        cellH = 64;
-    }
-
-    conslr::Console console{ cellW, cellH, 80, 24 };
+    conslr::Console console{ 16, 32, 80, 24 };
     console.setTitle("Extended Theme");
 
     int32_t scr = console.createScreen();
