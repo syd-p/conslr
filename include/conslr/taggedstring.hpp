@@ -8,6 +8,8 @@
 #include <vector>
 #include <array>
 #include <string>
+#include <sstream>
+#include <cassert>
 
 #include <SDL_pixels.h>
 
@@ -47,7 +49,7 @@ namespace conslr
         ///Tags in the string are marked by {[b/f]n} where b is background tag, f is foreground tag, and n is the tag index
         ///
         ///@param str String to process
-        constexpr TaggedString(const std::string& str) noexcept
+        TaggedString(const std::string& str) noexcept
         {
             //Todo process string
 
@@ -84,9 +86,25 @@ namespace conslr
     ///
     ///@param str String to process
     ///@return Created TagSet
-    constexpr TagSet createTaggedSetFromString(const std::string& str)
+    inline TagSet createTagSetFromString(const std::string& str)
     {
         TagSet tags;
+            
+        std::stringstream ss{ str };
+        int32_t tagId;
+        int32_t r;
+        int32_t g;
+        int32_t b;
+        int32_t a;
+
+        while (ss >> tagId >> r >> g >> b >> a)
+        {
+            assert((!ss.fail()) && "Failed to read tags");
+            assert((tagId >= 0 && tagId < 16) && "Tag Id is too large");
+            assert((r >= 0 && r < 256) && (g >= 0 && g < 256) && (b >= 0 && b < 256) && (a >= 0 && a < 256));
+
+            tags.at(tagId) = { (uint8_t)r, (uint8_t)g, (uint8_t)b, (uint8_t)a };
+        }
 
         return tags;
     }
