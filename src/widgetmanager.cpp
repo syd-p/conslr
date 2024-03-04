@@ -80,6 +80,13 @@ void conslr::WidgetManager::loadFromFile(const std::string& file)
             { "string", "Hello world!" }
             });
 
+    WidgetFactory::createWidget("TextBox", *this,
+            {
+            { "priority", "2" },
+            { "region", "2 0 5 5" },
+            { "string", "Overlaid!" }
+            });
+
     return;
 }
 
