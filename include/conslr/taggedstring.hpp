@@ -5,11 +5,11 @@
 #pragma once
 
 #include <cstdint>
+#include <stdexcept>
 #include <vector>
 #include <array>
 #include <string>
 #include <sstream>
-#include <cassert>
 
 #include <SDL_pixels.h>
 
@@ -35,9 +35,14 @@ namespace conslr
         ///@param str std::string to use
         ///@param fg Foreground tag
         ///@param bg Background tag
-        constexpr TaggedString(const std::string& str, uint8_t fg, uint8_t bg) noexcept :
+        constexpr TaggedString(const std::string& str, uint8_t fg, uint8_t bg) :
             str{ str.size() }
         {
+            if ((fg > 0x0F) || (bg > 0x0F))
+            {
+                throw std::invalid_argument("Foreground and background tags must be in range 0-15, fg: " + std::to_string((int)fg) +  ", bg: " + std::to_string((int)bg));
+            }
+
             uint8_t tag = ((bg & 0x0F) << 4) | (fg & 0x0F);
 
             for (size_t i = 0; i < str.size(); i++)
@@ -144,9 +149,20 @@ namespace conslr
 
         while (ss >> tagId >> r >> g >> b >> a)
         {
-            assert((!ss.fail()) && "Failed to read tags");
-            assert((tagId >= 0 && tagId < 16) && "Tag Id is too large");
-            assert((r >= 0 && r < 256) && (g >= 0 && g < 256) && (b >= 0 && b < 256) && (a >= 0 && a < 256));
+            if (ss.fail())
+            {
+                throw std::runtime_error("Failed to read tags, tags must be in the format of [id r g b a] as ints");
+            }
+            
+            if (tagId > 0x0F)
+            {
+                throw std::runtime_error("Tag id must be between 0-15, id: " + std::to_string(tagId));
+            }
+
+            if (!((r >= 0 && r < 256) && (g >= 0 && g < 256) && (b >= 0 && b < 256) && (a >= 0 && a < 256)))
+            {
+                throw std::runtime_error("RGBA values must be between 0-255, r: " + std::to_string(r) + ", g: " + std::to_string(g) + ", b: " + std::to_string(b) + ", a: " + std::to_string(a));
+            }
 
             tags.at(tagId) = { (uint8_t)r, (uint8_t)g, (uint8_t)b, (uint8_t)a };
         }

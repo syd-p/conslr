@@ -8,6 +8,7 @@
 #include <vector>
 #include <algorithm>
 #include <sstream>
+#include <stdexcept>
 
 #include <SDL_rect.h>
 
@@ -141,9 +142,12 @@ namespace conslr::widgets
         constexpr int32_t getMaxRows() const noexcept { return mMaxRows; }
 
         //Setters
-        constexpr void setRegion(const SDL_Rect& region) noexcept
+        constexpr void setRegion(const SDL_Rect& region) 
         {
-            assert(((region.w > 2) && (region.h > 2)) && "Region is too small");
+            if (region.w <= 2 || region.h <= 2)
+            {
+                throw std::invalid_argument("Region width and height must be greater than 2, width: " + std::to_string(region.w) + ", height: " + std::to_string(region.h));
+            }
 
             mRegion = region;
             mTextRegion = { mRegion.x + 1, mRegion.y + 1, mRegion.w - 2, mRegion.h - 2 };
@@ -209,7 +213,10 @@ namespace conslr::widgets
 
         virtual void render(Screen& screen) override
         {
-            assert((mRegion.w > 2 && mRegion.h > 2) && "Scroll List is too small to render");
+            if (mRegion.w <= 2 || mRegion.h <= 2)
+            {
+                throw std::runtime_error("Region width and height must be greater than 2, width: " + std::to_string(mRegion.w) + ", height: " + std::to_string(mRegion.h));
+            }
 
             screen.fillRect(mRegion, mTheme->background, mTheme->border, 0);
             screen.borderRect(mRegion, mTheme->borderHorizontal, mTheme->borderVertical, mTheme->borderCornerTl, mTheme->borderCornerTr, mTheme->borderCornerBl, mTheme->borderCornerBr);

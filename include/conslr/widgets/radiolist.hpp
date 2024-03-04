@@ -9,6 +9,7 @@
 #include <cassert>
 #include <algorithm>
 #include <sstream>
+#include <stdexcept>
 
 #include <SDL_rect.h>
 
@@ -99,9 +100,12 @@ namespace conslr::widgets
         constexpr const SDL_Rect& getRegion() const noexcept { return mRegion; }
 
         //Setters
-        constexpr void setRegion(const SDL_Rect& region) noexcept
+        constexpr void setRegion(const SDL_Rect& region) 
         {
-            assert(((region.w > 2) && (region.h > 2)) && "Region is too small");
+            if (region.w <= 2 || region.h <= 2)
+            {
+                throw std::invalid_argument("Region width and height must be greater than 2, width: " + std::to_string(region.w) + ", height: " + std::to_string(region.h));
+            }
 
             mRegion = region;
             mRerender = true;
@@ -118,6 +122,11 @@ namespace conslr::widgets
 
         virtual void render(Screen& screen) override
         {
+            if (mRegion.w <= 2 || mRegion.h <= 2)
+            {
+                throw std::runtime_error("Region width and height must be greater than 2, width: " + std::to_string(mRegion.w) + ", height: " + std::to_string(mRegion.h));
+            }
+
             assert((mRegion.w > 2 && mRegion.h > 2) && "Scroll List is too small to render");
 
             screen.fillRect(mRegion, mTheme->background, mTheme->border, 0);

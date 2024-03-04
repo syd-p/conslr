@@ -14,9 +14,9 @@
 #include <array>
 #include <list>
 #include <type_traits>
-#include <cassert>
 #include <string>
 #include <unordered_map>
+#include <stdexcept>
 
 #include "conslr/widget.hpp"
 
@@ -42,7 +42,10 @@ namespace conslr
             requires IsNotInterface<T>
         [[nodiscard]] std::weak_ptr<T> createWidget(int32_t priority = 0)
         {
-           assert(!mFreeWidgets.empty() && "Max number of widgets created");
+            if (mFreeWidgets.empty())
+            {
+                throw std::runtime_error("WidgetManager has reached the max number of widgets, max: " + std::to_string(MAX_WIDGETS));
+            }
 
             int32_t index = mFreeWidgets.front();
             mFreeWidgets.pop();
@@ -79,8 +82,14 @@ namespace conslr
         template<IsWidget T>
         [[nodiscard]] constexpr std::weak_ptr<T> getWidget(int index)
         {
-            assert((index >= 0 && index < MAX_WIDGETS) && "Index out of bounds");
-            assert((mWidgets.at(index) != nullptr) && "Widget does not exist");
+            if (!(index >= 0 && index < MAX_WIDGETS))
+            {
+                throw std::invalid_argument("Index is out of bounds, index: " + std::to_string(index));
+            }
+            if (mWidgets.at(index) == nullptr)
+            {
+                throw std::runtime_error("Widget at index is nullptr, index: " + std::to_string(index));
+            }
 
             return std::dynamic_pointer_cast<T>(mWidgets.at(index));
         }

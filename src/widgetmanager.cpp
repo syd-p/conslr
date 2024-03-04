@@ -1,11 +1,11 @@
 #include "conslr/widgetmanager.hpp"
 
 #include <memory>
+#include <stdexcept>
 #include <string>
 #include <unordered_map>
 #include <utility>
 #include <fstream>
-#include <iostream>
 
 #include <nlohmann/json.hpp>
 
@@ -24,8 +24,14 @@ conslr::WidgetManager::WidgetManager()
 
 void conslr::WidgetManager::destroyWidget(int32_t index)
 {
-    assert((index >= 0 && index < MAX_WIDGETS) && "Index out of bounds");
-    assert((mWidgets.at(index) != nullptr) && "Widget does not exist");
+    if (!(index >= 0 && index < MAX_WIDGETS))
+    {
+        throw std::invalid_argument("Widget index is out of bounds, index: " + std::to_string(index));
+    }
+    if (mWidgets.at(index) == nullptr)
+    {
+        throw std::runtime_error("Widget at index is already nullptr, index: " + std::to_string(index));
+    }
 
     mWidgets.at(index) = nullptr;
 
@@ -45,8 +51,14 @@ void conslr::WidgetManager::destroyWidget(int32_t index)
 
 void conslr::WidgetManager::activateWidget(int32_t index)
 {
-    assert((index >= 0 && index < MAX_WIDGETS) && "Index out of bounds");
-    assert((mWidgets.at(index) != nullptr) && "Widget does not exist");
+    if (!(index >= 0 && index < MAX_WIDGETS))
+    {
+        throw std::invalid_argument("Widget index is out of bounds, index: " + std::to_string(index));
+    }
+    if (mWidgets.at(index) == nullptr)
+    {
+        throw std::invalid_argument("Widget at index is nullptr, index: " + std::to_string(index));
+    }
 
     for (auto renderablePtr : mRenderable)
     {
@@ -60,8 +72,14 @@ void conslr::WidgetManager::activateWidget(int32_t index)
 
 void conslr::WidgetManager::deactivateWidget(int32_t index)
 {
-    assert((index >= 0 && index < MAX_WIDGETS) && "Index out of bounds");
-    assert((mWidgets.at(index) != nullptr) && "Widget does not exist");
+    if (!(index >= 0 && index < MAX_WIDGETS))
+    {
+        throw std::invalid_argument("Widget index is out of bounds, index: " + std::to_string(index));
+    }
+    if (mWidgets.at(index) == nullptr)
+    {
+        throw std::runtime_error("Widget at index is nullptr, index: " + std::to_string(index));
+    }
 
     for (auto renderablePtr : mRenderable)
     {
@@ -82,7 +100,10 @@ void conslr::WidgetManager::deactivateWidget(int32_t index)
 std::unordered_map<std::string, int32_t> conslr::WidgetManager::loadFromFile(const std::string& file)
 {
     std::ifstream ifs(file);
-    assert((ifs.good()) && "Failed to open file");
+    if (!ifs.good())
+    {
+        throw std::runtime_error("Failed to open file, file: " + file);
+    }
 
     nlohmann::json data = nlohmann::json::parse(ifs);
     ifs.close();
@@ -100,7 +121,10 @@ std::unordered_map<std::string, int32_t> conslr::WidgetManager::loadFromFile(con
             params[param.key()] = param.value();
         }
 
-        assert((params.contains("type")) && "Widget does not have specified type");
+        if (!params.contains("type"))
+        {
+            throw std::runtime_error("Widget does not have specified type, file: " + file);
+        }
 
         auto name = WidgetFactory::createWidget(params.at("type"), *this, params);        
 

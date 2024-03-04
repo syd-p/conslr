@@ -5,6 +5,7 @@
 #pragma once
 
 #include <sstream>
+#include <stdexcept>
 
 #include <SDL_rect.h>
 
@@ -31,9 +32,12 @@ namespace conslr::widgets
         constexpr const TagSet& getTags() const noexcept { return mTags; }
 
         //Setters
-        constexpr void setRegion(const SDL_Rect& region) noexcept
+        constexpr void setRegion(const SDL_Rect& region) 
         {
-            assert((region.w > 0 && region.h > 0) && "Region is too small");
+            if (region.w <= 0 || region.h <= 0)
+            {
+                throw std::invalid_argument("Region width and height must be greater than 0, width: " + std::to_string(region.w) + ", height: " + std::to_string(region.h));
+            }
 
             mRegion = region;
             mRerender = true;
@@ -51,7 +55,10 @@ namespace conslr::widgets
 
         virtual void render(Screen& screen)
         {
-            assert((mRegion.w > 0 && mRegion.h > 0) && "Region is too small to render");
+            if (mRegion.w <= 0 || mRegion.h <= 0)
+            {
+                throw std::runtime_error("Region width and height must be greater than 0, width: " + std::to_string(mRegion.w) + ", height: " + std::to_string(mRegion.h));
+            }
 
             screen.renderMultilineTextTagged(
                     mRegion.x, mRegion.y,

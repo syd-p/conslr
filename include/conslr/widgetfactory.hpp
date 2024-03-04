@@ -4,6 +4,7 @@
 ///
 #pragma once
 
+#include <stdexcept>
 #include <unordered_map>
 #include <string>
 #include <functional>
@@ -32,7 +33,10 @@ namespace conslr
 
         [[nodiscard]] static std::pair<std::string, int32_t> createWidget(const std::string& key, WidgetManager& wm, const WidgetParameterMap& params)
         {
-            assert((mFactories.contains(key)) && "Key has not been registered to factory");
+            if (!mFactories.contains(key))
+            {
+                throw std::invalid_argument("Key not registered with WidgetFactory, key: " + key);
+            }
 
             return mFactories.at(key)(wm, params);
         }

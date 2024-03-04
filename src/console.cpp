@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <cassert>
+#include <stdexcept>
+#include <string>
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -9,7 +11,7 @@
 #include "conslr/screen.hpp"
 #include "conslr/themes/defaulttheme.hpp"
 
-conslr::Console::Console(int32_t cellWidth, int32_t cellHeight, int32_t windowCellWidth, int32_t windowCellHeight) noexcept :
+conslr::Console::Console(int32_t cellWidth, int32_t cellHeight, int32_t windowCellWidth, int32_t windowCellHeight) :
     mCellWidth{ cellWidth }, mCellHeight{ cellHeight },
     mWindowCellWidth{ windowCellWidth }, mWindowCellHeight{ windowCellHeight },
     mWindowWidth{ cellWidth * windowCellWidth }, mWindowHeight{ cellHeight * windowCellHeight },
@@ -18,7 +20,13 @@ conslr::Console::Console(int32_t cellWidth, int32_t cellHeight, int32_t windowCe
     mCurrentScreen{ -1 },
     mCurrentFont{ -1 }
 {
-    assert((cellWidth > 0 && cellHeight > 0 && windowCellWidth > 0 && windowCellHeight > 0) && "Console size is 0");
+    if (!(cellWidth > 0 && cellHeight > 0 && windowCellWidth > 0 && windowCellHeight > 0))
+    {
+        throw std::invalid_argument("Console sizes must be at least 1, cellWidth: " + std::to_string(cellWidth) +
+                ", cellHeight: " + std::to_string(cellHeight) +
+                ", windowCellWidth: " + std::to_string(windowCellWidth) +
+                ", windowCellHeight: " + std::to_string(windowCellHeight));
+    }
 
     for (auto i = 0; i < MAX_SCREENS; i++)
     {
@@ -63,78 +71,6 @@ conslr::Console::Console(int32_t cellWidth, int32_t cellHeight, int32_t windowCe
 
     return;
 }
-
-conslr::Console::Console(int32_t windowCellWidth, int32_t windowCellHeight, double widthPercent, double heightPercent) noexcept :
-    mCellWidth{ 0 }, mCellHeight{ 0 },
-    mWindowCellWidth{ windowCellWidth }, mWindowCellHeight{ windowCellHeight },
-    mWindowWidth{ 0 }, mWindowHeight{ 0 },
-    mTheme{ themes::Default },
-    mWindow{ nullptr }, mRenderer{ nullptr },
-    mCurrentScreen{ -1 },
-    mCurrentFont{ -1 }
-{
-    assert((widthPercent > 0.0 && widthPercent <= 1.0) && "Invalid width percent");
-    assert((heightPercent > 0.0 && heightPercent <= 1.0) && "Invalid height percent");
-
-    if (!SDL_WasInit(SDL_INIT_VIDEO))
-    {
-        if (SDL_InitSubSystem(SDL_INIT_VIDEO) < 0)
-        {
-            std::cerr << "Failed to init SDL video: " << SDL_GetError() << std::endl;
-            exit(-1);
-        }
-    }
-
-    SDL_DisplayMode dm;
-    if (SDL_GetCurrentDisplayMode(0, &dm) < 0)
-    {
-        std::cerr << SDL_GetError() << std::endl;
-        exit(-4);
-    }
-
-    mWindowWidth = dm.w * widthPercent;
-    mWindowHeight = dm.h * heightPercent;
-
-    mCellWidth = std::max(1, mWindowWidth / windowCellWidth);
-    mCellHeight = std::max(1, mWindowHeight / windowCellHeight);
-
-    assert((mCellWidth > 0 && mCellHeight > 0 && windowCellWidth > 0 && windowCellHeight > 0) && "Console size is 0");
-
-    for (auto i = 0; i < MAX_SCREENS; i++)
-    {
-        mFreeScreens.push(i);
-        mScreens.at(i).reset(nullptr);
-    }
-
-    for (auto i = 0; i < MAX_FONTS; i++)
-    {
-        mFreeFonts.push(i);
-        mFonts.at(i).reset(nullptr);
-    }
-
-    mWindow = SDL_CreateWindow("Console", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, mWindowWidth, mWindowHeight, 0);
-    if (!mWindow)
-    {
-        std::cerr << "Failed to create window, " << SDL_GetError() << std::endl;
-        mWindow = nullptr;
-
-        exit(-2);
-    }
-
-    mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-    if (!mRenderer)
-    {
-        std::cerr << "Failed to create renderer, " << SDL_GetError() << std::endl;
-        SDL_DestroyWindow(mWindow);
-        mWindow = nullptr;
-        mRenderer = nullptr;
-
-        exit(-3);
-    }
-
-    return;
-}
-
 
 conslr::Console::~Console()
 {
@@ -180,7 +116,10 @@ void conslr::Console::render()
         return;
     }
 
-    assert((mScreens.at(mCurrentScreen) != nullptr) && "Screen does not exist");
+    if (mScreens.at(mCurrentScreen) == nullptr)
+    {
+        throw std::runtime_error("Current screen is nullptr, currentScreen: " + std::to_string(mCurrentScreen));
+    }
     auto& scr = *mScreens.at(mCurrentScreen);
 
     for (auto& ptr : scr.mWidgetManager.getRenderable())
@@ -270,7 +209,10 @@ void conslr::Console::destroy()
 //Screen functions
 int32_t conslr::Console::createScreen()
 {
-    assert((!mFreeScreens.empty()) && "Max number of screens created");
+    if (mFreeScreens.empty())
+    {
+        throw std::runtime_error("Max screens created, max: " + std::to_string(MAX_SCREENS));
+    }
 
     int32_t index = mFreeScreens.front();
     mFreeScreens.pop();
@@ -284,8 +226,14 @@ int32_t conslr::Console::createScreen()
 
 void conslr::Console::destroyScreen(int32_t index)
 {
-    assert((index >= 0 && index < MAX_SCREENS) && "Index is out of bounds");
-    assert((mScreens.at(index) != nullptr) && "Screen is already nullptr");
+    if (!(index >= 0 && index < MAX_SCREENS))
+    {
+        throw std::invalid_argument("Screen index is out of bounds, index: " + std::to_string(index));
+    }
+    if (mScreens.at(index) == nullptr)
+    {
+        throw std::runtime_error("Screen at index is already nullptr, index: " + std::to_string(index));
+    }
 
     mScreens.at(index).reset(nullptr);
     mFreeScreens.push(index);
@@ -296,27 +244,31 @@ void conslr::Console::destroyScreen(int32_t index)
 //Font functions
 int32_t conslr::Console::createFont(const char* file, int32_t charWidth, int32_t charHeight)
 {
-    assert((!mFreeFonts.empty()) && "Max number of fonts created");
+    if (mFreeFonts.empty())
+    {
+        throw std::runtime_error("Max fonts created, max: " + std::to_string(MAX_FONTS));
+    }
 
     if (!IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG))
     {
-        std::cerr << "Failed to init SDL_Image" << std::endl;
-        return -1;
+        throw std::runtime_error("Failed to init SDL2_image");
     }
 
     SDL_Texture* texture = IMG_LoadTexture(mRenderer, file);
     if (!texture)
     {
-        std::cerr << "Failed to load font: " << file << std::endl;
-        return -1;
+        throw std::runtime_error(std::string("Failed to load image, file: ") + file);
     }
 
     int32_t width;
     int32_t height;
     SDL_QueryTexture(texture, NULL, NULL, &width, &height);
 
-    assert((width % charWidth == 0) && "Character width does not divide font evenly");
-    assert((height % charHeight == 0) && "Character height does not divide font evenly");
+    if ((width % charWidth != 0 || height % charHeight != 0))
+    {
+        throw std::runtime_error("Character width or height does not divide image evenly, charWidth: " + std::to_string(charWidth) + ", width: " + std::to_string(width)  +
+                ", charHeight: " + std::to_string(charHeight) + ", height: " + std::to_string(height));
+    }
 
     int32_t index = mFreeFonts.front();
     mFreeFonts.pop();
@@ -327,8 +279,14 @@ int32_t conslr::Console::createFont(const char* file, int32_t charWidth, int32_t
 
 void conslr::Console::destroyFont(int32_t index)
 {
-    assert((index >= 0 && index < MAX_FONTS) && "Index is out of bounds");
-    assert((mFonts.at(index) != nullptr) && "Font is already nullptr");
+    if (!(index >= 0 && index < MAX_FONTS))
+    {
+        throw std::invalid_argument("Font index is out of bounds, index: " + std::to_string(index));
+    }
+    if (mFonts.at(index) == nullptr)
+    {
+        throw std::runtime_error("Font at index is already nullptr, index: " + std::to_string(index));
+    }
 
     mFonts.at(index).reset(nullptr);
     mFreeFonts.push(index);
@@ -336,9 +294,12 @@ void conslr::Console::destroyFont(int32_t index)
     return;
 }
 
-void conslr::Console::resizeCells(int32_t width, int32_t height) noexcept
+void conslr::Console::resizeCells(int32_t width, int32_t height) 
 {
-    assert((width > 0 && height > 0) && "Cells can not be 0 wide/high");
+    if (width <= 0 || height <= 0)
+    {
+        throw std::invalid_argument("Width and height must be greater than 0, width: " + std::to_string(width) + ", height: " + std::to_string(height));
+    }
 
     mCellWidth = width;
     mCellHeight = height;
@@ -352,10 +313,16 @@ void conslr::Console::resizeCells(int32_t width, int32_t height) noexcept
 }
 
 //Getters
-conslr::WidgetManager& conslr::Console::getWidgetManager(int32_t index) const noexcept
+conslr::WidgetManager& conslr::Console::getWidgetManager(int32_t index) const 
 {
-    assert((index >= 0 && index < MAX_SCREENS) && "Index out of bounds");
-    assert((mScreens.at(index) != nullptr) && "Screen does not exist");
+    if (!(index >= 0 && index < MAX_SCREENS))
+    {
+        throw std::invalid_argument("Screen index is out of bounds, index: " + std::to_string(index));
+    }
+    if (mScreens.at(index) == nullptr)
+    {
+        throw std::runtime_error("Screen at index is already nullptr, index: " + std::to_string(index));
+    }
 
     return mScreens.at(index)->mWidgetManager;
 }
