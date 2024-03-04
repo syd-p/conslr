@@ -78,7 +78,7 @@ namespace conslr::widgets
         std::string mString;
     };
 
-    inline void constructTextBox(WidgetManager& wm, const WidgetParameterMap& params)
+    inline std::pair<std::string, int32_t> constructTextBox(WidgetManager& wm, const WidgetParameterMap& params)
     {
         int priority = 0;
         if (params.contains("priority"))
@@ -163,6 +163,13 @@ namespace conslr::widgets
             ptr->setRegion({ x, y, w, h });
         }
 
-        return;
+        if (params.contains("name"))
+        {
+            return { params.at("name"), ptr->getId() };
+        }
+        else
+        {
+            return { "unnamed", ptr->getId() };
+        }
     } 
 }

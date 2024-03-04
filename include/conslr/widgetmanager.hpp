@@ -15,6 +15,8 @@
 #include <list>
 #include <type_traits>
 #include <cassert>
+#include <string>
+#include <unordered_map>
 
 #include "conslr/widget.hpp"
 
@@ -65,21 +67,25 @@ namespace conslr
         void activateWidget(int32_t index);
         void deactivateWidget(int32_t index);
 
-        void loadFromFile(const std::string& file);
+        ///Creates widgets from a file
+        ///
+        ///@param file File name
+        ///@return Map of widget names as a string and widget index as the value
+        [[nodiscard]] std::unordered_map<std::string, int32_t> loadFromFile(const std::string& file);
 
         void clear();
 
         //Getters
         template<IsWidget T>
-        constexpr std::shared_ptr<T> getWidget(int index)
+        [[nodiscard]] constexpr std::shared_ptr<T> getWidget(int index)
         {
             assert((index >= 0 && index < MAX_WIDGETS) && "Index out of bounds");
             assert((mWidgets.at(index) != nullptr) && "Widget does not exist");
 
             return std::dynamic_pointer_cast<T>(mWidgets.at(index));
         }
-        constexpr const std::list<std::shared_ptr<IRenderable>>& getRenderable() const noexcept { return mRenderable; }
-        constexpr const Theme* getTheme() const noexcept { return mTheme; }
+        [[nodiscard]] constexpr const std::list<std::shared_ptr<IRenderable>>& getRenderable() const noexcept { return mRenderable; }
+        [[nodiscard]] constexpr const Theme* getTheme() const noexcept { return mTheme; }
 
         //Setters
         ///Sets the Color Scheme for widgets

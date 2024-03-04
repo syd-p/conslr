@@ -286,7 +286,7 @@ namespace conslr::widgets
     ///Must be registered manually for all types used
     ///
     template <typename T>
-    inline void constructRadioList(WidgetManager& wm, const WidgetParameterMap& params)
+    inline std::pair<std::string, int32_t> constructRadioList(WidgetManager& wm, const WidgetParameterMap& params)
     {
         int priority = 0;
         if (params.contains("priority"))
@@ -371,6 +371,13 @@ namespace conslr::widgets
             constructListElements<T>(ptr, params.at("elements"));
         }
 
-        return;
-    } 
+        if (params.contains("name"))
+        {
+            return { params.at("name"), ptr->getId() };
+        }
+        else
+        {
+            return { "unnamed", ptr->getId() };
+        }
+    }
 }

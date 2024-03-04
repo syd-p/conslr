@@ -14,7 +14,7 @@
 namespace conslr
 {
     typedef std::unordered_map<std::string, std::string> WidgetParameterMap;
-    typedef std::function<void(WidgetManager&, const WidgetParameterMap&)> WidgetFactorySignature;
+    typedef std::function<std::pair<std::string, int32_t>(WidgetManager&, const WidgetParameterMap&)> WidgetFactorySignature;
 
     class WidgetFactory
     {
@@ -30,11 +30,9 @@ namespace conslr
             return;
         }
 
-        static void createWidget(const std::string& key, WidgetManager& wm, const WidgetParameterMap& params)
+        [[nodiscard]] static std::pair<std::string, int32_t> createWidget(const std::string& key, WidgetManager& wm, const WidgetParameterMap& params)
         {
-            mFactories.at(key)(wm, params);
-
-            return;
+            return mFactories.at(key)(wm, params);
         }
 
     private:

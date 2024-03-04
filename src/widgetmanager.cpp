@@ -78,7 +78,7 @@ void conslr::WidgetManager::deactivateWidget(int32_t index)
 //It then modifies the widget according the pairs
 //Widget types have to be given a function to construct them from the json file
 //This is provided for the default widgets in the WidgetFactory::initialize method
-void conslr::WidgetManager::loadFromFile(const std::string& file)
+std::unordered_map<std::string, int32_t> conslr::WidgetManager::loadFromFile(const std::string& file)
 {
     std::ifstream ifs(file);
     if (!ifs.good())
@@ -86,7 +86,7 @@ void conslr::WidgetManager::loadFromFile(const std::string& file)
         std::cerr << "Failed to find file: " << file << std::endl;
 
         ifs.close();
-        return;
+        return {};
     }
 
     nlohmann::json data = nlohmann::json::parse(ifs);
@@ -94,6 +94,7 @@ void conslr::WidgetManager::loadFromFile(const std::string& file)
 
     clear();
     WidgetFactory::initialize();
+    std::unordered_map<std::string, int32_t> widgetNames;
 
     for (auto& widget : data["Widgets"].items())
     {
@@ -104,10 +105,12 @@ void conslr::WidgetManager::loadFromFile(const std::string& file)
             params[param.key()] = param.value();
         }
 
-        WidgetFactory::createWidget(params.at("type"), *this, params);        
+        auto name = WidgetFactory::createWidget(params.at("type"), *this, params);        
+        //Todo handle copies
+        widgetNames.insert(name);
     }
 
-    return;
+    return widgetNames;
 }
 
 void conslr::WidgetManager::clear()

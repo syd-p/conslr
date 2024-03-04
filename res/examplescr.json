@@ -3,6 +3,7 @@
     [
         {
             "type": "TextBox",
+            "name": "TextBox1",
             "priority": "10",          
             "showtitle": "true",
             "title": "Hello World!",
@@ -11,6 +12,7 @@
         },
         {
             "type": "ScrollListInt",
+            "name": "ScrollList1",
             "priority": "11",
             "region": "0 6 30 8",
             "active": "true",
