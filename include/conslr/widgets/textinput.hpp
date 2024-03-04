@@ -108,7 +108,7 @@ namespace conslr::widgets
         virtual constexpr void doReturn()
         {
             if (!mActive) { return; }
-            if (mRows.size() + 1 > mMaxRows) { return; }
+            if (mRows.size() + 1 > (size_t)mMaxRows) { return; }
             mRows.insert(mRows.begin() + mCurrentRow + 1, std::string{ mRows.at(mCurrentRow).begin() + mSelection, mRows.at(mCurrentRow).end() });
             mRows.at(mCurrentRow).erase(mSelection);
 
@@ -183,7 +183,7 @@ namespace conslr::widgets
                 return;
             }
 
-            if (mMaxRows < mRows.size())
+            if ((size_t)mMaxRows < mRows.size())
             {
                 //Removes excess rows
                 mRows = { mRows.begin(), mRows.begin() + mMaxRows };
@@ -262,13 +262,13 @@ namespace conslr::widgets
 
                 for (auto i = 0; i < mTextRegion.h; i++)
                 {
-                    if (i >= mRows.size())
+                    if ((size_t)i >= mRows.size())
                     {
                         break;
                     }
 
                     const std::string& row = mRows.at(i + mScrollY);
-                    if (row.size() <= mScrollX)
+                    if (row.size() <= (size_t)mScrollX)
                     {
                         continue;
                     }
@@ -282,7 +282,7 @@ namespace conslr::widgets
                 }
 
                 //Scrollbar
-                if (mRows.size() > mTextRegion.h)
+                if (mRows.size() > (size_t)mTextRegion.h)
                 {
                     double visiblePercent = (double)mTextRegion.h / (double)mRows.size();
                     double percentDown = (double)mScrollY / (double)mRows.size();
