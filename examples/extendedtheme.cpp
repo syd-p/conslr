@@ -65,8 +65,6 @@ int main()
         console.render();
     }
 
-    //Destroy console
-    console.destroy();
     SDL_Quit();
 
     return 0;

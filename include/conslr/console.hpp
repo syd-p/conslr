@@ -37,10 +37,6 @@ namespace conslr
 
         void doEvent(SDL_Event& event);
         void render();
-        ///Destroys the console
-        ///
-        ///Console can then be reinitialized as if it were a newly constructed console
-        void destroy();
 
         ///Creates a new screen
         ///
@@ -106,6 +102,11 @@ namespace conslr
         static const int32_t MAX_FONTS = 4; //!<Max fonts that a console can have
 
     private:
+        ///Destroys the console
+        ///
+        ///Used for destroying a window when there are multiple windows
+        void destroy();
+
         //Console data
         int32_t mCellWidth;
         int32_t mCellHeight;

@@ -88,7 +88,6 @@ int main()
 
     SDL_StopTextInput();
 
-    console.destroy();
     SDL_Quit();
 
     return 0;
