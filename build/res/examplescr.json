@@ -1,0 +1,22 @@
+{
+    "Widgets":
+    [
+        {
+            "type": "TextBox",
+            "name": "TextBox1",
+            "priority": "10",          
+            "showtitle": "true",
+            "title": "Hello World!",
+            "string": "This was loaded from a file! :)",
+            "region": "0 0 40 6"
+        },
+        {
+            "type": "ScrollListInt",
+            "name": "ScrollList1",
+            "priority": "11",
+            "region": "0 6 30 8",
+            "active": "true",
+            "elements": "One 1 Two 2 Three 3"
+        }
+    ]
+}

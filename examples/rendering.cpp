@@ -62,7 +62,7 @@ int main()
     //Init console
     conslr::Console console{ 16, 32, 80, 24 };
 
-    int32_t font = console.createFont("ibm_vga_fontsheet.bmp", 8, 16);
+    int32_t font = console.createFont("res/ibm_vga_fontsheet.bmp", 8, 16);
     console.setCurrentFontIndex(font);
 
     int32_t scr = console.createScreen();

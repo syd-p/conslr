@@ -12,14 +12,14 @@ int main()
     console.setTitle("Widgets");
 
     //Init font
-    int32_t font = console.createFont("ibm_vga_fontsheet.bmp", 8, 16);
+    int32_t font = console.createFont("res/ibm_vga_fontsheet.bmp", 8, 16);
     console.setCurrentFontIndex(font);
 
     //Init screen
     int32_t scr = console.createScreen();
     console.setCurrentScreenIndex(scr);
 
-    auto widgetIds = console.getWidgetManager(scr).loadFromFile("examplescr.json");
+    auto widgetIds = console.getWidgetManager(scr).loadFromFile("res/examplescr.json");
     auto list = console.getWidgetManager(scr).getWidget<conslr::widgets::ScrollList<int32_t>>(widgetIds.at("ScrollList1"));
 
     SDL_Event event;

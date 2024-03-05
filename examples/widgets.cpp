@@ -22,7 +22,7 @@ int main()
     console.setTitle("Widgets");
 
     //Init font
-    int32_t font = console.createFont("ibm_vga_fontsheet.bmp", 8, 16);
+    int32_t font = console.createFont("res/ibm_vga_fontsheet.bmp", 8, 16);
     console.setCurrentFontIndex(font);
 
     //Init screen

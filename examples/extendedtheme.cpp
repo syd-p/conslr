@@ -36,7 +36,7 @@ int main()
     int32_t scr = console.createScreen();
     console.setCurrentScreenIndex(scr);
 
-    int32_t font = console.createFont("ibm_vga_fontsheet.bmp", 8, 16);
+    int32_t font = console.createFont("res/ibm_vga_fontsheet.bmp", 8, 16);
     console.setCurrentFontIndex(font);
 
     ExtendedTheme et;

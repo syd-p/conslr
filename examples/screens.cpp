@@ -13,7 +13,7 @@ int main()
     console.setTitle("Screens");
 
     //Create and set font for console
-    int32_t font = console.createFont("ibm_vga_fontsheet.bmp", 8, 16);
+    int32_t font = console.createFont("res/ibm_vga_fontsheet.bmp", 8, 16);
     console.setCurrentFontIndex(font);
 
     //Create screen 1
