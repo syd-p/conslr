@@ -70,12 +70,12 @@ conslr::Console::~Console()
     return;
 }
 
-void conslr::Console::doEvent(SDL_Event& event)
+bool conslr::Console::doEvent(SDL_Event& event)
 {
     if (event.type == SDL_QUIT)
     {
         destroy();
-        return;
+        return false;
     }
 
     if (event.type == SDL_WINDOWEVENT)
@@ -86,14 +86,14 @@ void conslr::Console::doEvent(SDL_Event& event)
             {
             case SDL_WINDOWEVENT_CLOSE:
                 destroy();
-                return;
+                return false;
             default:
-                return;
+                return true;
             }
         }
     }
 
-    return;
+    return true;
 }
 
 void conslr::Console::render()

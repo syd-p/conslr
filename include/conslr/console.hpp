@@ -35,7 +35,10 @@ namespace conslr
         Console(int32_t cellWidth, int32_t cellHeight, int32_t windowCellWidth, int32_t windowCellHeight);
         ~Console();
 
-        void doEvent(SDL_Event& event);
+        ///Process events for the console
+        ///
+        ///@return true is screen is still valid, false if screen was closed
+        bool doEvent(SDL_Event& event);
         void render();
 
         ///Creates a new screen
