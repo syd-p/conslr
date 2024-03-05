@@ -1,6 +1,5 @@
 #include "conslr/console.hpp"
 
-#include <iostream>
 #include <cassert>
 #include <stdexcept>
 #include <string>

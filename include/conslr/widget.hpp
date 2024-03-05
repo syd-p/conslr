@@ -8,6 +8,7 @@
 ///3) Create a constructor that takes id and priority and passes to IWidget contstructor
 ///4) Overload interface functions
 ///5) (For renderables) Make Screen a friend class
+///6) Optionally create a constructor function used by WidgetFactory for loading the widget from a json file
 ///
 ///Optionally (but encouraged) the constructor and the render method should be marked protected or private and the WidgetManager made a friend class
 #pragma once

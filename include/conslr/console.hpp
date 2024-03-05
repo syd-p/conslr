@@ -41,25 +41,10 @@ namespace conslr
         bool doEvent(SDL_Event& event);
         void render();
 
-        ///Creates a new screen
-        ///
-        ///@return Index of the new screen
         [[nodiscard]] int32_t createScreen();
-        ///Destroys a screen
-        ///
-        ///@param index Index of screen
         void destroyScreen(int32_t index);
 
-        ///Creates a new font
-        ///
-        ///@param file Font sheet file to load
-        ///@param charWidth Width of a character in the image file
-        ///@param charHeight Height of a character in the image file
-        ///@return Index of the new font
         [[nodiscard]] int32_t createFont(const char* file, int32_t charWidth, int32_t charHeight);
-        ///Destroys a font
-        ///
-        ///@param index Font to destroy
         void destroyFont(int32_t index);
 
         void resizeCells(int32_t width, int32_t height);

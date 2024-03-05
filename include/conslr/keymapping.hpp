@@ -20,9 +20,9 @@ namespace conslr
         ///
         ///@param keySym Keysym to compare
         ///@return True if scancodes are the same, otherwise false
-        constexpr bool operator==(const SDL_Keysym& keySym) const noexcept
+        friend constexpr bool operator==(const KeyPair& keyPair, const SDL_Keysym& keySym) noexcept
         {
-            return (scancode == keySym.scancode) && (mod == keySym.mod);
+            return (keyPair.scancode == keySym.scancode) && (keyPair.mod == keySym.mod);
         }
     };
 
