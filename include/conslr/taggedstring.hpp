@@ -59,25 +59,25 @@ namespace conslr
         ///Example: "This is plain [f2][b3]This has a different foreground and background"
         ///
         ///@param str String to process
-        TaggedString(std::string str)
+        TaggedString(std::string formattedStr)
         {
             //Todo: this but better somehow
             
-            this->str.resize(str.size());
+            str.resize(formattedStr.size());
 
             //Initial tags, bg = 1, fg = 0
             uint8_t tag = (1 << 4) | (0 & FOREGROUND_MASK);
 
             for (size_t i = 0; i < str.size(); i++)
             {
-                if (str.at(i) == '[')
+                if (formattedStr.at(i) == '[')
                 {
                     //Open tag
 
-                    auto it = str.find(']', i);
-                    if (it != str.size() && it - i <= 4)
+                    auto it = formattedStr.find(']', i);
+                    if (it != formattedStr.size() && it - i <= 4)
                     {
-                        std::string o{ str.begin() + i, str.begin() + it + 1 };
+                        std::string o{ formattedStr.begin() + i, formattedStr.begin() + it + 1 };
 
                         if (o.at(1) == 'f') 
                         {
@@ -92,7 +92,7 @@ namespace conslr
                             tag = b | f;                          
                         }
 
-                        str.erase(i, it - i + 1);
+                        formattedStr.erase(i, it - i + 1);                      
                         if (i != 0)
                         {
                             i--;
@@ -100,11 +100,11 @@ namespace conslr
                     }
                 }
 
-                this->str.at(i).character = str.at(i);
-                this->str.at(i).tags = tag;
+                str.at(i).character = formattedStr.at(i);
+                str.at(i).tags = tag;
             }
 
-            this->str.resize(str.size());
+            str.resize(formattedStr.size());
 
             return;
         }
