@@ -65,7 +65,7 @@ namespace conslr
 
             return mScreens.at(index)->mWidgetManager;
         }
-        [[nodiscard]] constexpr const Theme& getTheme() const noexcept { return mTheme; }
+        [[nodiscard]] std::weak_ptr<Theme> getTheme() const noexcept { return mTheme; }
         [[nodiscard]] constexpr const KeyMapping& getKeyMap() const noexcept { return mKeyMap; }
         [[nodiscard]] int32_t getWindowId() const noexcept { return SDL_GetWindowID(mWindow); }
 
@@ -102,7 +102,7 @@ namespace conslr
         int32_t mWindowCellHeight;
         int32_t mWindowWidth;
         int32_t mWindowHeight;
-        Theme mTheme;
+        std::shared_ptr<Theme> mTheme;
 
         //SDL data
         SDL_Window* mWindow;

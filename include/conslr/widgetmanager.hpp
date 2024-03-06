@@ -94,14 +94,18 @@ namespace conslr
             return std::dynamic_pointer_cast<T>(mWidgets.at(index));
         }
         [[nodiscard]] constexpr const std::list<std::shared_ptr<IRenderable>>& getRenderable() const noexcept { return mRenderable; }
-        [[nodiscard]] constexpr const Theme* getTheme() const noexcept { return mTheme; }
+        [[nodiscard]] std::weak_ptr<Theme> getTheme() const noexcept { return mTheme; }
 
         //Setters
-        ///Sets the Color Scheme for widgets
-        ///Note that the colorscheme passed must have a lifetime at least equal to the life time of the screen that the widget manager is held by
-        ///
-        ///@param theme Pointer to the color scheme
-        constexpr void setTheme(Theme* theme) noexcept { mTheme = theme; }
+        void setTheme(std::shared_ptr<Theme> theme) noexcept 
+        {
+            mTheme = theme; 
+            
+            for (auto& widget : mRenderable)
+            {
+                widget->setTheme(mTheme);                
+            }
+        }
 
         static const int32_t MAX_WIDGETS = 16;
 
@@ -111,6 +115,6 @@ namespace conslr
 
         std::list<std::shared_ptr<IRenderable>> mRenderable;
 
-        Theme* mTheme = nullptr;
+         std::shared_ptr<Theme> mTheme = nullptr;
     };
 }

@@ -14,7 +14,7 @@ conslr::Console::Console(int32_t cellWidth, int32_t cellHeight, int32_t windowCe
     mCellWidth{ cellWidth }, mCellHeight{ cellHeight },
     mWindowCellWidth{ windowCellWidth }, mWindowCellHeight{ windowCellHeight },
     mWindowWidth{ cellWidth * windowCellWidth }, mWindowHeight{ cellHeight * windowCellHeight },
-    mTheme{ themes::Default },
+    mTheme{ std::make_shared<Theme>(themes::Default) },
     mWindow{ nullptr }, mRenderer{ nullptr },
     mCurrentScreen{ -1 },
     mCurrentFont{ -1 }
@@ -209,7 +209,7 @@ int32_t conslr::Console::createScreen()
 
     mScreens.at(index).reset(new Screen{ mWindowCellWidth, mWindowCellHeight });
 
-    mScreens.at(index)->mWidgetManager.setTheme(&mTheme);
+    mScreens.at(index)->mWidgetManager.setTheme(mTheme);
 
     return index;
 }
@@ -305,7 +305,7 @@ void conslr::Console::resizeCells(int32_t width, int32_t height)
 //Setters
 void conslr::Console::setTheme(const Theme& theme) noexcept
 {
-    mTheme = theme;
+    (*mTheme) = theme;
 
     for (auto& scr : mScreens)
     {

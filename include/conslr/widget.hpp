@@ -16,6 +16,7 @@
 #include <cstdint>
 #include <type_traits>
 #include <string>
+#include <memory>
 
 #include <SDL_rect.h>
 #include <SDL_events.h>
@@ -73,13 +74,14 @@ namespace conslr
         //Getters
         [[nodiscard]] constexpr const std::string& getTitle() const noexcept { return mTitle; }
 
+        //Setters
         constexpr void setTitle(const std::string& title) { mTitle = title; }
         ///Sets the widgets theme
         ///Should primarily be internally used
         ///Assumes that the theme pointer is always valid
         ///
         ///@param theme Pointer to the theme
-        constexpr void setTheme(Theme* theme) noexcept { mTheme = theme; }
+        void setTheme(std::shared_ptr<Theme> theme) noexcept { mTheme = theme; }
 
         bool mRerender; //!<If the widget is to be rerendered
     protected:
@@ -95,7 +97,7 @@ namespace conslr
         bool mShowTitle; 
         std::string mTitle; 
 
-        Theme* mTheme; //!<Current theme, typically the theme of the console
+        std::shared_ptr<Theme> mTheme; //!<Current theme, typically the theme of the console
     };
 
     class IScrollable
