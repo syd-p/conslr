@@ -18,7 +18,7 @@ namespace conslr
     struct TaggedChar
     {
         uint8_t character;
-        uint8_t tags; //!<Color tags of the string
+        uint8_t tags; 
     };
 
     const uint8_t FOREGROUND_MASK = 0x0F; //!<Mask for the foreground tag
@@ -124,6 +124,27 @@ namespace conslr
             str.insert(str.end(), other.str.begin(), other.str.end());
 
             return *this;
+        }
+
+        constexpr TaggedString& operator+=(const TaggedChar& other)
+        {
+            str.insert(str.end(), other);
+
+            return *this;
+        }
+
+        friend constexpr TaggedString operator+(TaggedString tstr, const TaggedChar& tc)
+        {
+            tstr.str.insert(tstr.str.end(), tc);
+
+            return tstr;
+        }
+
+        friend constexpr TaggedString operator+(const TaggedChar& tc, TaggedString tstr)
+        {
+            tstr.str.insert(tstr.str.begin(), tc);
+
+            return tstr;
         }
 
         std::vector<TaggedChar> str;

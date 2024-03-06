@@ -8,7 +8,7 @@
 conslr::Screen::Screen(int32_t width, int32_t height) :
     mRerender{ true },
     mWidth{ width }, mHeight{ height },
-    mCells{ (size_t)(mWidth * mHeight), conslr::Cell{} }
+    mCells{ (size_t)(mWidth * mHeight), Cell{} }
 {}
 
 void conslr::Screen::render()

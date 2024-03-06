@@ -20,15 +20,16 @@ namespace conslr
 {
     class Console;
 
-    struct Cell
-    {
-        SDL_Color background = { 0, 0, 0, 255 };
-        SDL_Color foreground = { 255, 255, 255, 255 };
-        int32_t character = 0;
-    };
-
     class Screen
     {
+    private:
+        struct Cell
+        {
+            SDL_Color background = { 0, 0, 0, 255 };
+            SDL_Color foreground = { 255, 255, 255, 255 };
+            int32_t character = 0;
+        };
+
     public:
         friend class conslr::Console;
 
