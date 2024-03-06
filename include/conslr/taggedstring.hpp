@@ -113,11 +113,11 @@ namespace conslr
         constexpr TaggedString& operator=(const TaggedString& other) { *this = TaggedString(other); return *this; } //!<Copy assignment
         constexpr TaggedString& operator=(TaggedString&& other) noexcept { str = std::move(other.str); return *this; } //!<Move assignment
 
-        constexpr TaggedString operator+(const TaggedString& other)
+        friend constexpr TaggedString operator+(TaggedString tstr, const TaggedString& other)
         {
-            str.insert(str.end(), other.str.begin(), other.str.end());
+            tstr.str.insert(tstr.str.end(), other.str.begin(), other.str.end());
 
-            return *this;
+            return tstr;
         }
         constexpr TaggedString& operator+=(const TaggedString& other)
         {
