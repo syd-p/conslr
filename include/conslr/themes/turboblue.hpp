@@ -8,6 +8,9 @@
 
 namespace conslr::themes
 {
+    ///
+    ///Turbo Blue theme
+    ///
     static const Theme TurboBlue
     {
         .borderHorizontal = (12 * 16) + 13, //!<Horizontal border character

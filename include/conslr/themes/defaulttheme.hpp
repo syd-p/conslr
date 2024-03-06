@@ -8,6 +8,9 @@
 
 namespace conslr::themes
 {
+    ///
+    ///Default theme
+    ///
     static const Theme Default
     {
         .borderHorizontal = '-', //!<Horizontal border character
