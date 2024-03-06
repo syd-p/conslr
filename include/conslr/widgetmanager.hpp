@@ -23,11 +23,13 @@
 namespace conslr
 {
     struct Theme;
+    class Screen;
 
     class WidgetManager
     {
     public:
-        WidgetManager();
+        friend class Screen;
+
         WidgetManager(const WidgetManager&) = delete;
         WidgetManager(WidgetManager&&) = delete;
         WidgetManager& operator=(const WidgetManager&) = delete;
@@ -110,11 +112,13 @@ namespace conslr
         static const int32_t MAX_WIDGETS = 16;
 
     private:
+        WidgetManager();
+
         std::queue<int32_t> mFreeWidgets;
         std::array<std::shared_ptr<IWidget>, MAX_WIDGETS> mWidgets;
 
         std::list<std::shared_ptr<IRenderable>> mRenderable;
 
-         std::shared_ptr<Theme> mTheme = nullptr;
+        std::shared_ptr<Theme> mTheme = nullptr;
     };
 }
