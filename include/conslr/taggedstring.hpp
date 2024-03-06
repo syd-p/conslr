@@ -19,10 +19,10 @@ namespace conslr
     {
         uint8_t character;
         uint8_t tags; 
-    };
 
-    const uint8_t FOREGROUND_MASK = 0x0F; //!<Mask for the foreground tag
-    const uint8_t BACKGROUND_MASK = 0xF0; //!<Mask for the background tag
+        static const uint8_t FOREGROUND_MASK = 0x0F; //!<Mask for the foreground tag
+        static const uint8_t BACKGROUND_MASK = 0xF0; //!<Mask for the background tag
+    };
 
     ///
     ///Wrapper class for std::vector<TaggedChar>
@@ -66,7 +66,7 @@ namespace conslr
             str.resize(formattedStr.size());
 
             //Initial tags, bg = 1, fg = 0
-            uint8_t tag = (1 << 4) | (0 & FOREGROUND_MASK);
+            uint8_t tag = (1 << 4) | (0 & TaggedChar::FOREGROUND_MASK);
 
             for (size_t i = 0; i < str.size(); i++)
             {
@@ -81,14 +81,14 @@ namespace conslr
 
                         if (o.at(1) == 'f') 
                         {
-                            uint8_t b = tag & BACKGROUND_MASK;
+                            uint8_t b = tag & TaggedChar::BACKGROUND_MASK;
                             uint8_t f = std::stoi(std::string{ o.begin() + 2, o.end() - 1 }) & 0x0F;
                             tag = b | f;
                         }
                         else if (o.at(1) == 'b')
                         {
                             uint8_t b = (std::stoi(std::string{ o.begin() + 2, o.end() - 1 }) & 0x0F) << 4; 
-                            uint8_t f = tag  & FOREGROUND_MASK;
+                            uint8_t f = tag  & TaggedChar::FOREGROUND_MASK;
                             tag = b | f;                          
                         }
 

@@ -528,8 +528,8 @@ void conslr::Screen::renderTextTagged(int32_t x, int32_t y, int32_t maxSize, con
         //Current tagged character
         const auto& tc = str.str.at(i);
         //Current indexs of the color tags
-        uint8_t bg = (tc.tags & BACKGROUND_MASK) >> 4;
-        uint8_t fg = tc.tags & FOREGROUND_MASK;
+        uint8_t bg = (tc.tags & TaggedChar::BACKGROUND_MASK) >> 4;
+        uint8_t fg = tc.tags & TaggedChar::FOREGROUND_MASK;
 
         cell.character = (int32_t)tc.character;
 
@@ -570,8 +570,8 @@ void conslr::Screen::renderMultilineTextTagged(int32_t x, int32_t y, int32_t max
         if (x + i < 0 || x + i >= mWidth || y + j < 0 || y + j >= mHeight) { i++; continue; }
 
         auto& cell = mCells.at(((j + y) * mWidth) + x + i);
-        uint8_t bg = (tc.tags & BACKGROUND_MASK) >> 4;
-        uint8_t fg = tc.tags & FOREGROUND_MASK;
+        uint8_t bg = (tc.tags & TaggedChar::BACKGROUND_MASK) >> 4;
+        uint8_t fg = tc.tags & TaggedChar::FOREGROUND_MASK;
 
         cell.character = (int32_t)tc.character;
 
