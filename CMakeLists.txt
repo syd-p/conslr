@@ -8,7 +8,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
 configure_file(res/ibm_vga_fontsheet.bmp ${CMAKE_SOURCE_DIR}/build/res/ibm_vga_fontsheet.bmp COPYONLY)
 configure_file(res/examplescr.json ${CMAKE_SOURCE_DIR}/build/res/examplescr.json COPYONLY)
-configure_file(res/audioplayer.json ${CMAKE_SOURCE_DIR}/build/res/audioplayer.json COPYONLY)
 
 project(conslr VERSION 1.2.2 DESCRIPTION "Simple console emulator")
 

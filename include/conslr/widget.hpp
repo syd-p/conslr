@@ -76,11 +76,6 @@ namespace conslr
 
         //Setters
         constexpr void setTitle(const std::string& title) { mTitle = title; }
-        ///Sets the widgets theme
-        ///Should primarily be internally used
-        ///Assumes that the theme pointer is always valid
-        ///
-        ///@param theme Pointer to the theme
         void setTheme(std::shared_ptr<Theme> theme) noexcept { mTheme = theme; }
 
         bool mRerender; //!<If the widget is to be rerendered

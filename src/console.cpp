@@ -314,6 +314,8 @@ void conslr::Console::setTheme(const Theme& theme) noexcept
             continue;
         }
 
+        scr->mWidgetManager.setTheme(mTheme);
+
         scr->mRerender = true;
     }
 
