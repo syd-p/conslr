@@ -94,8 +94,8 @@ void conslr::WidgetManager::deactivateWidget(int32_t index)
 //Loads the file into json, assuming its formed correctly
 //Data from the json file gets passed in the form of [parameter, value], where parameter is used to modify the widget in some way
 //The WidgetFactory takes the [param, value] pairs and creates the widget through WidgetManager
-//It then modifies the widget according the pairs
-//Widget types have to be given a function to construct them from the json file
+//It then modifies the widget according to the pairs
+//Widget types have to be given a function to construct them from the parameter map 
 //This is provided for the default widgets in the WidgetFactory::initialize method
 std::unordered_map<std::string, int32_t> conslr::WidgetManager::loadFromFile(const std::string& file)
 {
