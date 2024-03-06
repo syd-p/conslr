@@ -58,6 +58,8 @@ foreach(exampleSourceFile ${EXAMPLE_SOURCES})
     target_link_libraries(${exampleName} PRIVATE ${SDL2_LIBRARIES})
     target_link_libraries(${exampleName} PRIVATE ${SDL2_IMAGE_LIBRARIES})
     target_link_libraries(${exampleName} PRIVATE ${CMAKE_SOURCE_DIR}/build/lib/libconslr.so)
+
+    target_compile_options(${exampleName} PRIVATE -Wall -Wextra -pedantic)
 endforeach(exampleSourceFile ${EXAMPLE_SOURCES})
 
 include(GNUInstallDirs)
