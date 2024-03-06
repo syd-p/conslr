@@ -22,9 +22,9 @@ namespace conslr
 
     struct Cell
     {
-        SDL_Color background = { 0, 0, 0, 255 }; //!<Background color
-        SDL_Color foreground = { 255, 255, 255, 255 }; //!<Foreground color
-        int32_t character = 0; //!<Character
+        SDL_Color background = { 0, 0, 0, 255 };
+        SDL_Color foreground = { 255, 255, 255, 255 };
+        int32_t character = 0;
     };
 
     class Screen
@@ -70,7 +70,7 @@ namespace conslr
         [[nodiscard]] const int32_t& getHeight() const { return mHeight; }
         [[nodiscard]] const std::vector<Cell>& getCells() const { return mCells; }
 
-        bool mRerender; //!<Screen will be rerendered if true
+        bool mRerender;
         WidgetManager mWidgetManager;
 
     private:

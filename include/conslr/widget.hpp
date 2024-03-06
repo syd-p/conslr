@@ -39,11 +39,9 @@ namespace conslr
         [[nodiscard]] constexpr int32_t getPriority() const noexcept { return mPriority; }
         [[nodiscard]] constexpr bool getActive() const noexcept { return mActive; }
 
-        ///Sets the active status of the widget
-        ///May be used prior to initial render, as this does not make the screen rerender
-        ///Primarily internal
+        ///Can be used before main loop begins
         ///
-        ///@param val Value to set it to
+        ///Otherwise use WidgetManager::activateWidget/deactivateWidget so the screen is rerendered
         constexpr void setActive(bool val) noexcept { mActive = val; }
 
     protected:
@@ -53,9 +51,9 @@ namespace conslr
             mActive{ false }
         {}
 
-        int32_t mId; //!<Internal id of the widget
-        int32_t mPriority; //!<Priority of the widget, higher values will be drawn above lower values
-        bool mActive; //!<If this widget is currently active, used for changing behavior of widgets
+        int32_t mId;
+        int32_t mPriority;
+        bool mActive;
     };
 
     class IRenderable
@@ -78,7 +76,7 @@ namespace conslr
         constexpr void setTitle(const std::string& title) { mTitle = title; }
         void setTheme(std::shared_ptr<Theme> theme) noexcept { mTheme = theme; }
 
-        bool mRerender; //!<If the widget is to be rerendered
+        bool mRerender;
     protected:
         constexpr IRenderable() noexcept :
             mRerender{ true }, mVisible{ true },
@@ -88,11 +86,11 @@ namespace conslr
 
         virtual void render(Screen&) {}
 
-        bool mVisible; //!<If the widget is to be rendered
+        bool mVisible;
         bool mShowTitle; 
         std::string mTitle; 
 
-        std::shared_ptr<Theme> mTheme; //!<Current theme, typically the theme of the console
+        std::shared_ptr<Theme> mTheme;
     };
 
     class IScrollable
@@ -110,7 +108,7 @@ namespace conslr
             mSelection{ 0 }
         {}
 
-        int32_t mSelection; //!<Currently selected item
+        int32_t mSelection;
     };
 
     class ITextInput

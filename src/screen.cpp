@@ -7,12 +7,9 @@
 
 conslr::Screen::Screen(int32_t width, int32_t height) :
     mRerender{ true },
-    mWidth{ width }, mHeight{ height }
-{
-    mCells.resize(mWidth * mHeight, {});
-
-    return;
-}
+    mWidth{ width }, mHeight{ height },
+    mCells{ (size_t)(mWidth * mHeight), conslr::Cell{} }
+{}
 
 void conslr::Screen::render()
 {
