@@ -15,11 +15,6 @@ namespace conslr
         SDL_Scancode scancode;
         uint16_t mod;
 
-        ///Compares a KeyPair and Keysym
-        ///Ignores the keycode of the SDL_Keysym as that is part of the physical keyboard, scancode however is abstracted
-        ///
-        ///@param keySym Keysym to compare
-        ///@return True if scancodes are the same, otherwise false
         friend constexpr bool operator==(const KeyPair& keyPair, const SDL_Keysym& keySym) noexcept
         {
             return (keyPair.scancode == keySym.scancode) && (keyPair.mod == keySym.mod);
