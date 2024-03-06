@@ -23,6 +23,48 @@ cd build
 ```
 cmake --install .
 ```
+## Getting Started
+First include the needed headers
+```c++
+#include <conslr/console.hpp> //For the console itself
+#include <conslr/widgetmanager.hpp> //For the WidgetManager
+#include <conslr/widgets/textbox.hpp> //A widget to add
+```
+
+Then create a console with a simple loop
+```c++
+conslr::Console console{ 16, 32, 80, 24 }; //Create a console where the cells are 16x32 and the console size is 80x24
+console.setTitle("Hello world!"); //Set the title of the window
+
+int32_t screen = console.createScreen();
+console.setCurrentScreenIndex(screen);
+
+int32_t font = console.createFont("Font/Path/font.bmp", 8, 16);
+console.setCurrentFontIndex(font);
+
+auto& widgetManager = console.getWidgetManager(screen); //Get the WidgetManager for the screen
+auto textbox = widgetManager.createWidget<conslr::widgets::TextBox>(0); //Create the widget with priority 0
+textbox.lock()->setRegion({ 0, 0, 40, 12 }); //Set the region of the widget
+textbox.lock()->setString("This is a textbox!"); //Set the text of the widget
+
+SDL_Event event; //This is build on SDL, so it uses a loop similar to other SDL programs
+bool running = true;
+while (running)
+{
+    while (SDL_PollEvent(&event)) //Loop through all events
+    {
+        if (event.type == SDL_QUIT)
+        {
+            running = false; //Exit the loop
+        }
+
+        console.doEvent(event);
+    }
+
+    console.render(); //Render the console
+}
+```
+
 ## Loading Widgets From File
 Widgets can optionally be loaded using the WidgetFactory::createWidget function where the key is the type of widget, wm is the WidgetManager to create it with, and params is a map of parameters to create the widget
 
