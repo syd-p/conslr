@@ -58,7 +58,7 @@ namespace conslr
         ///Very rudimentary
         ///Example: "This is plain [f2][b3]This has a different foreground and background"
         ///
-        ///@param str String to process
+        ///@param formattedStr String to process
         TaggedString(std::string formattedStr)
         {
             //Todo: this but better somehow
