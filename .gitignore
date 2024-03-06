@@ -18,6 +18,7 @@ build/install_manifest.txt
 build/custombuild.sh
 build/*.json
 build/songs/*
+build/res/*
 
 compile_commands.json
 
