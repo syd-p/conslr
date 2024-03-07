@@ -132,13 +132,11 @@ namespace conslr
         std::string mName;
     };
 
-
     template <typename T>
     class IList
     {
     public:
         friend class conslr::WidgetManager;
-
 
         virtual void addElement(const T& element, const std::string& name)
         {
