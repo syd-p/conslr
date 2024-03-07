@@ -52,13 +52,13 @@ namespace conslr
         //Getters
         [[nodiscard]] constexpr int32_t getCurrentScreenIndex() const noexcept { return mCurrentScreen; }
         [[nodiscard]] constexpr int32_t getCurrentFontIndex() const noexcept { return mCurrentFont; }
-        [[nodiscard]] constexpr WidgetManager& getWidgetManager(int32_t index) const
+        [[nodiscard]] WidgetManager& getWidgetManager(int32_t index) const
         {
             if (!(index >= 0 && index < MAX_SCREENS))
             {
                 throw std::invalid_argument("Screen index is out of bounds, index: " + std::to_string(index));
             }
-            if (!mScreens.at(index))
+            if (mScreens.at(index) == nullptr)
             {
                 throw std::runtime_error("Screen at index is already nullptr, index: " + std::to_string(index));
             }
