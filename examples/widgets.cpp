@@ -97,6 +97,14 @@ int main()
                 {
                     l.lock()->scrollDown();
                 }
+
+                if (event.key.keysym == keys.enter)
+                {
+                    if (l.lock()->size() > 0)
+                    {
+                        l.lock()->removeElement(l.lock()->getCurrentElement().mIndex);                    
+                    }
+                }
             }
 
             console.doEvent(event);
