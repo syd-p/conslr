@@ -586,9 +586,9 @@ void conslr::Screen::renderMultilineTextTagged(int32_t x, int32_t y, int32_t max
     return;
 }
 
-constexpr void conslr::Screen::clear()
+void conslr::Screen::clear()
 {
-    mCells.assign(mCells.size(), { mWidgetManager.getTheme().lock()->background, { 255, 255, 255, 255 }, 0 });
+    mCells.assign(mCells.size(), { mWidgetManager.mTheme->background, { 255, 255, 255, 255 }, 0 });
 
     return;
 }

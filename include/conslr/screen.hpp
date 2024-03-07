@@ -77,7 +77,7 @@ namespace conslr
     private:
         Screen(int32_t width, int32_t height);
 
-        constexpr void clear();
+        void clear();
 
         //Size in cells
         int32_t mWidth;

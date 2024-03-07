@@ -58,7 +58,7 @@ namespace conslr
             {
                 throw std::invalid_argument("Screen index is out of bounds, index: " + std::to_string(index));
             }
-            if (mScreens.at(index) == nullptr)
+            if (!mScreens.at(index))
             {
                 throw std::runtime_error("Screen at index is already nullptr, index: " + std::to_string(index));
             }
