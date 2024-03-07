@@ -85,13 +85,13 @@ namespace conslr::widgets
             return;
         }
 
-        constexpr void toggleCurrentElement() noexcept
+        bool toggleCurrentElement() noexcept
         {
             mElements.at(mSelection).second = !mElements.at(mSelection).second;
             
             mRerender = true;
 
-            return;
+            return mElements.at(mSelection).second;
         }
 
         constexpr void showScrollbar() noexcept { mShowScrollbar = true; mRerender = true; }
