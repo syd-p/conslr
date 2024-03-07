@@ -94,7 +94,7 @@ namespace conslr::widgets
 
             return;
         }
-        virtual constexpr void chooseElement() noexcept
+        constexpr void chooseElement() noexcept
         {
             mChosenElement = mSelection;
 
@@ -106,7 +106,7 @@ namespace conslr::widgets
         constexpr void hideScrollbar() noexcept { mShowScrollbar = false; mRerender = true; }
 
         //Getters
-        constexpr const ListContainer<T>& getCurrentElement() { return IList<T>::mElements.at(mSelection); }
+        constexpr const ListContainer<T>& getCurrentElement() { return IList<T>::mElements.at(mChosenElement); }
         constexpr const SDL_Rect& getRegion() const noexcept { return mRegion; }
 
         //Setters
