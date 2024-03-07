@@ -147,7 +147,7 @@ namespace conslr
 
         virtual void removeElement(size_t index)
         {
-            if (index < 0 || index >= mElements.size())
+            if (index >= mElements.size())
             {
                 throw std::runtime_error(std::string("Index is out of bounds, index: ") + std::to_string(index) + ", size: " + std::to_string(mElements.size()));
             }

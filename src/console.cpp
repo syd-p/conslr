@@ -182,16 +182,13 @@ void conslr::Console::destroy()
 
     if (mRenderer)
     {
-        SDL_DestroyRenderer(mRenderer.get());
+        mRenderer.reset(nullptr);
     }
 
     if (mWindow)
     {
-        SDL_DestroyWindow(mWindow.get());
+        mWindow.reset(nullptr);
     }
-
-    mRenderer = nullptr;
-    mWindow = nullptr;
 
     return;
 }
