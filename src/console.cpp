@@ -15,7 +15,7 @@ conslr::Console::Console(int32_t cellWidth, int32_t cellHeight, int32_t windowCe
     mWindowCellWidth{ windowCellWidth }, mWindowCellHeight{ windowCellHeight },
     mWindowWidth{ cellWidth * windowCellWidth }, mWindowHeight{ cellHeight * windowCellHeight },
     mTheme{ std::make_shared<Theme>(themes::Default) },
-    mWindow{ nullptr }, mRenderer{ nullptr },
+    mWindow{ nullptr, SDL_DestroyWindow }, mRenderer{ nullptr, SDL_DestroyRenderer },
     mCurrentScreen{ -1 },
     mCurrentFont{ -1 }
 {
@@ -47,13 +47,13 @@ conslr::Console::Console(int32_t cellWidth, int32_t cellHeight, int32_t windowCe
         }
     }
 
-    mWindow = SDL_CreateWindow("Console", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, mWindowWidth, mWindowHeight, 0);
+    mWindow.reset(SDL_CreateWindow("Console", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, mWindowWidth, mWindowHeight, 0));
     if (!mWindow)
     {
         throw std::runtime_error(std::string("Failed to create window: ") + SDL_GetError());
     }
 
-    mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    mRenderer.reset(SDL_CreateRenderer(mWindow.get(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC));
     if (!mRenderer)
     {
         throw std::runtime_error(std::string("Failed to create renderer: ") + SDL_GetError());
@@ -79,7 +79,7 @@ bool conslr::Console::doEvent(SDL_Event& event)
 
     if (event.type == SDL_WINDOWEVENT)
     {
-        if (event.window.windowID == SDL_GetWindowID(mWindow))
+        if (event.window.windowID == SDL_GetWindowID(mWindow.get()))
         {
             switch (event.window.event)
             {
@@ -97,12 +97,12 @@ bool conslr::Console::doEvent(SDL_Event& event)
 
 void conslr::Console::render()
 {
-    SDL_SetRenderDrawColor(mRenderer, 0, 0, 0, 255);
-    SDL_RenderClear(mRenderer);
+    SDL_SetRenderDrawColor(mRenderer.get(), 0, 0, 0, 255);
+    SDL_RenderClear(mRenderer.get());
 
     if (mCurrentScreen < 0)
     {
-        SDL_RenderPresent(mRenderer);
+        SDL_RenderPresent(mRenderer.get());
         return;
     }
 
@@ -136,8 +136,8 @@ void conslr::Console::render()
         int32_t indexY = i / mWindowCellWidth;
         SDL_Rect rect{ indexX * mCellWidth, indexY * mCellHeight, mCellWidth, mCellHeight };
 
-        SDL_SetRenderDrawColor(mRenderer, cell.background.r, cell.background.g, cell.background.b, cell.background.a);
-        SDL_RenderFillRect(mRenderer, &rect);
+        SDL_SetRenderDrawColor(mRenderer.get(), cell.background.r, cell.background.g, cell.background.b, cell.background.a);
+        SDL_RenderFillRect(mRenderer.get(), &rect);
 
         if (mCurrentFont < 0)
         {
@@ -146,12 +146,12 @@ void conslr::Console::render()
         const auto& font = *mFonts.at(mCurrentFont);
         SDL_Rect src{ (cell.character % font.mColumns) * font.mCharWidth, (cell.character / font.mColumns) * font.mCharHeight, font.mCharWidth, font.mCharHeight };
 
-        SDL_SetTextureColorMod(font.mTexture, cell.foreground.r, cell.foreground.g, cell.foreground.b);
-        SDL_SetTextureAlphaMod(font.mTexture, cell.foreground.a);
-        SDL_RenderCopy(mRenderer, font.mTexture, &src, &rect);
+        SDL_SetTextureColorMod(font.mTexture.get(), cell.foreground.r, cell.foreground.g, cell.foreground.b);
+        SDL_SetTextureAlphaMod(font.mTexture.get(), cell.foreground.a);
+        SDL_RenderCopy(mRenderer.get(), font.mTexture.get(), &src, &rect);
     }
 
-    SDL_RenderPresent(mRenderer);
+    SDL_RenderPresent(mRenderer.get());
 
     return;
 }
@@ -182,12 +182,12 @@ void conslr::Console::destroy()
 
     if (mRenderer)
     {
-        SDL_DestroyRenderer(mRenderer);
+        SDL_DestroyRenderer(mRenderer.get());
     }
 
     if (mWindow)
     {
-        SDL_DestroyWindow(mWindow);
+        SDL_DestroyWindow(mWindow.get());
     }
 
     mRenderer = nullptr;
@@ -244,7 +244,7 @@ int32_t conslr::Console::createFont(const char* file, int32_t charWidth, int32_t
         throw std::runtime_error("Failed to init SDL2_image");
     }
 
-    SDL_Texture* texture = IMG_LoadTexture(mRenderer, file);
+    SDL_Texture* texture = IMG_LoadTexture(mRenderer.get(), file);
     if (!texture)
     {
         throw std::runtime_error(std::string("Failed to load image, file: ") + file);
@@ -262,7 +262,8 @@ int32_t conslr::Console::createFont(const char* file, int32_t charWidth, int32_t
 
     int32_t index = mFreeFonts.front();
     mFreeFonts.pop();
-    mFonts.at(index).reset(new Font{ charWidth, charHeight, width / charWidth, height / charHeight, texture });
+    mFonts.at(index).reset(new Font{ charWidth, charHeight, width / charWidth, height / charHeight });
+    mFonts.at(index)->mTexture.reset(texture);
 
     return index;
 }
@@ -297,7 +298,7 @@ void conslr::Console::resizeCells(int32_t width, int32_t height)
     mWindowWidth = mCellWidth * mWindowCellWidth;
     mWindowHeight = mCellHeight * mWindowCellHeight;
 
-    SDL_SetWindowSize(mWindow, mWindowWidth, mWindowHeight);
+    SDL_SetWindowSize(mWindow.get(), mWindowWidth, mWindowHeight);
 
     return;
 }
@@ -322,13 +323,3 @@ void conslr::Console::setTheme(const Theme& theme) noexcept
     return;
 }
 
-//Console::Font
-conslr::Console::Font::~Font()
-{
-    if (mTexture != nullptr)
-    {
-        SDL_DestroyTexture(mTexture);
-    }
-
-    return;
-}

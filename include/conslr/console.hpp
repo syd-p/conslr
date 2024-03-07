@@ -11,16 +11,12 @@
 #include <stdexcept>
 #include <string>
 
+#include <SDL.h>
+
 #include "conslr/keymapping.hpp"
 #include "conslr/widgetmanager.hpp"
 #include "conslr/theme.hpp"
 #include "conslr/screen.hpp"
-
-struct SDL_Window;
-struct SDL_Renderer;
-struct SDL_Surface;
-struct SDL_Texture;
-union SDL_Event;
 
 namespace conslr
 {
@@ -67,7 +63,7 @@ namespace conslr
         }
         [[nodiscard]] std::weak_ptr<Theme> getTheme() const noexcept { return mTheme; }
         [[nodiscard]] constexpr const KeyMapping& getKeyMap() const noexcept { return mKeyMap; }
-        [[nodiscard]] int32_t getWindowId() const noexcept { return SDL_GetWindowID(mWindow); }
+        [[nodiscard]] int32_t getWindowId() const noexcept { return SDL_GetWindowID(mWindow.get()); }
 
         //Setters
         constexpr void setCurrentScreenIndex(int32_t index)
@@ -82,8 +78,8 @@ namespace conslr
         }
         void setTheme(const Theme& theme) noexcept;
         constexpr void setKeyMap(const KeyMapping& keyMap) noexcept { mKeyMap = keyMap; }
-        void setTitle(const std::string& str) noexcept { SDL_SetWindowTitle(mWindow, str.c_str()); }
-        void setIcon(SDL_Surface* icon) noexcept { SDL_SetWindowIcon(mWindow, icon); }
+        void setTitle(const std::string& str) noexcept { SDL_SetWindowTitle(mWindow.get(), str.c_str()); }
+        void setIcon(SDL_Surface* icon) noexcept { SDL_SetWindowIcon(mWindow.get(), icon); }
 
         //Const values
         static const int32_t MAX_SCREENS = 16; //!<Max screens that a console can have
@@ -105,8 +101,8 @@ namespace conslr
         std::shared_ptr<Theme> mTheme;
 
         //SDL data
-        SDL_Window* mWindow;
-        SDL_Renderer* mRenderer;
+        std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> mWindow;
+        std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)> mRenderer;
         KeyMapping mKeyMap;
 
         //Screen data
@@ -117,14 +113,18 @@ namespace conslr
         //Font data
         struct Font
         {
-            ~Font();
+            Font(int32_t charW, int32_t charH, int32_t cols, int32_t rows) :
+                mCharWidth{ charW }, mCharHeight{ charH },
+                mColumns{ cols }, mRows{ rows },
+                mTexture{ nullptr, SDL_DestroyTexture }
+            {}
 
             int32_t mCharWidth = 0;
             int32_t mCharHeight = 0;
             int32_t mColumns = 0;
             int32_t mRows = 0;
 
-            SDL_Texture* mTexture = nullptr;
+            std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> mTexture; 
         };
         std::queue<int32_t> mFreeFonts;
         std::array<std::unique_ptr<Font>, MAX_FONTS> mFonts;
