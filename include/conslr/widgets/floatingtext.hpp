@@ -70,7 +70,7 @@ namespace conslr::widgets
         }
 
         SDL_Rect mRegion;
-        std::string mString; //!<Text of the widget
+        std::string mString;
     };
 
     inline std::pair<std::string, int32_t> constructFloatingText(WidgetManager& wm, const WidgetParameterMap& params)

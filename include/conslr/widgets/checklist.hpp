@@ -105,8 +105,8 @@ namespace conslr::widgets
         constexpr void hideScrollbar() noexcept { mShowScrollbar = false; mRerender = true; }
 
         //Getters
-        constexpr const ListContainer<CheckListContainer<T>>& getCurrentElement() { return IList<CheckListContainer<T>>::mElements.at(mSelection); }
-        constexpr const SDL_Rect& getRegion() const noexcept { return mRegion; }
+        [[nodiscard]] constexpr const ListContainer<CheckListContainer<T>>& getCurrentElement() { return IList<CheckListContainer<T>>::mElements.at(mSelection); }
+        [[nodiscard]] constexpr const SDL_Rect& getRegion() const noexcept { return mRegion; }
 
         //Setters
         constexpr void setRegion(const SDL_Rect& region) 
