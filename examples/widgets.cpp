@@ -1,6 +1,6 @@
 ///Example showing widgets
 ///
-///Press up or down to scroll through list, enter to output the current element
+///Press up or down to scroll through list, enter to remove the selected element 
 #include <string>
 
 #include <SDL.h>
