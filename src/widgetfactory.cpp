@@ -7,6 +7,7 @@
 #include "conslr/widgets/textinput.hpp"
 #include "conslr/widgets/scrolllist.hpp"
 #include "conslr/widgets/radiolist.hpp"
+#include "conslr/widgets/checklist.hpp"
 
 std::unordered_map<std::string, conslr::WidgetFactorySignature> conslr::WidgetFactory::mFactories;
 bool conslr::WidgetFactory::mInitialized = false;
@@ -34,6 +35,12 @@ void conslr::WidgetFactory::initialize()
     registerWidget("RadioListDouble", widgets::constructRadioList<double>);
     registerWidget("RadioListStr", widgets::constructRadioList<std::string>);
     registerWidget("RadioListChar", widgets::constructRadioList<char>);
+
+    registerWidget("CheckListInt", widgets::constructCheckList<int32_t>);
+    registerWidget("CheckListUInt", widgets::constructCheckList<uint32_t>);
+    registerWidget("CheckListDouble", widgets::constructCheckList<double>);
+    registerWidget("CheckListStr", widgets::constructCheckList<std::string>);
+    registerWidget("CheckListChar", widgets::constructCheckList<char>);
 
     mInitialized = true;
     return;

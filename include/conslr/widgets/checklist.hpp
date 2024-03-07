@@ -4,6 +4,10 @@
 ///
 #pragma once
 
+#include <cassert>
+#include <string>
+#include <sstream>
+
 #include <SDL.h>
 
 #include "conslr/widget.hpp"
@@ -192,4 +196,207 @@ namespace conslr::widgets
         int32_t mScrollY;
         bool mShowScrollbar;
     };
+
+    ///
+    ///Populates a list if possible
+    ///Custom data types must have their own specialized function
+    ///
+    template <typename T>
+    inline void constructListElements(std::shared_ptr<CheckList<T>> ptr, const std::string& str)
+    {
+        (void)ptr; (void)str;
+        assert(0 && "Unimplemented type for constructListElements");
+
+        return;
+    }
+
+    //Signed int specialization
+    template<std::signed_integral T>
+    inline void constructListElements(std::shared_ptr<CheckList<T>> ptr, const std::string& str)
+    {
+        std::stringstream ss{ str };
+
+        std::string name; 
+        std::string val;
+        bool ticked;
+
+        while (ss >> name >> val >> ticked)
+        {
+            ptr->addElement({ std::stoll(val), ticked }, name);
+        }
+
+        return;
+    }
+
+    //Unsigned int specialization
+    template<std::unsigned_integral T>
+    inline void constructListElements(std::shared_ptr<CheckList<T>> ptr, const std::string& str)
+    {
+        std::stringstream ss{ str };
+
+        std::string name; 
+        std::string val;
+        bool ticked;
+
+        while (ss >> name >> val >> ticked)
+        {
+            ptr->addElement({ std::stoull(val), ticked }, name);
+        }
+
+        return;
+    }
+
+    //Floating point specialization
+    template<std::floating_point T>
+    inline void constructListElements(std::shared_ptr<CheckList<T>> ptr, const std::string& str)
+    {
+        std::stringstream ss{ str };
+
+        std::string name; 
+        std::string val;
+        bool ticked;
+
+        while (ss >> name >> val >> ticked)
+        {
+            ptr->addElement({ std::stold(val), ticked }, name);
+        }
+
+        return;
+    }
+
+    //String specialization
+    template<>
+    inline void constructListElements<std::string>(std::shared_ptr<CheckList<std::string>> ptr, const std::string& str)
+    {
+        std::stringstream ss{ str };
+
+        std::string name; 
+        std::string val;
+        bool ticked;
+
+        while (ss >> name >> val >> ticked)
+        {
+            ptr->addElement({ val, ticked }, name);
+        }
+
+        return;
+    }
+
+    //Char specialization
+    template<>
+    inline void constructListElements<char>(std::shared_ptr<CheckList<char>> ptr, const std::string& str)
+    {
+        std::stringstream ss{ str };
+
+        std::string name; 
+        char val;
+        bool ticked;
+
+        while (ss >> name >> val >> ticked)
+        {
+            ptr->addElement({ val, ticked }, name);
+        }
+
+        return;
+    }
+
+
+    ///
+    ///Must be registered manually for all types used
+    ///
+    template <typename T>
+    inline std::pair<std::string, int32_t> constructCheckList(WidgetManager& wm, const WidgetParameterMap& params)
+    {
+        int priority = 0;
+        if (params.contains("priority"))
+        {
+            priority = std::stoi(params.at("priority"));
+        }
+        auto wptr = wm.createWidget<CheckList<T>>(priority);
+        auto ptr = wptr.lock();
+
+        if (params.contains("visible"))
+        {
+            if (params.at("visible") == "true")
+            {
+                ptr->show();
+            } 
+            else if (params.at("visible") == "false")
+            {
+                ptr->hide();
+            }
+            else
+            {
+                throw std::invalid_argument("Param visible must be \"true\" or \"false\"");
+            }
+        }
+
+        if (params.contains("showtitle"))
+        {
+            if (params.at("showtitle") == "true")
+            {
+                ptr->showTitle();
+            }
+            else if (params.at("showtitle") == "false")
+            {
+                ptr->hideTitle();
+            } 
+            else
+            {
+                throw std::invalid_argument("Param showtitle must be \"true\" or \"false\"");
+            }
+        }
+
+        if (params.contains("active"))
+        {
+            if (params.at("active") == "true")
+            {
+                ptr->setActive(true);
+            }
+            else if (params.at("active") == "false")
+            {
+                ptr->setActive(false);
+            } 
+            else
+            {
+                throw std::invalid_argument("Param active must be \"true\" or \"false\"");
+            }
+        }
+
+        if (params.contains("title"))
+        {
+            ptr->setTitle(params.at("title"));
+        }
+
+        if (params.contains("region"))
+        {
+            std::stringstream ss{ params.at("region") };
+            int32_t x;
+            int32_t y;
+            int32_t w;
+            int32_t h;
+
+            ss >> x >> y >> w >> h;
+            if (ss.fail())
+            {
+                throw std::invalid_argument("Param region must be in the format of \"intx inty intw inth\"");
+            }
+
+            ptr->setRegion({ x, y, w, h });
+        }
+
+        if (params.contains("elements"))
+        {
+            constructListElements<T>(ptr, params.at("elements"));
+        }
+
+        if (params.contains("name"))
+        {
+            return { params.at("name"), ptr->getId() };
+        }
+        else
+        {
+            return { "unnamed", ptr->getId() };
+        }
+    }
 }
