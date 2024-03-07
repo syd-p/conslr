@@ -13,6 +13,7 @@
 #include "conslr/widgets/taggedtextbox.hpp"
 #include "conslr/widgets/floatingtext.hpp"
 #include "conslr/widgets/scrolllist.hpp"
+#include "conslr/widgets/checklist.hpp"
 
 int main()
 {
@@ -30,7 +31,7 @@ int main()
 
     auto& wm = console.getWidgetManager(scr);
     //Creates list
-    auto l = wm.createWidget<conslr::widgets::ScrollList<int32_t>>();
+    auto l = wm.createWidget<conslr::widgets::CheckList<int32_t>>();
     {
         auto listPtr = l.lock();
 
@@ -39,7 +40,7 @@ int main()
         listPtr->setTitle("List");
         for (auto i = 0; i < 30; i++)
         {
-            listPtr->addElement(i, std::to_string(i));
+            listPtr->addElement({ i, false }, std::to_string(i));
         }
         wm.activateWidget(listPtr->getId());
     }
@@ -102,7 +103,7 @@ int main()
                 {
                     if (l.lock()->size() > 0)
                     {
-                        l.lock()->removeElement(l.lock()->getCurrentElement().mIndex);                    
+                        l.lock()->toggleCurrentElement();
                     }
                 }
             }

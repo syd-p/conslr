@@ -5,7 +5,6 @@
 #pragma once
 
 #include <string>
-#include <cassert>
 #include <algorithm>
 #include <sstream>
 #include <stdexcept>
@@ -136,8 +135,6 @@ namespace conslr::widgets
             {
                 throw std::runtime_error("Region width and height must be greater than 2, width: " + std::to_string(mRegion.w) + ", height: " + std::to_string(mRegion.h));
             }
-
-            assert((mRegion.w > 2 && mRegion.h > 2) && "Scroll List is too small to render");
 
             screen.fillRect(mRegion, mTheme->background, mTheme->border, 0);
             screen.borderRect(mRegion, mTheme->borderHorizontal, mTheme->borderVertical, mTheme->borderCornerTl, mTheme->borderCornerTr, mTheme->borderCornerBl, mTheme->borderCornerBr);
