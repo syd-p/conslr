@@ -2,7 +2,6 @@
 ///
 ///Press up or down to scroll through list, enter to output the current element
 #include <string>
-#include <iostream>
 
 #include <SDL.h>
 
@@ -10,10 +9,10 @@
 #include "conslr/taggedstring.hpp"
 #include "conslr/theme.hpp"
 #include "conslr/themes/defaulttheme.hpp"
-#include "conslr/widgets/scrolllist.hpp"
 #include "conslr/widgets/textbox.hpp"
 #include "conslr/widgets/taggedtextbox.hpp"
 #include "conslr/widgets/floatingtext.hpp"
+#include "conslr/widgets/checklist.hpp"
 
 int main()
 {
@@ -31,7 +30,7 @@ int main()
 
     auto& wm = console.getWidgetManager(scr);
     //Creates list
-    auto l = wm.createWidget<conslr::widgets::ScrollList<int32_t>>();
+    auto l = wm.createWidget<conslr::widgets::CheckList<int32_t>>();
     {
         auto listPtr = l.lock();
 
@@ -43,7 +42,6 @@ int main()
             listPtr->addElement(i, std::to_string(i));
         }
         wm.activateWidget(listPtr->getId());
-
     }
 
     //Creates text box
@@ -102,7 +100,7 @@ int main()
 
                 if (event.key.keysym == keys.enter)
                 {
-                    std::cout << "Currently selected list element is: " << l.lock()->getCurrentElement() << std::endl;
+                    l.lock()->toggleCurrentElement();
                 }
             }
 

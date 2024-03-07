@@ -28,7 +28,7 @@ namespace conslr::widgets
     template<typename T>
     struct ScrollListContainer
     {
-        const int32_t mSelectionIndex; //!<The index of this element in the vector
+        size_t mSelectionIndex; //!<The index of this element in the vector
         T mElement;
         std::string mName;
     };

@@ -1,17 +1,16 @@
 ///
-///@file conslr/widgets/radiolist.hpp
-///@brief Defines the RadioList widget
+///@file conslr/widgets/checklist.hpp
+///@brief Defines the CheckList widget
 ///
 #pragma once
 
 #include <vector>
 #include <string>
-#include <cassert>
-#include <algorithm>
-#include <sstream>
 #include <stdexcept>
+#include <sstream>
+#include <algorithm>
 
-#include <SDL_rect.h>
+#include <SDL.h>
 
 #include "conslr/widget.hpp"
 #include "conslr/screen.hpp"
@@ -22,27 +21,28 @@
 
 namespace conslr::widgets
 {
-    ///Allows the user to create a radio list of items
-    ///Internal note, mSelection refers to what is being hovered (taken from scrollable), mChosenElement refers to the element of the list that is ticked
     ///
-    ///@tparam Type of the elements of the ScrollList
+    ///CheckList widget
+    ///Note that it returns elements as a pair (element, currently ticked)
+    ///
     template<typename T>
-    class RadioList : public IWidget, public IRenderable, public IScrollable
+    class CheckList : public IWidget, public IRenderable, public IScrollable
     {
     public:
         friend class conslr::Screen;
         friend class conslr::WidgetManager;
 
-        void addElement(const T& t, const std::string& name)
+        void addElement(const T& t, const std::string& name, bool ticked = false)
         {
-            mElements.emplace_back(mElements.size(), t, name);
+            mElements.emplace_back(std::pair<ScrollListContainer<T>, bool>{ { mElements.size(), t, name }, ticked });
             mRerender = true;
 
             return;
         }
-        void addElement(T&& t, const std::string& name)
+
+        void addElement(T&& t, const std::string& name, bool ticked = false)
         {
-            mElements.emplace_back(mElements.size(), t, name);
+            mElements.emplace_back(std::pair<ScrollListContainer<T>, bool>{ { mElements.size(), t, name }, ticked });
             mRerender = true;
 
             return;
@@ -84,11 +84,13 @@ namespace conslr::widgets
 
             return;
         }
-        virtual constexpr void chooseElement() noexcept
-        {
-            mChosenElement = mSelection;
 
+        constexpr void toggleCurrentElement() noexcept
+        {
+            mElements.at(mSelection).second = !mElements.at(mSelection).second;
+            
             mRerender = true;
+
             return;
         }
 
@@ -96,8 +98,9 @@ namespace conslr::widgets
         constexpr void hideScrollbar() noexcept { mShowScrollbar = false; mRerender = true; }
 
         //Getters
-        constexpr const T& getCurrentElement() { return mElements.at(mSelection).mElement; }
+        constexpr const std::pair<ScrollListContainer<T>, bool> getCurrentElement() { return mElements.at(mSelection); }
         constexpr const SDL_Rect& getRegion() const noexcept { return mRegion; }
+        constexpr const std::vector<std::pair<ScrollListContainer<T>, bool>>& getElements() const noexcept { return mElements; }
 
         //Setters
         constexpr void setRegion(const SDL_Rect& region) 
@@ -112,12 +115,22 @@ namespace conslr::widgets
 
             return;
         }
+        constexpr void setElements(bool value)
+        {
+            for (auto& element : mElements)
+            {
+                element.second = value;
+            }
+
+            mRerender = true;
+
+            return;
+        }
 
     protected:
-        constexpr RadioList(int32_t id, int32_t priority) noexcept :
+        constexpr CheckList(int32_t id, int32_t priority) noexcept :
             IWidget{ id, priority },
-            mRegion{ 0, 0, 0, 0 }, mScrollY{ 0 }, mShowScrollbar{ true },
-            mChosenElement{ -1 }
+            mRegion{ 0, 0, 0, 0 }, mScrollY{ 0 }, mShowScrollbar{ true }
         {}
 
         virtual void render(Screen& screen) override
@@ -126,8 +139,6 @@ namespace conslr::widgets
             {
                 throw std::runtime_error("Region width and height must be greater than 2, width: " + std::to_string(mRegion.w) + ", height: " + std::to_string(mRegion.h));
             }
-
-            assert((mRegion.w > 2 && mRegion.h > 2) && "Scroll List is too small to render");
 
             screen.fillRect(mRegion, mTheme->background, mTheme->border, 0);
             screen.borderRect(mRegion, mTheme->borderHorizontal, mTheme->borderVertical, mTheme->borderCornerTl, mTheme->borderCornerTr, mTheme->borderCornerBl, mTheme->borderCornerBr);
@@ -147,12 +158,12 @@ namespace conslr::widgets
             for (auto i = 0; i < maxShown; i++)
             {
                 const auto& element = mElements.at(mScrollY + i);
-                screen.renderTextColor(xOffset, yOffset + i, freeWidth, "[ ]" + element.mName, mTheme->text);
-
-                if (mChosenElement == mScrollY + i)
+                std::string checkbox = "[ ]";
+                if (element.second)
                 {
-                    screen.setCellCharacter(xOffset + 1, yOffset + i, mTheme->selectionTick);
+                    checkbox.at(1) = mTheme->selectionTick;
                 }
+                screen.renderTextColor(xOffset, yOffset + i, freeWidth, checkbox + element.first.mName, mTheme->text);
             }
 
             //Current selection
@@ -185,12 +196,11 @@ namespace conslr::widgets
             return;
         }
 
-        std::vector<ScrollListContainer<T>> mElements;
+        std::vector<std::pair<ScrollListContainer<T>, bool>> mElements;
 
         SDL_Rect mRegion;
         int32_t mScrollY;
         bool mShowScrollbar;
-        int32_t mChosenElement; //!<Element currently chosen in the list, negative numbers are no selection
     };
 
     ///
@@ -198,7 +208,7 @@ namespace conslr::widgets
     ///Custom data types must have their own specialized function
     ///
     template <typename T>
-    inline void constructListElements(std::shared_ptr<RadioList<T>> ptr, const std::string& str)
+    inline void constructListElements(std::shared_ptr<CheckList<T>> ptr, const std::string& str)
     {
         (void)ptr; (void)str;
         assert(0 && "Unimplemented type for constructListElements");
@@ -208,16 +218,18 @@ namespace conslr::widgets
 
     //Signed int specialization
     template<std::signed_integral T>
-    inline void constructListElements(std::shared_ptr<RadioList<T>> ptr, const std::string& str)
+    inline void constructListElements(std::shared_ptr<CheckList<T>> ptr, const std::string& str)
     {
         std::stringstream ss{ str };
 
         std::string name; 
         std::string val;
+        bool ticked;
 
-        while (ss >> name >> val)
+        while (ss >> name >> val >> ticked)
         {
-            ptr->addElement(std::stoll(val), name);
+            ptr->addElement(std::stoll(val), name, ticked);
+            
         }
 
         return;
@@ -225,16 +237,17 @@ namespace conslr::widgets
 
     //Unsigned int specialization
     template<std::unsigned_integral T>
-    inline void constructListElements(std::shared_ptr<RadioList<T>> ptr, const std::string& str)
+    inline void constructListElements(std::shared_ptr<CheckList<T>> ptr, const std::string& str)
     {
         std::stringstream ss{ str };
 
         std::string name; 
         std::string val;
+        bool ticked;
 
-        while (ss >> name >> val)
+        while (ss >> name >> val >> ticked)
         {
-            ptr->addElement(std::stoull(val), name);
+            ptr->addElement(std::stoull(val), name, ticked);
         }
 
         return;
@@ -242,16 +255,17 @@ namespace conslr::widgets
 
     //Floating point specialization
     template<std::floating_point T>
-    inline void constructListElements(std::shared_ptr<RadioList<T>> ptr, const std::string& str)
+    inline void constructListElements(std::shared_ptr<CheckList<T>> ptr, const std::string& str)
     {
         std::stringstream ss{ str };
 
         std::string name; 
         std::string val;
+        bool ticked;
 
-        while (ss >> name >> val)
+        while (ss >> name >> val >> ticked)
         {
-            ptr->addElement(std::stold(val), name);
+            ptr->addElement(std::stold(val), name, ticked);
         }
 
         return;
@@ -259,16 +273,17 @@ namespace conslr::widgets
 
     //String specialization
     template<>
-    inline void constructListElements<std::string>(std::shared_ptr<RadioList<std::string>> ptr, const std::string& str)
+    inline void constructListElements<std::string>(std::shared_ptr<CheckList<std::string>> ptr, const std::string& str)
     {
         std::stringstream ss{ str };
 
         std::string name; 
         std::string val;
+        bool ticked;
 
-        while (ss >> name >> val)
+        while (ss >> name >> val >> ticked)
         {
-            ptr->addElement(val, name);
+            ptr->addElement(val, name, ticked);
         }
 
         return;
@@ -276,16 +291,17 @@ namespace conslr::widgets
 
     //Char specialization
     template<>
-    inline void constructListElements<char>(std::shared_ptr<RadioList<char>> ptr, const std::string& str)
+    inline void constructListElements<char>(std::shared_ptr<CheckList<char>> ptr, const std::string& str)
     {
         std::stringstream ss{ str };
 
         std::string name; 
         char val;
+        bool ticked;
 
-        while (ss >> name >> val)
+        while (ss >> name >> val >> ticked)
         {
-            ptr->addElement(val, name);
+            ptr->addElement(val, name, ticked);
         }
 
         return;
@@ -295,14 +311,14 @@ namespace conslr::widgets
     ///Must be registered manually for all types used
     ///
     template <typename T>
-    inline std::pair<std::string, int32_t> constructRadioList(WidgetManager& wm, const WidgetParameterMap& params)
+    inline std::pair<std::string, int32_t> constructCheckList(WidgetManager& wm, const WidgetParameterMap& params)
     {
         int priority = 0;
         if (params.contains("priority"))
         {
             priority = std::stoi(params.at("priority"));
         }
-        auto wptr = wm.createWidget<RadioList<T>>(priority);
+        auto wptr = wm.createWidget<CheckList<T>>(priority);
         auto ptr = wptr.lock();
 
         if (params.contains("visible"))
