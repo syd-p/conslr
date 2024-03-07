@@ -61,33 +61,40 @@ namespace conslr
         ///@param formattedStr String to process
         TaggedString(std::string formattedStr)
         {
-            //Todo: this but better somehow
-            
             str.resize(formattedStr.size());
 
             //Initial tags, bg = 1, fg = 0
             uint8_t tag = (1 << 4) | (0 & TaggedChar::FOREGROUND_MASK);
 
-            for (size_t i = 0; i < str.size(); i++)
+            for (size_t i = 0; i < formattedStr.size(); i++)
             {
                 if (formattedStr.at(i) == '[')
                 {
-                    //Open tag
-
                     auto it = formattedStr.find(']', i);
-                    if (it != formattedStr.size() && it - i <= 4)
-                    {
-                        std::string o{ formattedStr.begin() + i, formattedStr.begin() + it + 1 };
+                    if (it != std::string::npos && it - i >= 4 && it - i <= 5)
+                    {                         
+                        std::string o{ formattedStr.begin() + i, formattedStr.begin() + it + 1 };                       
+                        o.erase(0, 1);
+                        o.pop_back();
 
-                        if (o.at(1) == 'f') 
+                        char tagType = o.at(0);
+                        o.erase(0, 1);
+
+                        int32_t tagVal = std::stoi(o);
+                        if (tagVal < 0 || tagVal > 0x0F)
+                        {
+                            throw std::runtime_error("Formatted TaggedString tag is out of bounds, tagVal: " + std::to_string(tagVal));
+                        }
+
+                        if (tagType == 'f') 
                         {
                             uint8_t b = tag & TaggedChar::BACKGROUND_MASK;
-                            uint8_t f = std::stoi(std::string{ o.begin() + 2, o.end() - 1 }) & 0x0F;
+                            uint8_t f = tagVal & 0x0F;
                             tag = b | f;
                         }
-                        else if (o.at(1) == 'b')
+                        else if (tagType == 'b')
                         {
-                            uint8_t b = (std::stoi(std::string{ o.begin() + 2, o.end() - 1 }) & 0x0F) << 4; 
+                            uint8_t b = (tagVal & 0x0F) << 4; 
                             uint8_t f = tag  & TaggedChar::FOREGROUND_MASK;
                             tag = b | f;                          
                         }
@@ -99,7 +106,6 @@ namespace conslr
                         }
                     }
                 }
-
                 str.at(i).character = formattedStr.at(i);
                 str.at(i).tags = tag;
             }
