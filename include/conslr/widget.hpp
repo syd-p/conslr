@@ -14,9 +14,11 @@
 #pragma once
 
 #include <cstdint>
+#include <stdexcept>
 #include <type_traits>
 #include <string>
 #include <memory>
+#include <vector>
 
 #include <SDL_rect.h>
 #include <SDL_events.h>
@@ -123,9 +125,64 @@ namespace conslr
     };
 
     template <typename T>
-    concept IsWidget = std::is_base_of<IWidget, T>::value;
+    struct ListContainer
+    {
+        size_t mIndex;
+        T mElement;
+        std::string mName;
+    };
+
 
     template <typename T>
+    class IList
+    {
+    public:
+        friend class conslr::WidgetManager;
+
+
+        virtual void addElement(const T& element, const std::string& name)
+        {
+            mElements.emplace_back(mElements.size(), element, name);
+
+            return;
+        }
+
+        virtual void removeElement(size_t index)
+        {
+            if (index < 0 || index >= mElements.size())
+            {
+                throw std::runtime_error(std::string("Index is out of bounds, index: ") + std::to_string(index) + ", size: " + std::to_string(mElements.size()));
+            }
+
+            mElements.erase(mElements.begin() + index);
+
+            for (size_t i = index; i < mElements.size(); i++)
+            {
+                mElements.at(i).mIndex = i;
+            }
+
+            return;
+        }
+
+        //Getters
+        const ListContainer<T>& getElement(size_t index) { return mElements.at(index); }
+        constexpr const std::vector<ListContainer<T>>& getElements() noexcept { return mElements; }
+        constexpr size_t size() const noexcept { return mElements.size(); }
+        
+        //Setters
+        void setElementName(size_t index, const std::string& name) { mElements.at(index).mName = name; }
+        void setElement(size_t index, const T& element) { mElements.at(index).mElement = element; }
+
+    protected:
+        constexpr IList() noexcept {}
+
+        std::vector<ListContainer<T>> mElements;
+    };
+
+    template <class T>
+    concept IsWidget = std::is_base_of<IWidget, T>::value;
+
+    template <class T>
     concept IsNotInterface =
         !std::is_same<IWidget, T>::value &&
         !std::is_same<IRenderable, T>::value &&

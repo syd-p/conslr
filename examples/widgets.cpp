@@ -12,7 +12,7 @@
 #include "conslr/widgets/textbox.hpp"
 #include "conslr/widgets/taggedtextbox.hpp"
 #include "conslr/widgets/floatingtext.hpp"
-#include "conslr/widgets/checklist.hpp"
+#include "conslr/widgets/scrolllist.hpp"
 
 int main()
 {
@@ -30,7 +30,7 @@ int main()
 
     auto& wm = console.getWidgetManager(scr);
     //Creates list
-    auto l = wm.createWidget<conslr::widgets::CheckList<int32_t>>();
+    auto l = wm.createWidget<conslr::widgets::ScrollList<int32_t>>();
     {
         auto listPtr = l.lock();
 
@@ -96,11 +96,6 @@ int main()
                 if (event.key.keysym == keys.scrollDown)
                 {
                     l.lock()->scrollDown();
-                }
-
-                if (event.key.keysym == keys.enter)
-                {
-                    l.lock()->toggleCurrentElement();
                 }
             }
 

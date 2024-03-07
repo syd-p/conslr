@@ -4,7 +4,6 @@
 ///
 #pragma once
 
-#include <vector>
 #include <string>
 #include <cassert>
 #include <algorithm>
@@ -27,22 +26,23 @@ namespace conslr::widgets
     ///
     ///@tparam Type of the elements of the ScrollList
     template<typename T>
-    class RadioList : public IWidget, public IRenderable, public IScrollable
+    class RadioList : public IWidget, public IRenderable, public IScrollable, public IList<T>
     {
     public:
         friend class conslr::Screen;
         friend class conslr::WidgetManager;
 
-        void addElement(const T& t, const std::string& name)
+        virtual void addElement(const T& t, const std::string& name) override
         {
-            mElements.emplace_back(mElements.size(), t, name);
+            IList<T>::addElement(t, name);
             mRerender = true;
 
             return;
         }
-        void addElement(T&& t, const std::string& name)
+
+        virtual void removeElement(size_t index) override
         {
-            mElements.emplace_back(mElements.size(), t, name);
+            IList<T>::removeElement(index);
             mRerender = true;
 
             return;
@@ -50,7 +50,7 @@ namespace conslr::widgets
 
         virtual constexpr void scrollUp() noexcept override
         {
-            if (mElements.size() == 0)
+            if (IList<T>::mElements.size() == 0)
             {
                 return;
             }
@@ -67,12 +67,12 @@ namespace conslr::widgets
         }
         virtual constexpr void scrollDown() noexcept override
         {
-            if (mElements.size() == 0)
+            if (IList<T>::mElements.size() == 0)
             {
                 return;
             }
 
-            mSelection = std::min((int32_t)mElements.size() - 1, mSelection + 1);
+            mSelection = std::min((int32_t)IList<T>::mElements.size() - 1, mSelection + 1);
             //Subtracted by 1 to get the last element
             //without it it would be past the last element
             if (mSelection > mScrollY + mRegion.h - 2 - 1)
@@ -96,7 +96,7 @@ namespace conslr::widgets
         constexpr void hideScrollbar() noexcept { mShowScrollbar = false; mRerender = true; }
 
         //Getters
-        constexpr const T& getCurrentElement() { return mElements.at(mSelection).mElement; }
+        constexpr const ListContainer<T>& getCurrentElement() { return IList<T>::mElements.at(mSelection); }
         constexpr const SDL_Rect& getRegion() const noexcept { return mRegion; }
 
         //Setters
@@ -132,7 +132,7 @@ namespace conslr::widgets
             screen.fillRect(mRegion, mTheme->background, mTheme->border, 0);
             screen.borderRect(mRegion, mTheme->borderHorizontal, mTheme->borderVertical, mTheme->borderCornerTl, mTheme->borderCornerTr, mTheme->borderCornerBl, mTheme->borderCornerBr);
 
-            if (mElements.size() == 0)
+            if (IList<T>::mElements.size() == 0)
             {
                 return;
             }
@@ -143,10 +143,10 @@ namespace conslr::widgets
             int32_t freeWidth = mRegion.w - 2;
             int32_t freeHeight = mRegion.h - 2;
 
-            int32_t maxShown = std::min(freeHeight, (int32_t)mElements.size());
+            int32_t maxShown = std::min(freeHeight, (int32_t)IList<T>::mElements.size());
             for (auto i = 0; i < maxShown; i++)
             {
-                const auto& element = mElements.at(mScrollY + i);
+                const auto& element = IList<T>::mElements.at(mScrollY + i);
                 screen.renderTextColor(xOffset, yOffset + i, freeWidth, "[ ]" + element.mName, mTheme->text);
 
                 if (mChosenElement == mScrollY + i)
@@ -170,10 +170,10 @@ namespace conslr::widgets
                         mTheme->border);
             }
 
-            if (mShowScrollbar && mElements.size() > (size_t)freeHeight)
+            if (mShowScrollbar && IList<T>::mElements.size() > (size_t)freeHeight)
             {
-                double visiblePercent = (double)freeHeight / (double)mElements.size(); //Percent of elements shown
-                double percentDown = (double)mScrollY / (double)mElements.size(); //How far down the first element is
+                double visiblePercent = (double)freeHeight / (double)IList<T>::mElements.size(); //Percent of elements shown
+                double percentDown = (double)mScrollY / (double)IList<T>::mElements.size(); //How far down the first element is
 
                 //Render scrollbar
                 int32_t scrollbarOffset = percentDown * freeHeight;
@@ -184,8 +184,6 @@ namespace conslr::widgets
 
             return;
         }
-
-        std::vector<ScrollListContainer<T>> mElements;
 
         SDL_Rect mRegion;
         int32_t mScrollY;

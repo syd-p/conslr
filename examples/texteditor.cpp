@@ -134,7 +134,7 @@ int main()
                     else if (sc == SDL_SCANCODE_RETURN)
                     {
                         //Choose option
-                        auto option = menu.lock()->getCurrentElement();
+                        auto option = menu.lock()->getCurrentElement().mElement;
 
                         if (option == MenuOptions::New)
                         {

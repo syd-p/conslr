@@ -1,9 +1,10 @@
 #include <string>
+#include <iostream>
 
 #include <SDL.h>
 
 #include "conslr/console.hpp"
-#include "conslr/widgets/checklist.hpp"
+#include "conslr/widgets/scrolllist.hpp"
 
 int main()
 {
@@ -20,7 +21,7 @@ int main()
     console.setCurrentScreenIndex(scr);
 
     auto widgetIds = console.getWidgetManager(scr).loadFromFile("res/examplescr.json");
-    auto list = console.getWidgetManager(scr).getWidget<conslr::widgets::CheckList<int32_t>>(widgetIds.at("CheckList1"));
+    auto list = console.getWidgetManager(scr).getWidget<conslr::widgets::ScrollList<int32_t>>(widgetIds.at("ScrollList1"));
 
     SDL_Event event;
     bool running = true;
@@ -47,7 +48,7 @@ int main()
 
                 if (event.key.keysym.scancode == SDL_SCANCODE_RETURN)
                 {
-                    list.lock()->toggleCurrentElement();
+                    std::cout << list.lock()->getCurrentElement().mElement << std::endl;
                 }
             }
 
