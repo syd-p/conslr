@@ -43,6 +43,16 @@ namespace conslr::widgets
         virtual void removeElement(size_t index) override
         {
             IList<T>::removeElement(index);
+            if ((size_t)mSelection == IList<T>::mElements.size())
+            {
+                //If the removed element was the last, and it was selected, scroll up
+                scrollUp();
+                mScrollY = std::max(0, mScrollY - 1);
+            }
+            else if (mScrollY != 0)
+            {
+                mScrollY--;
+            }
             mRerender = true;
 
             return;
@@ -132,16 +142,26 @@ namespace conslr::widgets
             screen.fillRect(mRegion, mTheme->background, mTheme->border, 0);
             screen.borderRect(mRegion, mTheme->borderHorizontal, mTheme->borderVertical, mTheme->borderCornerTl, mTheme->borderCornerTr, mTheme->borderCornerBl, mTheme->borderCornerBr);
 
+            int32_t xOffset = mRegion.x + 1;
+            int32_t yOffset = mRegion.y + 1;
+            int32_t freeWidth = mRegion.w - 2;
+            int32_t freeHeight = mRegion.h - 2;
+
+            if (mShowTitle)
+            {
+                screen.renderTextColor(
+                        mRegion.x + 1, mRegion.y,
+                        std::min(freeWidth, (int32_t)mTitle.size()),
+                        mTitle,
+                        mTheme->border);
+            }
+
             if (IList<T>::mElements.size() == 0)
             {
                 return;
             }
 
             //Render the elements
-            int32_t xOffset = mRegion.x + 1;
-            int32_t yOffset = mRegion.y + 1;
-            int32_t freeWidth = mRegion.w - 2;
-            int32_t freeHeight = mRegion.h - 2;
 
             int32_t maxShown = std::min(freeHeight, (int32_t)IList<T>::mElements.size());
             for (auto i = 0; i < maxShown; i++)
@@ -159,15 +179,6 @@ namespace conslr::widgets
             if (mActive)
             {
                 screen.setCellBackground(xOffset + 1, yOffset + mSelection - mScrollY, mTheme->selection);
-            }
-
-            if (mShowTitle)
-            {
-                screen.renderTextColor(
-                        mRegion.x + 1, mRegion.y,
-                        std::min(freeWidth, (int32_t)mTitle.size()),
-                        mTitle,
-                        mTheme->border);
             }
 
             if (mShowScrollbar && IList<T>::mElements.size() > (size_t)freeHeight)
