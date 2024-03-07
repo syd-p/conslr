@@ -39,7 +39,7 @@ namespace conslr::widgets
         virtual void removeElement(size_t index) override
         {
             IList<CheckListContainer<T>>::removeElement(index);
-            if ((size_t)mSelection == IList<CheckListContainer<T>>::mElements.size())
+            if ((size_t)mSelection == IList<CheckListContainer<T>>::size())
             {
                 //If the removed element was the last, and it was selected, scroll up
                 scrollUp();
@@ -56,7 +56,7 @@ namespace conslr::widgets
 
         virtual constexpr void scrollUp() noexcept override
         {
-            if (IList<CheckListContainer<T>>::mElements.size() == 0)
+            if (IList<CheckListContainer<T>>::size() == 0)
             {
                 return;
             }
@@ -73,12 +73,12 @@ namespace conslr::widgets
         }
         virtual constexpr void scrollDown() noexcept override
         {
-            if (IList<CheckListContainer<T>>::mElements.size() == 0)
+            if (IList<CheckListContainer<T>>::size() == 0)
             {
                 return;
             }
 
-            mSelection = std::min((int32_t)IList<CheckListContainer<T>>::mElements.size() - 1, mSelection + 1);
+            mSelection = std::min((int32_t)IList<CheckListContainer<T>>::size() - 1, mSelection + 1);
             //Subtracted by 1 to get the last element
             //without it it would be past the last element
             if (mSelection > mScrollY + mRegion.h - 2 - 1)
@@ -152,14 +152,14 @@ namespace conslr::widgets
                         mTheme->border);
             }
 
-            if (IList<CheckListContainer<T>>::mElements.size() == 0)
+            if (IList<CheckListContainer<T>>::size() == 0)
             {
                 return;
             }
 
             //Render the elements
 
-            int32_t maxShown = std::min(freeHeight, (int32_t)IList<CheckListContainer<T>>::mElements.size());
+            int32_t maxShown = std::min(freeHeight, (int32_t)IList<CheckListContainer<T>>::size());
             for (auto i = 0; i < maxShown; i++)
             {
                 const auto& element = IList<CheckListContainer<T>>::mElements.at(mScrollY + i);
@@ -177,10 +177,10 @@ namespace conslr::widgets
                 screen.setCellBackground(xOffset + 1, yOffset + mSelection - mScrollY, mTheme->selection);
             }
 
-            if (mShowScrollbar && IList<CheckListContainer<T>>::mElements.size() > (size_t)freeHeight)
+            if (mShowScrollbar && IList<CheckListContainer<T>>::size() > (size_t)freeHeight)
             {
-                double visiblePercent = (double)freeHeight / (double)IList<CheckListContainer<T>>::mElements.size(); //Percent of elements shown
-                double percentDown = (double)mScrollY / (double)IList<CheckListContainer<T>>::mElements.size(); //How far down the first element is
+                double visiblePercent = (double)freeHeight / (double)IList<CheckListContainer<T>>::size(); //Percent of elements shown
+                double percentDown = (double)mScrollY / (double)IList<CheckListContainer<T>>::size(); //How far down the first element is
 
                 //Render scrollbar
                 int32_t scrollbarOffset = percentDown * freeHeight;
