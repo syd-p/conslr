@@ -16,9 +16,11 @@ build/compile_commands.json
 build/ibm_vga_fontsheet.bmp
 build/install_manifest.txt
 build/custombuild.sh
+build/createpkg.sh
 build/*.json
 build/songs/*
 build/res/*
+build/pkg/*
 
 compile_commands.json
 
