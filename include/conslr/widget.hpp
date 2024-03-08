@@ -179,11 +179,4 @@ namespace conslr
 
     template <class T>
     concept IsWidget = std::is_base_of<IWidget, T>::value;
-
-    template <class T>
-    concept IsNotInterface =
-        !std::is_same<IWidget, T>::value &&
-        !std::is_same<IRenderable, T>::value &&
-        !std::is_same<IScrollable, T>::value &&
-        !std::is_same<ITextInput, T>::value;
 }

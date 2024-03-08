@@ -41,7 +41,7 @@ namespace conslr
         ///@param priority Priority of the created widget
         ///@return Returns a weak pointer to the created widget
         template<IsWidget T>
-            requires IsNotInterface<T>
+            requires (!std::same_as<T, IWidget>)
         [[nodiscard]] std::weak_ptr<T> createWidget(int32_t priority = 0)
         {
             if (mFreeWidgets.empty())
