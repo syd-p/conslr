@@ -31,6 +31,9 @@ namespace conslr::widgets
         constexpr void addValue(const int32_t& val) noexcept { mCurrentValue = std::clamp(mCurrentValue + val, 0, mMaxValue); mRerender = true; }
         constexpr void removeValue(const int32_t& val) noexcept { mCurrentValue = std::clamp(mCurrentValue - val, 0, mMaxValue); mRerender = true; }
 
+        constexpr void showPercent() noexcept { mShowPercent = true; mRerender = true; }
+        constexpr void hidePercent() noexcept { mShowPercent = false; mRerender = true; }
+
         //Getters
         constexpr const SDL_Rect& getRegion() const noexcept { return mRegion; }
         constexpr const int32_t& getCurrentValue() const noexcept { return mCurrentValue; }
@@ -56,7 +59,8 @@ namespace conslr::widgets
         constexpr ProgressBar(int32_t id, int32_t priority) noexcept :
            IWidget{ id, priority },
            mRegion{ 0, 0, 0, 0 },
-           mCurrentValue{ 0 }, mMaxValue{ 100 }
+           mCurrentValue{ 0 }, mMaxValue{ 100 },
+           mShowPercent{ true }
         {}
 
         virtual void render(Screen& screen) override
@@ -87,12 +91,28 @@ namespace conslr::widgets
                     mTheme->text,
                     mTheme->progress);
 
+            //Render percent
+            if (mShowPercent && mRegion.w - 2 >= 4)
+            {
+                std::string p{ "%" };
+                p += std::to_string((int32_t)(percent * 100));
+                
+                int32_t percentX = std::max(0, (int32_t)(((mRegion.w - 2) / 2) - (p.size() / 2)));
+                
+                screen.renderTextColor(
+                        mRegion.x + 1 + percentX, mRegion.y + 1 + ((mRegion.h - 2) / 2),
+                        mRegion.w - 2,
+                        p,
+                        mTheme->text);
+            }
+
             return;
         }
 
         SDL_Rect mRegion;
         int32_t mCurrentValue;
         int32_t mMaxValue;
+        bool mShowPercent;
     };
 
     inline std::pair<std::string, int32_t> constructProgressBar(WidgetManager& wm, const WidgetParameterMap& params)
