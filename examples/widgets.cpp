@@ -12,8 +12,8 @@
 #include "conslr/widgets/textbox.hpp"
 #include "conslr/widgets/taggedtextbox.hpp"
 #include "conslr/widgets/floatingtext.hpp"
-#include "conslr/widgets/scrolllist.hpp"
 #include "conslr/widgets/checklist.hpp"
+#include "conslr/widgets/progressbar.hpp"
 
 int main()
 {
@@ -74,6 +74,15 @@ int main()
         ftPtr->setString("Floating text widget");
     }
 
+    auto pb = wm.createWidget<conslr::widgets::ProgressBar>();
+    {
+        auto pbPtr = pb.lock();
+        pbPtr->setTitle("Progess Bar");
+        pbPtr->showTitle();
+        pbPtr->setRegion({ 41, 16, 25, 3 });
+        pbPtr->setMaxValue(1000);
+    }
+
     SDL_Event event;
     bool running = true;
     while (running)
@@ -109,6 +118,11 @@ int main()
             }
 
             console.doEvent(event);
+        }
+
+        if (running)
+        {
+            pb.lock()->addValue(1);
         }
 
         console.render();

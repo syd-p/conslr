@@ -8,6 +8,7 @@
 #include "conslr/widgets/scrolllist.hpp"
 #include "conslr/widgets/radiolist.hpp"
 #include "conslr/widgets/checklist.hpp"
+#include "conslr/widgets/progressbar.hpp"
 
 std::unordered_map<std::string, conslr::WidgetFactorySignature> conslr::WidgetFactory::mFactories;
 bool conslr::WidgetFactory::mInitialized = false;
@@ -22,6 +23,7 @@ void conslr::WidgetFactory::initialize()
     registerWidget("TaggedFloatingText", widgets::constructTaggedFloatingText);
     registerWidget("TaggedTextBox", widgets::constructTaggedTextBox);
     registerWidget("TextInput", widgets::constructTextInput);
+    registerWidget("ProgressBar", widgets::constructProgressBar);
 
     //Some template ones
     registerWidget("ScrollListInt", widgets::constructScrollList<int32_t>);
