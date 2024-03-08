@@ -8,10 +8,8 @@
 #include <conslr/widgets/floatingtext.hpp>
 #include <conslr/widgets/scrolllist.hpp>
 #include <conslr/widgets/textbox.hpp>
-#include "conslr/taggedstring.hpp"
 #include "conslr/widgets/checklist.hpp"
 #include "conslr/widgets/progressbar.hpp"
-#include "conslr/widgets/taggedfloatingtext.hpp"
 #include "conslr/widgets/textinput.hpp"
 
 enum class ScreenState
@@ -200,22 +198,8 @@ int main()
     auto charSlider = charWm.createWidget<conslr::widgets::FloatingText>();
     {
         auto ptr = charSlider.lock();
-        ptr->setRegion({ 60, 6, 5, 1 });
-        ptr->setString(" " + std::to_string(getCharacter(theme, ThemeCharacters::borderHorizontal)) + " ");
-    }
-
-    auto charDisplay = charWm.createWidget<conslr::widgets::TaggedFloatingText>();
-    {
-        auto ptr = charDisplay.lock();
-        ptr->setRegion({ 62, 7, 1, 1 });
-        conslr::TaggedString str{ " " };
-        str.str.at(0).character = getCharacter(theme, ThemeCharacters::borderHorizontal);
-        ptr->setString(str);
-
-        conslr::TagSet ts;
-        ts.at(0) = { 255, 255, 255, 255 };
-        ts.at(1) = { 0, 0, 0, 255 };
-        ptr->setTags(ts);
+        ptr->setRegion({ 60, 6, 6, 1 });
+        ptr->setString(" " + std::to_string(getCharacter(theme, ThemeCharacters::borderHorizontal)) + " " + (char)theme.borderHorizontal);
     }
 
     auto& widgetsWm = console.getWidgetManager(widgetScr);
@@ -260,8 +244,6 @@ int main()
 
     ThemeCharacters charOption = ThemeCharacters::borderHorizontal;
     bool editingChar = false;
-    conslr::TaggedString str{ " " };
-    str.str.at(0).character = getCharacter(theme, ThemeCharacters::borderHorizontal);
     
     SDL_Event event;
     bool running = true;
@@ -447,9 +429,7 @@ int main()
                             if (event.key.keysym.mod == KMOD_LSHIFT) { inc = -10; }
 
                             getCharacter(theme, charOption) = std::clamp(getCharacter(theme, charOption) + inc, 0, 255);
-                            charSlider.lock()->setString("<" + std::to_string(getCharacter(theme, charOption)) + ">");
-                            str.str.at(0).character = getCharacter(theme, charOption);
-                            charDisplay.lock()->setString(str);
+                            charSlider.lock()->setString("<" + std::to_string(getCharacter(theme, charOption)) + ">" + (char)getCharacter(theme, charOption));
 
                             console.setTheme(theme);
                         }
@@ -459,9 +439,7 @@ int main()
                             if (event.key.keysym.mod == KMOD_LSHIFT) { inc = 10; }
 
                             getCharacter(theme, charOption) = std::clamp(getCharacter(theme, charOption) + inc, 0, 255);
-                            charSlider.lock()->setString("<" + std::to_string(getCharacter(theme, charOption)) + ">");
-                            str.str.at(0).character = getCharacter(theme, charOption);
-                            charDisplay.lock()->setString(str);
+                            charSlider.lock()->setString("<" + std::to_string(getCharacter(theme, charOption)) + ">" + (char)getCharacter(theme, charOption));
 
                             console.setTheme(theme);
                         }
@@ -487,9 +465,7 @@ int main()
                             editingChar = true;
                             charOption = charList.lock()->getCurrentElement().mElement;
                             currentChar.lock()->setString(charList.lock()->getCurrentElement().mName);
-                            charSlider.lock()->setString("<" + std::to_string(getCharacter(theme, charOption)) + ">");
-                            str.str.at(0).character = getCharacter(theme, charOption);
-                            charDisplay.lock()->setString(str);
+                            charSlider.lock()->setString("<" + std::to_string(getCharacter(theme, charOption)) + ">" + (char)getCharacter(theme, charOption));
                             charWm.deactivateWidget(charList.lock()->getId());
                         }
                     }

@@ -350,7 +350,7 @@ void conslr::Screen::renderText(int32_t x, int32_t y, int32_t maxSize, const std
     {
         if (x + i < 0 || x + i >= mWidth) { continue; }
 
-        mCells.at(start + i).character = (int32_t)str.at(i);
+        mCells.at(start + i).character = (int32_t)(unsigned char)str.at(i);
     }
 
     mRerender = true;
@@ -384,7 +384,7 @@ void conslr::Screen::renderMultilineText(int32_t x, int32_t y, int32_t maxWidth,
 
         if (x + i < 0 || x + i >= mWidth || y + j < 0 || y + j >= mHeight) { i++; continue; }
 
-        mCells.at(((j + y) * mWidth) + x + i).character = c;
+        mCells.at(((j + y) * mWidth) + x + i).character = (int32_t)(unsigned char)c;
         i++;
     }
 
@@ -405,7 +405,7 @@ void conslr::Screen::renderTextColor(int32_t x, int32_t y, int32_t maxSize, cons
 
         auto& cell = mCells.at(start + i);
 
-        cell.character = (int32_t)str.at(i);
+        cell.character = (int32_t)(unsigned char)str.at(i);
         cell.foreground = color;
     }
 
@@ -426,7 +426,7 @@ void conslr::Screen::renderTextColor(int32_t x, int32_t y, int32_t maxSize, cons
 
         auto& cell = mCells.at(start + i);
 
-        cell.character = (int32_t)str.at(i);
+        cell.character = (int32_t)(unsigned char)str.at(i);
         cell.foreground = foreground;
         cell.background = background;
     }
@@ -464,7 +464,7 @@ void conslr::Screen::renderMultilineTextColor(int32_t x, int32_t y, int32_t maxW
 
         auto& cell = mCells.at(((j + y) * mWidth) + x + i);
 
-        cell.character = c;
+        cell.character = (int32_t)(unsigned char)c;
         cell.foreground = color;
 
         i++;
@@ -503,7 +503,7 @@ void conslr::Screen::renderMultilineTextColor(int32_t x, int32_t y, int32_t maxW
 
         auto& cell = mCells.at(((j + y) * mWidth) + x + i);
 
-        cell.character = c;
+        cell.character = (int32_t)(unsigned char)c;
         cell.foreground = foreground;
         cell.background = background;
         i++;
