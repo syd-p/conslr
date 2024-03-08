@@ -85,7 +85,7 @@ namespace conslr::widgets
             screen.fillRectForeground(
                     { mRegion.x + 1, mRegion.y + 1, fill, mRegion.h - 2 },
                     mTheme->text,
-                    mTheme->selectionTick);
+                    mTheme->progress);
 
             return;
         }

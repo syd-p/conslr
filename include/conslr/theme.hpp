@@ -23,6 +23,7 @@ namespace conslr
         int32_t scrollbarCharacter = (11 * 16) + 10; //!<Scrollbar character
         int32_t scrollbarCharacterHorizontal = (12 * 16) + 13; //!<Horizontal scrollbar character
         int32_t selectionTick = 'X'; //!<Selected element tick
+        int32_t progress = (13 * 16) + 11; //!<Progress bar fill
 
         SDL_Color background = { 0, 0, 0, 255 }; //!<Background for widgets
         SDL_Color text = { 255, 255, 255, 255 }; //!<Text for widgets
