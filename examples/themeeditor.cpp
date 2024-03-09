@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <iostream>
 
 #include <SDL.h>
 
@@ -40,6 +41,39 @@ enum class ThemeCharacters
     selectionTick,
     progress
 };
+
+void printTheme(const conslr::Theme& theme)
+{
+    std::cout << "Border Horizontal: " << (int)theme.borderHorizontal << std::endl;
+    std::cout << "Border Vertical: " << (int)theme.borderVertical << std::endl;
+    std::cout << "Border Top Left: " << (int)theme.borderCornerTl << std::endl;
+    std::cout << "Border Top Right: " << (int)theme.borderCornerTr << std::endl;
+    std::cout << "Border Bottom Left: " << (int)theme.borderCornerBl << std::endl;
+    std::cout << "Border Bottom Right: " << (int)theme.borderCornerBr << std::endl;
+    std::cout << "Scroll Bar: " << (int)theme.scrollbarCharacter << std::endl;
+    std::cout << "Scroll Bar Horizontal: " << (int)theme.scrollbarCharacterHorizontal << std::endl;
+    std::cout << "Selection Tick: " << (int)theme.selectionTick << std::endl;
+    std::cout << "Progress Bar: " << (int)theme.progress << std::endl;
+    std::cout << "Background: " << (int)theme.background.r << ' '
+                                << (int)theme.background.g << ' '
+                                << (int)theme.background.b << ' '
+                                << (int)theme.background.a << std::endl;
+    std::cout << "Text: " << (int)theme.text.r << ' '
+                                << (int)theme.text.g << ' '
+                                << (int)theme.text.b << ' '
+                                << (int)theme.text.a << std::endl;
+    std::cout << "Border: " << (int)theme.border.r << ' '
+                                << (int)theme.border.g << ' '
+                                << (int)theme.border.b << ' '
+                                << (int)theme.border.a << std::endl;
+    std::cout << "Selection: " << (int)theme.selection.r << ' '
+                                << (int)theme.selection.g << ' '
+                                << (int)theme.selection.b << ' '
+                                << (int)theme.selection.a << std::endl;
+
+
+    return;
+}
 
 SDL_Color& getColor(conslr::Theme& theme, ThemeColors color)
 {
@@ -258,7 +292,11 @@ int main()
 
             if (event.type == SDL_KEYDOWN)
             {
-                if (event.key.keysym.scancode == SDL_SCANCODE_1)
+                if (event.key.keysym.scancode == SDL_SCANCODE_P)
+                {
+                    printTheme(theme);
+                }
+                else if (event.key.keysym.scancode == SDL_SCANCODE_1)
                 {
                     state = ScreenState::colors;
                     console.setCurrentScreenIndex(colorScr);
