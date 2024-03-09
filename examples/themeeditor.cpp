@@ -1,3 +1,6 @@
+///Example / theme editor tool
+///
+///1,2,3 to change screens, arrow keys to move cursor, P to print theme to console
 #include <algorithm>
 #include <iostream>
 
