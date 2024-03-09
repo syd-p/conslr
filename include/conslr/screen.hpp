@@ -27,7 +27,7 @@ namespace conslr
         {
             SDL_Color background = { 0, 0, 0, 255 };
             SDL_Color foreground = { 255, 255, 255, 255 };
-            int32_t character = 0;
+            uint8_t character = 0;
         };
 
     public:
@@ -37,25 +37,25 @@ namespace conslr
 
         void render();
 
-        void fill(const SDL_Color& background, const SDL_Color& foreground, const int32_t& character);
+        void fill(const SDL_Color& background, const SDL_Color& foreground, const uint8_t& character);
         void fillBackground(const SDL_Color& background);
         void fillForeground(const SDL_Color& foreground);
-        void fillForeground(const SDL_Color& foreground, const int32_t& character);
-        void fillCharacter(const int32_t& character);
+        void fillForeground(const SDL_Color& foreground, const uint8_t& character);
+        void fillCharacter(const uint8_t& character);
 
-        void fillRect(SDL_Rect rect, const SDL_Color& background, const SDL_Color& foreground, const int32_t& character);
+        void fillRect(SDL_Rect rect, const SDL_Color& background, const SDL_Color& foreground, const uint8_t& character);
         void fillRectBackground(SDL_Rect rect, const SDL_Color& background);
         void fillRectForeground(SDL_Rect rect, const SDL_Color& foreground);
-        void fillRectForeground(SDL_Rect rect, const SDL_Color& foreground, const int32_t& character);
-        void fillRectCharacter(SDL_Rect rect, const int32_t& character);
+        void fillRectForeground(SDL_Rect rect, const SDL_Color& foreground, const uint8_t& character);
+        void fillRectCharacter(SDL_Rect rect, const uint8_t& character);
 
-        void setCell(int32_t x, int32_t y, const SDL_Color& background, const SDL_Color& foreground, const int32_t& character);
+        void setCell(int32_t x, int32_t y, const SDL_Color& background, const SDL_Color& foreground, const uint8_t& character);
         void setCellBackground(int32_t x, int32_t y, const SDL_Color& background);
         void setCellForeground(int32_t x, int32_t y, const SDL_Color& foreground);
-        void setCellForeground(int32_t x, int32_t y, const SDL_Color& foreground, const int32_t& character);
-        void setCellCharacter(int32_t x, int32_t y, const int32_t& character);
+        void setCellForeground(int32_t x, int32_t y, const SDL_Color& foreground, const uint8_t& character);
+        void setCellCharacter(int32_t x, int32_t y, const uint8_t& character);
 
-        void borderRect(SDL_Rect rect, int32_t horizontal, int32_t vertical, int32_t cornerTl, int32_t cornerTr, int32_t cornerBl, int32_t cornerBr);
+        void borderRect(SDL_Rect rect, uint8_t horizontal, uint8_t vertical, uint8_t cornerTl, uint8_t cornerTr, uint8_t cornerBl, uint8_t cornerBr);
 
         void renderText(int32_t x, int32_t y, int32_t maxSize, const std::string& str);
         void renderMultilineText(int32_t x, int32_t y, int32_t maxWidth, int32_t maxHeight, const std::string& str);

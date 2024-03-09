@@ -58,7 +58,7 @@ SDL_Color& getColor(conslr::Theme& theme, ThemeColors color)
     }
 }
 
-int32_t& getCharacter(conslr::Theme& theme, ThemeCharacters character)
+uint8_t& getCharacter(conslr::Theme& theme, ThemeCharacters character)
 {
     switch (character)
     {

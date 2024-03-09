@@ -29,7 +29,7 @@ void conslr::Screen::render()
     return;
 }
 
-void conslr::Screen::fill(const SDL_Color& background, const SDL_Color& foreground, const int32_t& character)
+void conslr::Screen::fill(const SDL_Color& background, const SDL_Color& foreground, const uint8_t& character)
 {
     for (auto& cell : mCells)
     {
@@ -67,7 +67,7 @@ void conslr::Screen::fillForeground(const SDL_Color& foreground)
     return;
 }
 
-void conslr::Screen::fillForeground(const SDL_Color& foreground, const int32_t& character)
+void conslr::Screen::fillForeground(const SDL_Color& foreground, const uint8_t& character)
 {
     for (auto& cell : mCells)
     {
@@ -80,7 +80,7 @@ void conslr::Screen::fillForeground(const SDL_Color& foreground, const int32_t& 
     return;
 }
 
-void conslr::Screen::fillCharacter(const int32_t& character)
+void conslr::Screen::fillCharacter(const uint8_t& character)
 {
     for (auto& cell : mCells)
     {
@@ -92,7 +92,7 @@ void conslr::Screen::fillCharacter(const int32_t& character)
     return;
 }
 
-void conslr::Screen::fillRect(SDL_Rect rect, const SDL_Color& background, const SDL_Color& foreground, const int32_t& character)
+void conslr::Screen::fillRect(SDL_Rect rect, const SDL_Color& background, const SDL_Color& foreground, const uint8_t& character)
 {
     for (auto i = rect.x; i < rect.x + rect.w; i++)
     {
@@ -157,7 +157,7 @@ void conslr::Screen::fillRectForeground(SDL_Rect rect, const SDL_Color& foregrou
     return;
 }
 
-void conslr::Screen::fillRectForeground(SDL_Rect rect, const SDL_Color& foreground, const int32_t& character)
+void conslr::Screen::fillRectForeground(SDL_Rect rect, const SDL_Color& foreground, const uint8_t& character)
 {
     for (auto i = rect.x; i < rect.x + rect.w; i++)
     {
@@ -179,7 +179,7 @@ void conslr::Screen::fillRectForeground(SDL_Rect rect, const SDL_Color& foregrou
     return;
 }
 
-void conslr::Screen::fillRectCharacter(SDL_Rect rect, const int32_t& character)
+void conslr::Screen::fillRectCharacter(SDL_Rect rect, const uint8_t& character)
 {
     for (auto i = rect.x; i < rect.x + rect.w; i++)
     {
@@ -200,7 +200,7 @@ void conslr::Screen::fillRectCharacter(SDL_Rect rect, const int32_t& character)
     return;
 }
 
-void conslr::Screen::setCell(int32_t x, int32_t y, const SDL_Color& background, const SDL_Color& foreground, const int32_t& character)
+void conslr::Screen::setCell(int32_t x, int32_t y, const SDL_Color& background, const SDL_Color& foreground, const uint8_t& character)
 {
     if (x < 0 || x >= mWidth || y < 0 || y >= mHeight) { return; }
 
@@ -241,7 +241,7 @@ void conslr::Screen::setCellForeground(int32_t x, int32_t y, const SDL_Color& fo
     return;
 }
 
-void conslr::Screen::setCellForeground(int32_t x, int32_t y, const SDL_Color& foreground, const int32_t& character)
+void conslr::Screen::setCellForeground(int32_t x, int32_t y, const SDL_Color& foreground, const uint8_t& character)
 {
     if (x < 0 || x >= mWidth || y < 0 || y >= mHeight) { return; }
 
@@ -255,7 +255,7 @@ void conslr::Screen::setCellForeground(int32_t x, int32_t y, const SDL_Color& fo
     return;
 }
 
-void conslr::Screen::setCellCharacter(int32_t x, int32_t y, const int32_t& character)
+void conslr::Screen::setCellCharacter(int32_t x, int32_t y, const uint8_t& character)
 {
     if (x < 0 || x >= mWidth || y < 0 || y >= mHeight) { return; }
 
@@ -268,7 +268,7 @@ void conslr::Screen::setCellCharacter(int32_t x, int32_t y, const int32_t& chara
     return;
 }
 
-void conslr::Screen::borderRect(SDL_Rect rect, int32_t horizontal, int32_t vertical, int32_t cornerTl, int32_t cornerTr, int32_t cornerBl, int32_t cornerBr)
+void conslr::Screen::borderRect(SDL_Rect rect, uint8_t horizontal, uint8_t vertical, uint8_t cornerTl, uint8_t cornerTr, uint8_t cornerBl, uint8_t cornerBr)
 {
     for (auto i = rect.x; i < rect.x + rect.w; i++)
     {
@@ -350,7 +350,7 @@ void conslr::Screen::renderText(int32_t x, int32_t y, int32_t maxSize, const std
     {
         if (x + i < 0 || x + i >= mWidth) { continue; }
 
-        mCells.at(start + i).character = (int32_t)(unsigned char)str.at(i);
+        mCells.at(start + i).character = (unsigned char)str.at(i);
     }
 
     mRerender = true;
@@ -384,7 +384,7 @@ void conslr::Screen::renderMultilineText(int32_t x, int32_t y, int32_t maxWidth,
 
         if (x + i < 0 || x + i >= mWidth || y + j < 0 || y + j >= mHeight) { i++; continue; }
 
-        mCells.at(((j + y) * mWidth) + x + i).character = (int32_t)(unsigned char)c;
+        mCells.at(((j + y) * mWidth) + x + i).character = (unsigned char)c;
         i++;
     }
 
@@ -405,7 +405,7 @@ void conslr::Screen::renderTextColor(int32_t x, int32_t y, int32_t maxSize, cons
 
         auto& cell = mCells.at(start + i);
 
-        cell.character = (int32_t)(unsigned char)str.at(i);
+        cell.character = (unsigned char)str.at(i);
         cell.foreground = color;
     }
 
@@ -426,7 +426,7 @@ void conslr::Screen::renderTextColor(int32_t x, int32_t y, int32_t maxSize, cons
 
         auto& cell = mCells.at(start + i);
 
-        cell.character = (int32_t)(unsigned char)str.at(i);
+        cell.character = (unsigned char)str.at(i);
         cell.foreground = foreground;
         cell.background = background;
     }
@@ -464,7 +464,7 @@ void conslr::Screen::renderMultilineTextColor(int32_t x, int32_t y, int32_t maxW
 
         auto& cell = mCells.at(((j + y) * mWidth) + x + i);
 
-        cell.character = (int32_t)(unsigned char)c;
+        cell.character = (unsigned char)c;
         cell.foreground = color;
 
         i++;
@@ -503,7 +503,7 @@ void conslr::Screen::renderMultilineTextColor(int32_t x, int32_t y, int32_t maxW
 
         auto& cell = mCells.at(((j + y) * mWidth) + x + i);
 
-        cell.character = (int32_t)(unsigned char)c;
+        cell.character = (unsigned char)c;
         cell.foreground = foreground;
         cell.background = background;
         i++;
@@ -531,7 +531,7 @@ void conslr::Screen::renderTextTagged(int32_t x, int32_t y, int32_t maxSize, con
         uint8_t bg = (tc.tags & TaggedChar::BACKGROUND_MASK) >> 4;
         uint8_t fg = tc.tags & TaggedChar::FOREGROUND_MASK;
 
-        cell.character = (int32_t)tc.character;
+        cell.character = tc.character;
 
 
         cell.foreground = tags.at(fg);
@@ -573,7 +573,7 @@ void conslr::Screen::renderMultilineTextTagged(int32_t x, int32_t y, int32_t max
         uint8_t bg = (tc.tags & TaggedChar::BACKGROUND_MASK) >> 4;
         uint8_t fg = tc.tags & TaggedChar::FOREGROUND_MASK;
 
-        cell.character = (int32_t)tc.character;
+        cell.character = tc.character;
 
         cell.foreground = tags.at(fg);
         cell.background = tags.at(bg);
