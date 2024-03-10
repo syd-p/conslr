@@ -10,6 +10,8 @@ Some info to keep track of:
 
 - Setting the theme of Console takes a const Theme& and instead creates a new shared\_ptr
 
-- Theme.extended is user implemented
+- Theme::extended is user implemented
 
     - Theme.extended is a raw pointer !!
+
+- Themes are loaded from files, see the loadfromfile example and res/themes/

@@ -5,6 +5,7 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
 
 #include <SDL_pixels.h>
 
@@ -32,4 +33,6 @@ namespace conslr
                                                       
         ExtendedTheme* extended = nullptr; //!<User implemented theme
     };
+
+    Theme loadThemeFromFile(const std::string& file);
 }

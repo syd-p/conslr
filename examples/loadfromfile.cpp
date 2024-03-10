@@ -3,6 +3,7 @@
 #include <SDL.h>
 
 #include "conslr/console.hpp"
+#include "conslr/theme.hpp"
 #include "conslr/widgets/checklist.hpp"
 
 int main()
@@ -18,6 +19,9 @@ int main()
     //Init screen
     int32_t scr = console.createScreen();
     console.setCurrentScreenIndex(scr);
+
+    //Init theme
+    console.setTheme(conslr::loadThemeFromFile("res/themes/turboblue.txt"));
 
     auto widgetIds = console.getWidgetManager(scr).loadFromFile("res/examplescr.json");
     auto list = console.getWidgetManager(scr).getWidget<conslr::widgets::CheckList<int32_t>>(widgetIds.at("CheckList1"));

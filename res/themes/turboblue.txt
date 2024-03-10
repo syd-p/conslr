@@ -1,0 +1,14 @@
+borderHorizontal=205
+borderVertical=186
+borderCornerTl=201
+borderCornerTr=187
+borderCornerBl=200
+borderCornerBr=188
+scrollbarCharacter=219
+scrollbarCharacterHorizontal=219
+selectionTick='X'
+
+background=0 0 175 255
+text=255 255 255 255
+border=255 255 255 255
+selection=0 168 175 255

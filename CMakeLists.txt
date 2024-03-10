@@ -8,6 +8,9 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
 configure_file(res/ibm_vga_fontsheet.bmp ${CMAKE_SOURCE_DIR}/build/res/ibm_vga_fontsheet.bmp COPYONLY)
 configure_file(res/examplescr.json ${CMAKE_SOURCE_DIR}/build/res/examplescr.json COPYONLY)
+configure_file(res/themes/default.txt ${CMAKE_SOURCE_DIR}/build/res/themes/default.txt COPYONLY)
+configure_file(res/themes/turboblue.txt ${CMAKE_SOURCE_DIR}/build/res/themes/turboblue.txt COPYONLY)
+configure_file(res/themes/chameleon.txt ${CMAKE_SOURCE_DIR}/build/res/themes/chameleon.txt COPYONLY)
 
 project(conslr VERSION 1.2.4 DESCRIPTION "Simple console emulator")
 
@@ -20,6 +23,7 @@ add_library(conslr SHARED
     src/screen.cpp
     src/widgetmanager.cpp
     src/widgetfactory.cpp
+    src/theme.cpp
 )
 
 file(GLOB conslr_headers include/conslr/*)

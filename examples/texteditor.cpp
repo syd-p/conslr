@@ -14,7 +14,7 @@
 #include <SDL.h>
 
 #include <conslr/console.hpp>
-#include <conslr/themes/turboblue.hpp>
+#include <conslr/theme.hpp>
 #include <conslr/widgets/textbox.hpp>
 #include <conslr/widgets/textinput.hpp>
 #include <conslr/widgets/scrolllist.hpp>
@@ -48,7 +48,7 @@ int main()
     int32_t mainScr = console.createScreen();
     console.setCurrentScreenIndex(mainScr);
 
-    console.setTheme(conslr::themes::TurboBlue);
+    console.setTheme(conslr::loadThemeFromFile("res/themes/turboblue.txt"));
 
     //Create main screen
     auto& mainWm = console.getWidgetManager(mainScr);
