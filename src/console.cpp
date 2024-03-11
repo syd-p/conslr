@@ -211,6 +211,12 @@ int32_t conslr::Console::createScreen()
     return index;
 }
 
+std::pair<int32_t, std::unordered_map<std::string, int32_t>> conslr::Console::createScreenFromFile(const std::string& file)
+{
+    int32_t scr = createScreen();
+    return { scr, mScreens.at(scr)->mWidgetManager.loadFromFile(file) };
+}
+
 void conslr::Console::destroyScreen(int32_t index)
 {
     if (!(index >= 0 && index < MAX_SCREENS))

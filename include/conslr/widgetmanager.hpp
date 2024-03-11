@@ -24,11 +24,13 @@ namespace conslr
 {
     struct Theme;
     class Screen;
+    class Console;
 
     class WidgetManager
     {
     public:
         friend class Screen;
+        friend class Console;
 
         WidgetManager(const WidgetManager&) = delete;
         WidgetManager(WidgetManager&&) = delete;
@@ -72,12 +74,6 @@ namespace conslr
         void activateWidget(int32_t index);
         void deactivateWidget(int32_t index);
 
-        ///Creates widgets from a file
-        ///
-        ///@param file File name
-        ///@return Map of widget names as a string and widget index as the value
-        [[nodiscard]] std::unordered_map<std::string, int32_t> loadFromFile(const std::string& file);
-
         void clear();
 
         //Getters
@@ -113,6 +109,12 @@ namespace conslr
 
     private:
         WidgetManager();
+
+        ///Creates widgets from a file
+        ///
+        ///@param file File name
+        ///@return Map of widget names as a string and widget index as the value
+        [[nodiscard]] std::unordered_map<std::string, int32_t> loadFromFile(const std::string& file);
 
         std::queue<int32_t> mFreeWidgets;
         std::array<std::shared_ptr<IWidget>, MAX_WIDGETS> mWidgets;
