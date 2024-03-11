@@ -108,6 +108,11 @@ std::unordered_map<std::string, int32_t> conslr::WidgetManager::loadFromFile(con
     nlohmann::json data = nlohmann::json::parse(ifs);
     ifs.close();
 
+    if (!data.contains("Widgets"))
+    {
+        throw std::runtime_error("Screen JSON file does not contain a Widgets object, file: " + file);
+    }
+
     clear();
     WidgetFactory::initialize();
     std::unordered_map<std::string, int32_t> widgetNames;
