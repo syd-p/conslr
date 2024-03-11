@@ -12,7 +12,6 @@
 #include <string>
 
 #include <SDL.h>
-#include <unordered_map>
 
 #include "conslr/keymapping.hpp"
 #include "conslr/widgetmanager.hpp"
@@ -39,7 +38,6 @@ namespace conslr
         void render();
 
         [[nodiscard]] int32_t createScreen();
-        [[nodiscard]] std::pair<int32_t, std::unordered_map<std::string, int32_t>> createScreenFromFile(const std::string& file);
         void destroyScreen(int32_t index);
 
         [[nodiscard]] int32_t createFont(const std::string& file, int32_t charWidth, int32_t charHeight);

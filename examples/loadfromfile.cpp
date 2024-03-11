@@ -20,10 +20,13 @@ int main()
     conslr::Theme theme{ "res/themes/turboblue.txt" };
     console.setTheme(theme);
 
-    //Loads a file to a screen
-    auto scrData = console.createScreenFromFile("res/screens/loadfromfilescr.json");
-    console.setCurrentScreenIndex(scrData.first);
-    auto list = console.getWidgetManager(scrData.first).getWidget<conslr::widgets::CheckList<int32_t>>(scrData.second.at("CheckList1")); 
+    //Init screen
+    int32_t scr = console.createScreen();
+    console.setCurrentScreenIndex(scr);
+
+    //Load widgets from a file
+    auto widgetIds = console.getWidgetManager(scr).loadFromFile("res/screens/loadfromfilescr.json");
+    auto list = console.getWidgetManager(scr).getWidget<conslr::widgets::CheckList<int32_t>>(widgetIds.at("CheckList1"));
 
     SDL_Event event;
     bool running = true;
