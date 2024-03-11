@@ -40,7 +40,7 @@ namespace conslr
         [[nodiscard]] int32_t createScreen();
         void destroyScreen(int32_t index);
 
-        [[nodiscard]] int32_t createFont(const char* file, int32_t charWidth, int32_t charHeight);
+        [[nodiscard]] int32_t createFont(const std::string& file, int32_t charWidth, int32_t charHeight);
         void destroyFont(int32_t index);
 
         void resizeCells(int32_t width, int32_t height);

@@ -229,7 +229,7 @@ void conslr::Console::destroyScreen(int32_t index)
 }
 
 //Font functions
-int32_t conslr::Console::createFont(const char* file, int32_t charWidth, int32_t charHeight)
+int32_t conslr::Console::createFont(const std::string& file, int32_t charWidth, int32_t charHeight)
 {
     if (mFreeFonts.empty())
     {
@@ -241,7 +241,7 @@ int32_t conslr::Console::createFont(const char* file, int32_t charWidth, int32_t
         throw std::runtime_error("Failed to init SDL2_image");
     }
 
-    SDL_Texture* texture = IMG_LoadTexture(mRenderer.get(), file);
+    SDL_Texture* texture = IMG_LoadTexture(mRenderer.get(), file.c_str());
     if (!texture)
     {
         throw std::runtime_error(std::string("Failed to load image, file: ") + file);
