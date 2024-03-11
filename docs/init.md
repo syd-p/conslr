@@ -60,3 +60,33 @@ auto textbox = widgetManager.createWidget<conslr::widgets::TextBox>();
     ptr->setRegion({ 0, 0, 10, 10 }); //Set the region on screen of the textbox
 }
 ```
+
+# Compile-time vs Run-time?
+
+Initializing things programatically vs at runtime has some positives and negatives, and I think its worth going over
+
+Programatically
+
+\+ Can be used to ensure a program will initialize correctly
+
+\+ Faster initialization
+
+\+ More portable, requires less external data to bootstrap it
+
+\- Must be recompiled to test (although with caching it should not be too big of a time loss)
+
+Run-time
+
+\+ Can be created and tested quickly
+
+\+ Added room for user customization that can still comply with the programs needs
+
+\- Potential for breaking changes
+
+\- Longer initialization times due to file i/o
+
+I like both generally, although my preference thus far seems to lie as the following
+
+Themes : Run-time
+
+Widgets : Compile-time

@@ -73,6 +73,7 @@ namespace conslr
         void deactivateWidget(int32_t index);
 
         ///Creates widgets from a file
+        ///Clears existing widgets to do so
         ///
         ///@param file File name
         ///@return Map of widget names as a string and widget index as the value
