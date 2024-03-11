@@ -16,14 +16,15 @@ int main()
     int32_t font = console.createFont("res/ibm_vga_fontsheet.bmp", 8, 16);
     console.setCurrentFontIndex(font);
 
+    //Init theme
+    console.setTheme(conslr::loadThemeFromFile("res/themes/turboblue.txt"));
+
     //Init screen
     int32_t scr = console.createScreen();
     console.setCurrentScreenIndex(scr);
 
-    //Init theme
-    console.setTheme(conslr::loadThemeFromFile("res/themes/turboblue.txt"));
-
-    auto widgetIds = console.getWidgetManager(scr).loadFromFile("res/examplescr.json");
+    //Load widgets from a file
+    auto widgetIds = console.getWidgetManager(scr).loadFromFile("res/screens/loadfromfilescr.json");
     auto list = console.getWidgetManager(scr).getWidget<conslr::widgets::CheckList<int32_t>>(widgetIds.at("CheckList1"));
 
     SDL_Event event;

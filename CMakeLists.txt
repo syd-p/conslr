@@ -7,7 +7,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
 configure_file(res/ibm_vga_fontsheet.bmp ${CMAKE_SOURCE_DIR}/build/res/ibm_vga_fontsheet.bmp COPYONLY)
-configure_file(res/examplescr.json ${CMAKE_SOURCE_DIR}/build/res/examplescr.json COPYONLY)
+configure_file(res/screens/loadfromfilescr.json ${CMAKE_SOURCE_DIR}/build/res/screens/loadfromfilescr.json COPYONLY)
 configure_file(res/themes/default.txt ${CMAKE_SOURCE_DIR}/build/res/themes/default.txt COPYONLY)
 configure_file(res/themes/turboblue.txt ${CMAKE_SOURCE_DIR}/build/res/themes/turboblue.txt COPYONLY)
 configure_file(res/themes/chameleon.txt ${CMAKE_SOURCE_DIR}/build/res/themes/chameleon.txt COPYONLY)
