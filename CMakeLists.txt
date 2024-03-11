@@ -12,7 +12,7 @@ configure_file(res/themes/default.txt ${CMAKE_SOURCE_DIR}/build/res/themes/defau
 configure_file(res/themes/turboblue.txt ${CMAKE_SOURCE_DIR}/build/res/themes/turboblue.txt COPYONLY)
 configure_file(res/themes/chameleon.txt ${CMAKE_SOURCE_DIR}/build/res/themes/chameleon.txt COPYONLY)
 
-project(conslr VERSION 1.2.4 DESCRIPTION "Simple console emulator")
+project(conslr VERSION 1.2.5 DESCRIPTION "Simple console emulator")
 
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
