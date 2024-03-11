@@ -40,6 +40,10 @@ console.setTheme(theme);
 
 conslr is not very useful without widgets of course
 
+My general philosophy around conslr is that the end user has the ability to choose either compile time or run time customization of themes and widgets.
+
+Both methods of creating widgets are valid and remain up to the end user to decide the appropriate pattern to use
+
 ```c++
 //Loading a screen from a file
 auto& widgetManager = console.getWidgetManager(myScreenId);
