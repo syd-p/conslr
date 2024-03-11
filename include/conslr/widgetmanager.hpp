@@ -77,7 +77,7 @@ namespace conslr
         ///
         ///@param file File name
         ///@return Map of widget names as a string and widget index as the value
-        [[nodiscard]] std::unordered_map<std::string, int32_t> loadFromFile(const std::string& file);
+        [[nodiscard]] std::unordered_map<std::string, int32_t> loadWidgetsFromFile(const std::string& file);
 
         void clear();
 

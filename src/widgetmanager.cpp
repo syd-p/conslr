@@ -97,7 +97,7 @@ void conslr::WidgetManager::deactivateWidget(int32_t index)
 //It then modifies the widget according to the pairs
 //Widget types have to be given a function to construct them from the parameter map 
 //This is provided for the default widgets in the WidgetFactory::initialize method
-std::unordered_map<std::string, int32_t> conslr::WidgetManager::loadFromFile(const std::string& file)
+std::unordered_map<std::string, int32_t> conslr::WidgetManager::loadWidgetsFromFile(const std::string& file)
 {
     std::ifstream ifs(file);
     if (!ifs.good())

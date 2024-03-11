@@ -25,8 +25,9 @@ int main()
     console.setCurrentScreenIndex(scr);
 
     //Load widgets from a file
-    auto widgetIds = console.getWidgetManager(scr).loadFromFile("res/screens/loadfromfilescr.json");
-    auto list = console.getWidgetManager(scr).getWidget<conslr::widgets::CheckList<int32_t>>(widgetIds.at("CheckList1"));
+    auto& wm = console.getWidgetManager(scr);
+    auto widgetIds = wm.loadWidgetsFromFile("res/screens/loadfromfilescr.json");
+    auto list = wm.getWidget<conslr::widgets::CheckList<int32_t>>(widgetIds.at("CheckList1"));
 
     SDL_Event event;
     bool running = true;
