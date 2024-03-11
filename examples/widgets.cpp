@@ -8,7 +8,6 @@
 #include "conslr/console.hpp"
 #include "conslr/taggedstring.hpp"
 #include "conslr/theme.hpp"
-#include "conslr/themes/defaulttheme.hpp"
 #include "conslr/widgets/textbox.hpp"
 #include "conslr/widgets/taggedtextbox.hpp"
 #include "conslr/widgets/floatingtext.hpp"
@@ -61,7 +60,7 @@ int main()
         auto ttbPtr = ttb.lock();
 
         ttbPtr->setString(conslr::TaggedString("Tagged Strings ", 0, 1) + conslr::TaggedString("add color!", 2, 1));
-        ttbPtr->setTags({ conslr::themes::Default.text, conslr::themes::Default.background, { 0, 255, 255, 255 } });
+        ttbPtr->setTags({ conslr::Theme{}.text, conslr::Theme{}.background, { 0, 255, 255, 255 } });
         ttbPtr->setRegion({ 41, 0, 20, 15 });
         ttbPtr->showTitle();
         ttbPtr->setTitle("Tagged Text Box");

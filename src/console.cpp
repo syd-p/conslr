@@ -8,13 +8,12 @@
 #include <SDL_image.h>
 
 #include "conslr/screen.hpp"
-#include "conslr/themes/defaulttheme.hpp"
 
 conslr::Console::Console(int32_t cellWidth, int32_t cellHeight, int32_t windowCellWidth, int32_t windowCellHeight) :
     mCellWidth{ cellWidth }, mCellHeight{ cellHeight },
     mWindowCellWidth{ windowCellWidth }, mWindowCellHeight{ windowCellHeight },
     mWindowWidth{ cellWidth * windowCellWidth }, mWindowHeight{ cellHeight * windowCellHeight },
-    mTheme{ std::make_shared<Theme>(themes::Default) },
+    mTheme{ std::make_shared<Theme>() },
     mWindow{ nullptr, SDL_DestroyWindow }, mRenderer{ nullptr, SDL_DestroyRenderer },
     mCurrentScreen{ -1 },
     mCurrentFont{ -1 }

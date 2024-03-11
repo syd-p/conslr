@@ -48,7 +48,7 @@ int main()
     int32_t mainScr = console.createScreen();
     console.setCurrentScreenIndex(mainScr);
 
-    console.setTheme(conslr::loadThemeFromFile("res/themes/turboblue.txt"));
+    console.setTheme(conslr::Theme{ "res/themes/turboblue.txt" });
 
     //Create main screen
     auto& mainWm = console.getWidgetManager(mainScr);

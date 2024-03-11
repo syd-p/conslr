@@ -4,17 +4,16 @@
 #include <sstream>
 #include <iostream>
 
-conslr::Theme conslr::loadThemeFromFile(const std::string& file)
+conslr::Theme::Theme(const std::string& file)
 {
     std::ifstream ifs(file);
     if (!ifs.good())
     {
         ifs.close();
         std::cerr << "Failed to open file: " << file << std::endl;
-        return conslr::Theme{};
+        return;
     }
 
-    conslr::Theme theme{};
     std::string line;
     while (std::getline(ifs, line))
     {
@@ -30,11 +29,11 @@ conslr::Theme conslr::loadThemeFromFile(const std::string& file)
         {
             if (value.at(0) == '\'')
             {
-                theme.borderHorizontal = value.at(1);
+                borderHorizontal = value.at(1);
                 continue;
             }
 
-            theme.borderHorizontal = std::stoi(value);
+            borderHorizontal = std::stoi(value);
             continue;
         }
 
@@ -42,11 +41,11 @@ conslr::Theme conslr::loadThemeFromFile(const std::string& file)
         {
             if (value.at(0) == '\'')
             {
-                theme.borderVertical = value.at(1);
+                borderVertical = value.at(1);
                 continue;
             }
 
-            theme.borderVertical = std::stoi(value);
+            borderVertical = std::stoi(value);
             continue;
         }
 
@@ -54,11 +53,11 @@ conslr::Theme conslr::loadThemeFromFile(const std::string& file)
         {
             if (value.at(0) == '\'')
             {
-                theme.borderCornerTl = value.at(1);
+                borderCornerTl = value.at(1);
                 continue;
             }
 
-            theme.borderCornerTl = std::stoi(value);
+            borderCornerTl = std::stoi(value);
             continue;
         }
 
@@ -66,11 +65,11 @@ conslr::Theme conslr::loadThemeFromFile(const std::string& file)
         {
             if (value.at(0) == '\'')
             {
-                theme.borderCornerTr = value.at(1);
+                borderCornerTr = value.at(1);
                 continue;
             }
 
-            theme.borderCornerTr = std::stoi(value);
+            borderCornerTr = std::stoi(value);
             continue;
         }
 
@@ -78,11 +77,11 @@ conslr::Theme conslr::loadThemeFromFile(const std::string& file)
         {
             if (value.at(0) == '\'')
             {
-                theme.borderCornerBl= value.at(1);
+                borderCornerBl= value.at(1);
                 continue;
             }
 
-            theme.borderCornerBl = std::stoi(value);
+            borderCornerBl = std::stoi(value);
             continue;
         }
 
@@ -90,11 +89,11 @@ conslr::Theme conslr::loadThemeFromFile(const std::string& file)
         {
             if (value.at(0) == '\'')
             {
-                theme.borderCornerBr = value.at(1);
+                borderCornerBr = value.at(1);
                 continue;
             }
 
-            theme.borderCornerBr = std::stoi(value);
+            borderCornerBr = std::stoi(value);
             continue;
         }
 
@@ -102,11 +101,11 @@ conslr::Theme conslr::loadThemeFromFile(const std::string& file)
         {
             if (value.at(0) == '\'')
             {
-                theme.scrollbarCharacter = value.at(1);
+                scrollbarCharacter = value.at(1);
                 continue;
             }
 
-            theme.scrollbarCharacter = std::stoi(value);
+            scrollbarCharacter = std::stoi(value);
             continue;
         }
 
@@ -114,11 +113,11 @@ conslr::Theme conslr::loadThemeFromFile(const std::string& file)
         {
             if (value.at(0) == '\'')
             {
-                theme.scrollbarCharacterHorizontal = value.at(1);
+                scrollbarCharacterHorizontal = value.at(1);
                 continue;
             }
 
-            theme.scrollbarCharacterHorizontal = std::stoi(value);
+            scrollbarCharacterHorizontal = std::stoi(value);
             continue;
         }
 
@@ -126,11 +125,11 @@ conslr::Theme conslr::loadThemeFromFile(const std::string& file)
         {
             if (value.at(0) == '\'')
             {
-                theme.selectionTick = value.at(1);
+                selectionTick = value.at(1);
                 continue;
             }
 
-            theme.selectionTick = std::stoi(value);
+            selectionTick = std::stoi(value);
             continue;
         }
 
@@ -138,11 +137,11 @@ conslr::Theme conslr::loadThemeFromFile(const std::string& file)
         {
             if (value.at(0) == '\'')
             {
-                theme.progress = value.at(1);
+                progress = value.at(1);
                 continue;
             }
 
-            theme.progress = std::stoi(value);
+            progress = std::stoi(value);
             continue;
         }
 
@@ -156,7 +155,7 @@ conslr::Theme conslr::loadThemeFromFile(const std::string& file)
             std::stringstream colors{value};
             colors >> r >> g >> b >> a;
             
-            theme.background = { (uint8_t)r, (uint8_t)g, (uint8_t)b, (uint8_t)a };
+            background = { (uint8_t)r, (uint8_t)g, (uint8_t)b, (uint8_t)a };
             continue;
         }
 
@@ -170,7 +169,7 @@ conslr::Theme conslr::loadThemeFromFile(const std::string& file)
             std::stringstream colors{value};
             colors >> r >> g >> b >> a;
             
-            theme.text = { (uint8_t)r, (uint8_t)g, (uint8_t)b, (uint8_t)a };
+            text = { (uint8_t)r, (uint8_t)g, (uint8_t)b, (uint8_t)a };
             continue;
         }
 
@@ -184,7 +183,7 @@ conslr::Theme conslr::loadThemeFromFile(const std::string& file)
             std::stringstream colors{value};
             colors >> r >> g >> b >> a;
             
-            theme.border = { (uint8_t)r, (uint8_t)g, (uint8_t)b, (uint8_t)a };
+            border = { (uint8_t)r, (uint8_t)g, (uint8_t)b, (uint8_t)a };
             continue;
         }
 
@@ -198,11 +197,11 @@ conslr::Theme conslr::loadThemeFromFile(const std::string& file)
             std::stringstream colors{value};
             colors >> r >> g >> b >> a;
             
-            theme.selection = { (uint8_t)r, (uint8_t)g, (uint8_t)b, (uint8_t)a };
+            selection = { (uint8_t)r, (uint8_t)g, (uint8_t)b, (uint8_t)a };
             continue;
         }
     }
 
     ifs.close();
-    return theme;
+    return;
 }
