@@ -1,3 +1,6 @@
+///Example loading console info from file
+///
+///
 #include <string>
 
 #include <SDL.h>
