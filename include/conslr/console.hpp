@@ -43,6 +43,8 @@ namespace conslr
         [[nodiscard]] int32_t createFont(const std::string& file, int32_t charWidth, int32_t charHeight);
         void destroyFont(int32_t index);
 
+        [[nodiscard]] Theme createTheme(const std::string& file);
+
         void resizeCells(int32_t width, int32_t height);
 
         //Getters

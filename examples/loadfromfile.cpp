@@ -17,7 +17,7 @@ int main()
     console.setCurrentFontIndex(font);
 
     //Init theme
-    conslr::Theme theme{ "res/themes/turboblue.txt" };
+    conslr::Theme theme = console.createTheme("res/themes/turboblue.txt");
     console.setTheme(theme);
 
     //Init screen

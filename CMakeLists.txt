@@ -23,7 +23,6 @@ add_library(conslr SHARED
     src/screen.cpp
     src/widgetmanager.cpp
     src/widgetfactory.cpp
-    src/theme.cpp
 )
 
 file(GLOB conslr_headers include/conslr/*)

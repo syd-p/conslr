@@ -5,7 +5,6 @@
 #pragma once
 
 #include <cstdint>
-#include <string>
 
 #include <SDL_pixels.h>
 
@@ -15,9 +14,6 @@ namespace conslr
 {
     struct Theme
     {
-        Theme() {}
-        Theme(const std::string& file);
-
         uint8_t borderHorizontal = '-'; //!<Horizontal border character
         uint8_t borderVertical = '|'; //!<Vertical border character
         uint8_t borderCornerTl = '+'; //!<Top left corner border character
