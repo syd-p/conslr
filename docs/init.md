@@ -27,7 +27,7 @@ Congrats, now you have a console that is set up and ready to be hold some widget
 4. (Optional) Create or load a theme
 ```c++
 //Loading a theme from file
-conslr::Theme theme{ "res/themes/sometheme.txt" };
+conslr::Theme theme = console.createTheme("mytheme.txt");
 console.setTheme(theme);
 
 //Or create a theme programatically
